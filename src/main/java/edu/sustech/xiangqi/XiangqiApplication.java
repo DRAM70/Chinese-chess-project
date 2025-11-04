@@ -3,9 +3,16 @@ package edu.sustech.xiangqi;
 import edu.sustech.xiangqi.model.ChessBoardModel;
 import edu.sustech.xiangqi.ui.ChessBoardPanel;
 
+import java.io.*;
+
 import javax.swing.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class XiangqiApplication {
+    public static String user;
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame loginFrame = new JFrame("login");
@@ -61,18 +68,33 @@ public class XiangqiApplication {
             JButton button = new JButton("start");
             button.setLocation(600, 200);
             button.setSize(100, 50);
-            button.addActionListener(e -> {
-                label.setText("hh");
-                System.out.println("hhhhhh");
-            });
+
+
+
             loginIn.addActionListener(e -> {
                 String a = username.getText();
                 String b = passcode.getText();
-                isInUserList(a, b);
-                label.setText(a);
-                loginFrame.setVisible(false);
-                frame.setVisible(true);
+
+
+
+
+                if(isInUserList(a, b)){
+                    label.setText(a);
+                    user = a;
+                    loginFrame.setVisible(false);
+                    frame.setVisible(true);
+                }else{
+                    System.out.println("entry denied");
+                }
+
             });
+
+
+            button.addActionListener(e -> {
+                System.out.println("hhhhhh");
+            });
+
+
             frame.add(button);//先添加的后绘制
 
             ChessBoardModel model = new ChessBoardModel();
@@ -89,7 +111,45 @@ public class XiangqiApplication {
 
 
     public static boolean isInUserList(String name, String passcode){
-
+        File file = new File(".\\UserInfo.txt");
+        Scanner in;
+        try{
+            in = new Scanner(file);
+            while(in.hasNextLine()){
+                String existingUsername = in.nextLine();
+                if(name.equals(existingUsername)){
+                    String existingPasscode = in.nextLine();
+                    if(passcode.equals(existingPasscode)){
+                        return true;
+                    }
+                }else{
+                    in.nextLine();
+                }
+            }
+            return false;
+        }catch(FileNotFoundException e){
+            System.out.println("File UserInfo.txt not found!");
+        }
         return false;
+    }
+
+    public static boolean addNewUser(String name, String passcode){
+        if(isInUserList(name, passcode)){
+            return false;
+        }
+        write(name);
+        write(passcode);
+        return true;
+    }
+
+    public static void write(String s){
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter("UserInfo.txt", true));
+            writer.write(s + "\n");
+            writer.flush();
+            writer.close();
+        }catch(IOException e){
+            System.out.println("Error, writing " + s + " to UserInfo.txt failed!");
+        }
     }
 }
