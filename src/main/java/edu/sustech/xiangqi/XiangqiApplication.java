@@ -31,7 +31,6 @@ public class XiangqiApplication {
             usernameLabel.setText("Username");
             loginFrame.add(usernameLabel);
 
-
             JTextField passcode = new JTextField();
             passcode.setLocation(150, 175);
             passcode.setSize(200, 50);
@@ -43,13 +42,11 @@ public class XiangqiApplication {
             passcodeLabel.setText("Passcode");
             loginFrame.add(passcodeLabel);
 
-
             JLabel loginStatusLabel = new JLabel();
             loginStatusLabel.setLocation(155, 50);
             loginStatusLabel.setSize(200, 50);
-            loginStatusLabel.setText("???");
+            loginStatusLabel.setText("  ");
             loginFrame.add(loginStatusLabel);
-
 
             JButton loginIn = new JButton("login in");
             loginIn.setSize(100, 30);
@@ -63,11 +60,49 @@ public class XiangqiApplication {
 
             loginFrame.setVisible(true);
 
+            //register的界面
+            JFrame registerFrame=new JFrame("中国象棋注册界面");
+            registerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            registerFrame.setLayout(null);
+            registerFrame.setSize(500, 500);
+
+            JTextField username1 = new JTextField();
+            username1.setLocation(150, 100);
+            username1.setSize(200, 50);
+            registerFrame.add(username1);
+
+            JLabel usernameLabel1 = new JLabel();
+            usernameLabel1.setLocation(75, 100);
+            usernameLabel1.setSize(200, 50);
+            usernameLabel1.setText("Username");
+            registerFrame.add(usernameLabel1);
+
+            JTextField passcode1 = new JTextField();
+            passcode1.setLocation(150, 175);
+            passcode1.setSize(200, 50);
+            registerFrame.add(passcode1);
+
+            JLabel passcodeLabel1 = new JLabel();
+            passcodeLabel1.setLocation(75, 175);
+            passcodeLabel1.setSize(200, 50);
+            passcodeLabel1.setText("Passcode");
+            registerFrame.add(passcodeLabel1);
+
+            JButton register1 = new JButton("register");
+            register1.setSize(100, 30);
+            register1.setLocation(200, 300);
+            registerFrame.add(register1);
+
+            JLabel loginStatusLabel1 = new JLabel();
+            loginStatusLabel1.setLocation(155, 50);
+            loginStatusLabel1.setSize(200, 50);
+            loginStatusLabel1.setText("  ");
+            registerFrame.add(loginStatusLabel1);
+
 
             //上面是login的界面，下面是象棋的界面
             JFrame chessFrame = new JFrame("中国象棋");
             chessFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 
             JLabel label = new JLabel("开始");
             label.setLocation(600, 100);
@@ -107,6 +142,31 @@ public class XiangqiApplication {
                         loginStatusLabel.setLocation(195, 50);
                         loginStatusLabel.setText("User doesn't exist!");
                     }
+                }
+            });
+
+            register.addActionListener(e -> {
+                loginFrame.setVisible(false);
+                registerFrame.setVisible(true);
+            });
+
+            register1.addActionListener(e -> {
+                String c=username1.getText();
+                String d=passcode1.getText();
+                if(c.isEmpty()){
+                    loginStatusLabel1.setLocation(170, 50);
+                    loginStatusLabel1.setText("Please enter the Username!");
+                    return;
+                }
+                if(d.isEmpty()){
+                    loginStatusLabel1.setLocation(170, 50);
+                    loginStatusLabel1.setText("Please enter the Passcode!");
+                    return;
+                }
+                if(addNewUser(c,d)){
+                    loginFrame.setVisible(true);
+                    registerFrame.setVisible(false);
+                    loginStatusLabel.setText("please login");
                 }
             });
 
