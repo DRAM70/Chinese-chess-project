@@ -15,7 +15,7 @@ public class XiangqiApplication {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame loginFrame = new JFrame("login");
+            JFrame loginFrame = new JFrame("中国象棋登陆界面");
             loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             loginFrame.setLayout(null);
             loginFrame.setSize(500, 500);
@@ -44,6 +44,13 @@ public class XiangqiApplication {
             loginFrame.add(passcodeLabel);
 
 
+            JLabel loginStatusLabel = new JLabel();
+            loginStatusLabel.setLocation(155, 50);
+            loginStatusLabel.setSize(200, 50);
+            loginStatusLabel.setText("???");
+            loginFrame.add(loginStatusLabel);
+
+
             JButton loginIn = new JButton("login in");
             loginIn.setSize(100, 30);
             loginIn.setLocation(200, 250);
@@ -56,14 +63,16 @@ public class XiangqiApplication {
 
             loginFrame.setVisible(true);
 
-            JFrame frame = new JFrame("中国象棋");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            //上面是login的界面，下面是象棋的界面
+            JFrame chessFrame = new JFrame("中国象棋");
+            chessFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
             JLabel label = new JLabel("开始");
             label.setLocation(600, 100);
             label.setSize(100, 50);
-            frame.add(label);//先添加的后绘制
+            chessFrame.add(label);//先添加的后绘制
 
             JButton button = new JButton("start");
             button.setLocation(600, 200);
@@ -74,19 +83,31 @@ public class XiangqiApplication {
             loginIn.addActionListener(e -> {
                 String a = username.getText();
                 String b = passcode.getText();
-
-
-
-
-                if(isInUserList(a, b)){
+                if(a.isEmpty()){
+                    loginStatusLabel.setLocation(170, 50);
+                    loginStatusLabel.setText("Please enter the Username!");
+                    return;
+                }
+                if(b.isEmpty()){
+                    loginStatusLabel.setLocation(170, 50);
+                    loginStatusLabel.setText("Please enter the Passcode!");
+                    return;
+                }
+                if(isInUserListUP(a, b)){
                     label.setText(a);
                     user = a;
                     loginFrame.setVisible(false);
-                    frame.setVisible(true);
+                    chessFrame.setVisible(true);
                 }else{
                     System.out.println("entry denied");
+                    if(isInUserListU(a, b)){
+                        loginStatusLabel.setLocation(205, 50);
+                        loginStatusLabel.setText("Wrong passcode!");
+                    }else{
+                        loginStatusLabel.setLocation(195, 50);
+                        loginStatusLabel.setText("User doesn't exist!");
+                    }
                 }
-
             });
 
 
@@ -95,22 +116,22 @@ public class XiangqiApplication {
             });
 
 
-            frame.add(button);//先添加的后绘制
+            chessFrame.add(button);//先添加的后绘制
 
             ChessBoardModel model = new ChessBoardModel();
             ChessBoardPanel boardPanel = new ChessBoardPanel(model);
             boardPanel.label = label;
 
-            frame.add(boardPanel);
-//            frame.pack();//大小适于内容
-            frame.setSize(800, 700);
-            frame.setLocationRelativeTo(null);
-            //frame.setVisible(true);
+            chessFrame.add(boardPanel);
+//            chessFrame.pack();//大小适于内容
+            chessFrame.setSize(800, 700);
+            chessFrame.setLocationRelativeTo(null);
+            //chessFrame.setVisible(true);
         });
     }
 
-
-    public static boolean isInUserList(String name, String passcode){
+    //总体判断用户名和密码，用户名是否存在的单独判断在后面
+    public static boolean isInUserListUP(String name, String passcode){
         File file = new File(".\\UserInfo.txt");
         Scanner in;
         try{
@@ -133,8 +154,38 @@ public class XiangqiApplication {
         return false;
     }
 
+    public static boolean isInUserListU(String name, String passcode){
+        File file = new File(".\\UserInfo.txt");
+        Scanner in;
+        try{
+            in = new Scanner(file);
+            while(in.hasNextLine()){
+                String existingUsername = in.nextLine();
+                if(name.equals(existingUsername)){
+//                    String existingPasscode = in.nextLine();
+//                    if(passcode.equals(existingPasscode)){
+//                        return true;
+//                    }
+                    return true;
+                }else{
+                    in.nextLine();
+                }
+            }
+            System.out.println(name + " doesn't exist as a username!");
+            return false;
+        }catch(FileNotFoundException e){
+            System.out.println("File UserInfo.txt not found!");
+        }
+        return false;
+    }
+
+
+    /*这个是在添加新用户时使用的，直接调用的话可以执行添加，
+    返回的boolean值会告诉是否存在该用户，若存在（用户名相同），则返回false，不存在并且添加成功则返回true
+    为注册的按钮添加事件监听，新页面中使用这个方法
+     */
     public static boolean addNewUser(String name, String passcode){
-        if(isInUserList(name, passcode)){
+        if(isInUserListUP(name, passcode)){
             return false;
         }
         write(name);
