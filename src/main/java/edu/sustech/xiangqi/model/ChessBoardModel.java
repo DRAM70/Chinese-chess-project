@@ -22,6 +22,7 @@ public class ChessBoardModel {
         pieces.add(new SoldierPiece("卒", 3, 4, false));
         pieces.add(new SoldierPiece("卒", 3, 6, false));
         pieces.add(new SoldierPiece("卒", 3, 8, false));
+        pieces.add(new HorsePiece("马",2,4,false));
 
         // 红方棋子
         pieces.add(new GeneralPiece("帅", 9, 4, true));
