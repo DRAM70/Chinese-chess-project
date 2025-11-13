@@ -1,10 +1,4 @@
-aaaa
-bbbbb
-ccc
-ddd
-aaa
-bbb
+000
+000
 Username
 Passcode
-moon
-123456
