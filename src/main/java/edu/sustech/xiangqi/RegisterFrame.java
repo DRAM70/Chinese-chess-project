@@ -1,10 +1,12 @@
 package edu.sustech.xiangqi;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.util.Scanner;
 
 public class RegisterFrame extends JFrame {
+    public Font defaultFont = new Font("微软雅黑", Font.BOLD, 18);
     
 
 
@@ -22,39 +24,46 @@ public class RegisterFrame extends JFrame {
         JTextField username1 = new JTextField();
         username1.setLocation(150, 100);
         username1.setSize(200, 50);
+        username1.setFont(new Font(defaultFont.getName(), defaultFont.getStyle(), 16));
         this.add(username1);
 
         JLabel usernameLabel1 = new JLabel();
         usernameLabel1.setLocation(50, 100);
         usernameLabel1.setSize(200, 50);
-        usernameLabel1.setText("New Username");
+        usernameLabel1.setText("新用户名");
+        usernameLabel1.setFont(defaultFont);
         this.add(usernameLabel1);
 
         JTextField passcode1 = new JTextField();
         passcode1.setLocation(150, 175);
         passcode1.setSize(200, 50);
+        passcode1.setFont(new Font(defaultFont.getName(), defaultFont.getStyle(), 16));
         this.add(passcode1);
 
         JLabel passcodeLabel1 = new JLabel();
         passcodeLabel1.setLocation(50, 175);
         passcodeLabel1.setSize(200, 50);
-        passcodeLabel1.setText("New Passcode");
+        passcodeLabel1.setText("新密码");
+        passcodeLabel1.setFont(defaultFont);
         this.add(passcodeLabel1);
 
-        JButton confirm = new JButton("CONFIRM");
+        JButton confirm = new JButton("确认");
         confirm.setSize(100, 30);
         confirm.setLocation(200, 250);
+        confirm.setFont(defaultFont);
         this.add(confirm);
 
-        JButton back = new JButton("return");
+        JButton back = new JButton("返回");
         back.setSize(80, 20);
         back.setLocation(210, 300);
+        back.setFont(defaultFont);
         this.add(back);
 
         JLabel loginStatusLabel1 = new JLabel();
         loginStatusLabel1.setLocation(155, 50);
         loginStatusLabel1.setSize(200, 50);
         loginStatusLabel1.setText("  ");
+        loginStatusLabel1.setFont(defaultFont);
         this.add(loginStatusLabel1);
 
         this.add(background);
@@ -64,25 +73,27 @@ public class RegisterFrame extends JFrame {
             String c = username1.getText();
             String d = passcode1.getText();
             if (c.isEmpty()) {
-                loginStatusLabel1.setLocation(170, 50);
-                loginStatusLabel1.setText("Please enter the Username!");
+                loginStatusLabel1.setLocation(190, 50);
+                loginStatusLabel1.setText("请输入用户名！");
                 return;
             }
             if (d.isEmpty()) {
-                loginStatusLabel1.setLocation(170, 50);
-                loginStatusLabel1.setText("Please enter the Passcode!");
+                loginStatusLabel1.setLocation(195, 50);
+                loginStatusLabel1.setText("请输入密码！");
                 return;
             }
             if(isInUserListU(c)){
-                loginStatusLabel1.setLocation(190, 50);
-                loginStatusLabel1.setText("User already existed!");
+                loginStatusLabel1.setLocation(195, 50);
+                loginStatusLabel1.setText("用户已存在！");
+                return;
             }
             if (addNewUser(c, d)) {
                 LoginFrame loginFrame = new LoginFrame("中国象棋 登录页面");
                 loginFrame.setVisible(true);
                 this.setVisible(false);
-                LoginFrame.loginStatusLabel.setText("Please login now!");
-                LoginFrame.loginStatusLabel.setLocation(200, 50);
+                LoginFrame.loginStatusLabel.setText("请登录！");
+                LoginFrame.loginStatusLabel.setFont(defaultFont);
+                LoginFrame.loginStatusLabel.setLocation(220, 50);
             }
         });
 
@@ -156,6 +167,7 @@ public class RegisterFrame extends JFrame {
         }
         write(name);
         write(passcode);
+        newUserData(name);
         return true;
     }
 
@@ -167,6 +179,45 @@ public class RegisterFrame extends JFrame {
             writer.close();
         }catch(IOException e){
             System.out.println("Error, writing " + s + " to UserInfo.txt failed!");
+        }
+    }
+
+    public static void newUserData(String s){
+        try{
+
+
+//
+//            // 使用 BufferedWriter 写入文件
+//            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+//
+//                writer.write("使用相对路径创建的文件");
+//                writer.newLine();
+//                writer.write("当前时间: " + java.time.LocalDateTime.now());
+//                writer.newLine();
+//                writer.write("文件路径: " + file.getAbsolutePath());
+//
+//                System.out.println("文件创建成功!");
+//                System.out.println("相对路径: " + relativePath);
+//                System.out.println("绝对路径: " + file.getAbsolutePath());
+//
+//            } catch (IOException e) {
+//                System.out.println("写入文件时出错: " + e.getMessage());
+//                e.printStackTrace();
+//            }
+            String relativePath = "UserData/" + s + ".txt";
+            File file = new File(relativePath);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+
+
+
+            writer.write(s + "\n");
+
+
+
+            writer.flush();
+            writer.close();
+        }catch(IOException e){
+            System.out.println("Error, file" + s + ".txt is broken!");
         }
     }
 }
