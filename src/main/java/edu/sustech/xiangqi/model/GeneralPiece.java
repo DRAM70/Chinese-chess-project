@@ -11,7 +11,7 @@ public class GeneralPiece extends AbstractPiece {
 
     @Override
     public boolean canMoveTo(int targetRow, int targetCol, ChessBoardModel model) {
-        // TODO: 实现将/帅的移动规则
+
         int currentRow = getRow();
         int currentCol = getCol();
         if (currentRow == targetRow && currentCol == targetCol) {
