@@ -18,6 +18,7 @@ public class ChariotPiece extends AbstractPiece {
         //在没有阻挡的情况下，車可以横或竖走任意格数
         int rowDiff = Math.abs(targetRow - currentRow);
         int colDiff = Math.abs(targetCol - currentCol);
+
         if(rowDiff>0&&colDiff>0){
             return false;
         }
