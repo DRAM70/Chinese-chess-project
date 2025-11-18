@@ -15,6 +15,9 @@ public class ChariotPiece extends AbstractPiece {
             return false;
         }
 
+        AbstractPiece piece_target= model.getPieceAt(targetRow,targetCol);
+        AbstractPiece piece_current=model.getPieceAt(currentRow,currentCol);
+
         //在没有阻挡的情况下，車可以横或竖走任意格数
         int rowDiff = Math.abs(targetRow - currentRow);
         int colDiff = Math.abs(targetCol - currentCol);
@@ -59,6 +62,16 @@ public class ChariotPiece extends AbstractPiece {
             }
         }
 
-        return true;
+        if(piece_target==null){
+            return true;
+        }
+        else {
+            if (piece_target.isRed()==piece_current.isRed()){return false;}
+            else {
+                model.removePieces(piece_target);
+                return true;
+            }
+        }
+
     }
 }

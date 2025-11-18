@@ -4,6 +4,7 @@ public class HorsePiece extends AbstractPiece {
 
     public HorsePiece(String name, int row, int col, boolean isRed){super(name, row, col, isRed);}
 
+
     @Override
     public boolean canMoveTo(int targetRow, int targetCol, ChessBoardModel model) {
         int currentRow = getRow();
@@ -13,23 +14,79 @@ public class HorsePiece extends AbstractPiece {
         }
 
         int rowDiff = targetRow - currentRow;
-        int colDiff = Math.abs(targetCol - currentCol);
+        int colDiff = targetCol - currentCol;
+
+        AbstractPiece piece_target= model.getPieceAt(targetRow,targetCol);
+        AbstractPiece piece_current=model.getPieceAt(currentRow,currentCol);
 
         //马的移动规则
         //走“日”
-        int[][] movement={{2,1},{2,-1},{1,2},{1,-2},{-1,2},{-1,-2},{-2,-1},{-2,1}};
-        //遍历移动路径是否合法
-        for(int i=0;i< movement.length;i++){
-            int move1=currentRow+movement[i][0];
-            int move2=currentCol+movement[i][1];
-            if(targetRow==move1&&targetCol==move2&&move1>=0&&move1<10&&move2>=0&&move2<9){
-
-                //蹩马腿
-                //if()
-                return true;
+            if((rowDiff==2&&colDiff==1)||(rowDiff==2&&colDiff==-1)){
+                AbstractPiece piece = model.getPieceAt(currentRow+1,currentCol );
+                if(piece==null){
+                    if(piece_target==null){
+                    return true;
+                    }
+                    else {
+                        if (piece_target.isRed()==piece_current.isRed()){return false;}
+                        else {
+                            model.removePieces(piece_target);
+                            return true;
+                        }
+                    }
+                }
             }
-        }
+
+            if((rowDiff==-2&&colDiff==1)||(rowDiff==-2&&colDiff==-1)){
+                AbstractPiece piece = model.getPieceAt(currentRow-1,currentCol );
+                if(piece==null){
+                    if(piece_target==null){
+                        return true;
+                    }
+                    else {
+                        if (piece_target.isRed()==piece_current.isRed()){return false;}
+                        else {
+                            model.removePieces(piece_target);
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            if((rowDiff==1&&colDiff==2)||(rowDiff==-1&&colDiff==2)){
+                AbstractPiece piece = model.getPieceAt(currentRow,currentCol+1 );
+                if(piece==null){
+                    if(piece_target==null){
+                        return true;
+                    }
+                    else {
+                        if (piece_target.isRed()==piece_current.isRed()){return false;}
+                        else {
+                            model.removePieces(piece_target);
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            if((rowDiff==1&&colDiff==-2)||(rowDiff==-1&&colDiff==-2)){
+                AbstractPiece piece = model.getPieceAt(currentRow,currentCol-1 );
+                if(piece==null){
+                    if(piece_target==null){
+                        return true;
+                    }
+                    else {
+                        if (piece_target.isRed()==piece_current.isRed()){return false;}
+                        else {
+                            model.removePieces(piece_target);
+                            return true;
+                        }
+                    }
+                }
+            }
+
+
+
         return false;
     }
-
 }

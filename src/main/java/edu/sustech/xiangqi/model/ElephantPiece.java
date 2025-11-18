@@ -15,6 +15,9 @@ public class ElephantPiece extends AbstractPiece{
             return false;
         }
 
+        AbstractPiece piece_target= model.getPieceAt(targetRow,targetCol);
+        AbstractPiece piece_current=model.getPieceAt(currentRow,currentCol);
+
         //象的移动规则
         //象走“田”
         int rowDiff = targetRow - currentRow;
@@ -38,6 +41,15 @@ public class ElephantPiece extends AbstractPiece{
             if(piece!=null){return false;}
         }
 
-        return true;
+        if(piece_target==null){
+            return true;
+        }
+        else {
+            if (piece_target.isRed()==piece_current.isRed()){return false;}
+            else {
+                model.removePieces(piece_target);
+                return true;
+            }
+        }
     }
 }

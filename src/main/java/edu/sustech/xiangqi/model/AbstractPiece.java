@@ -46,5 +46,23 @@ public abstract class AbstractPiece {
      * 判断棋子是否可以移动到目标位置
      * @return 是否可以移动
      */
+
     public abstract boolean canMoveTo(int targetRow, int targetCol, ChessBoardModel model);
+
+//    public boolean legalMove(int targetRow, int targetCol, ChessBoardModel model){
+//        if(canMoveTo(targetRow, targetCol, model)){
+//            AbstractPiece targetPiece= model.getPieceAt(targetRow,targetCol);
+//            if(targetPiece!=null){
+//                if(targetPiece.isRed()==this.isRed()){
+//                    return false;
+//                }
+//                else {
+//                    model.removePieces(targetPiece);
+//                    this.moveTo(targetRow,targetCol);
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 }
