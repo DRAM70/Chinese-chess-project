@@ -13,7 +13,7 @@ import java.awt.event.KeyListener;
 public class LoginFrame extends JFrame{
     public String user;
     public static JLabel loginStatusLabel;
-    public RegisterFrame registerFrame = new RegisterFrame("中国象棋 注册页面");
+//    public RegisterFrame registerFrame = new RegisterFrame("中国象棋 注册页面");
     public Font defaultFont = new Font("微软雅黑", Font.BOLD, 18);
 
 
@@ -26,9 +26,12 @@ public class LoginFrame extends JFrame{
         this.setLayout(null);
         this.setSize(500, 500);
 
-        JLabel background = new JLabel(new ImageIcon(".\\src\\main\\resources\\back1111.png"));
+        ImageIcon originalIcon = new ImageIcon(".\\src\\main\\resources\\loginBackground2.jpg");
+        Image scaledImage = originalIcon.getImage().getScaledInstance(500, 500, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel background = new JLabel(scaledIcon);
         background.setSize(500, 500);
-        background.setLocation(0, 100);
+        background.setLocation(0, 0);
 
 
         JTextField username = new JTextField();
@@ -85,7 +88,8 @@ public class LoginFrame extends JFrame{
         this.add(background);
 
         this.setVisible(true);
-        GameFrame chessFrame = new GameFrame("中国象棋");
+//        GameFrame chessFrame = new GameFrame("中国象棋");
+        //将gameFrame初始化后移，仅在判断正确后初始化并进入，保留以说明
 
         loginIn.addActionListener(e -> {
             String a = username.getText();
@@ -103,11 +107,23 @@ public class LoginFrame extends JFrame{
                 return;
             }
             if(isInUserListUP(a, b)){
-                    chessFrame.label.setText(a);
-                    user = a;
+                GameFrame chessFrame = new GameFrame("中国象棋", a);
+                user = a;
                 this.setVisible(false);
                 chessFrame.setVisible(true);
-                chessFrame.user = a;
+                //这里还没有检测是否存在log文档去写入，尽管在移动棋子后可以直接生成新的userData文件，
+                // 但是以防在loginFrame里也需要检测的情况，下面还是贴上write函数的代码
+
+//                public static void write(String s){
+//                    try{
+//                        BufferedWriter writer = new BufferedWriter(new FileWriter("UserInfo.txt", true));
+//                        writer.write(s + "\n");
+//                        writer.flush();
+//                        writer.close();
+//                    }catch(IOException e){
+//                        System.out.println("Error, writing " + s + " to UserInfo.txt failed!");
+//                    }
+//                }
             }else{
                 System.out.println("entry denied");
                 if(isInUserListU(a, b)){
@@ -122,14 +138,15 @@ public class LoginFrame extends JFrame{
 
 
         visitor.addActionListener(e -> {
-            user = "游客";
+            GameFrame chessFrame = new GameFrame("中国象棋", "游客6060");
+            user = "游客6060";
             this.setVisible(false);
             chessFrame.setVisible(true);
-            chessFrame.label.setText("游客");
-            chessFrame.user = "游客";
+//            chessFrame.label.setText("游客");
+//            chessFrame.user = "游客";
         });
 
-
+/*这是login时使用回车键即可起到按登录按钮的效果的代码，必要时可以实现*/
 //        JPanel panel = new JPanel();
 //        panel.setFocusable(true); // 重要：设置面板可获得焦点
 //        panel.requestFocusInWindow(); // 请求焦点

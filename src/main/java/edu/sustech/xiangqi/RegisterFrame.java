@@ -17,9 +17,13 @@ public class RegisterFrame extends JFrame {
         this.setLayout(null);
         this.setSize(500, 500);
 
-        JLabel background = new JLabel(new ImageIcon(".\\src\\main\\resources\\back1111.png"));
+
+        ImageIcon originalIcon = new ImageIcon(".\\src\\main\\resources\\loginBackground2.jpg");
+        Image scaledImage = originalIcon.getImage().getScaledInstance(500, 500, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel background = new JLabel(scaledIcon);
         background.setSize(500, 500);
-        background.setLocation(0, 100);
+        background.setLocation(0, 0);
 
         JTextField username1 = new JTextField();
         username1.setLocation(150, 100);

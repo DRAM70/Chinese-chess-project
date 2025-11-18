@@ -1,5 +1,9 @@
 package edu.sustech.xiangqi.model;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +12,7 @@ public class ChessBoardModel {
     private final List<AbstractPiece> pieces;
     private static final int ROWS = 10;
     private static final int COLS = 9;
+    private String user;
 
     protected void removePieces(AbstractPiece piece){
         pieces.remove(piece);
@@ -83,6 +88,10 @@ public class ChessBoardModel {
         }
 
         piece.moveTo(newRow, newCol);
+        //这里是一个示例，具体还有待开发
+        String move = piece.getName() + " moved to (" + newRow + ", " + newCol + ")";
+        logWriter(move, true);
+        //示例结束
         return true;
         //return piece.legalMove(newRow,newCol,this);
     }
@@ -93,5 +102,33 @@ public class ChessBoardModel {
 
     public static int getCols() {
         return COLS;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    //当写入步骤记录时，输入string，写入文档,注意还要输入是否是红方走的棋
+    //现在这里还没有完工
+    //目前实现了在特定文件里写入特定语句的功能，对于损坏的log还要检测
+    //检测log是否损坏的一个想法：结束后对log进行一个hashcode或者什么的加密，形成一串字符，在读取log之前将两者进行比对，任一方不符合对方都会不读取log
+    public void logWriter(String move, boolean isRed){
+        try{
+            String relativePath = "UserData/" + user + ".txt";
+            File file = new File(relativePath);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+
+
+
+            writer.write( "nenenen6666   " + user + "   " +move +   "\n");
+            System.out.println(user + ": New step log written! Log: "  + isRed + move);
+
+
+
+            writer.flush();
+            writer.close();
+        }catch(IOException e){
+            System.out.println("Error, file" + user + ".txt is broken! And step log writing failed!");
+        }
     }
 }
