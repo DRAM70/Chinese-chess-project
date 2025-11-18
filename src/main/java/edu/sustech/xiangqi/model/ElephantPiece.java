@@ -42,14 +42,21 @@ public class ElephantPiece extends AbstractPiece{
         }
 
         if(piece_target==null){
-            return true;
+            if(isRed()&&targetRow>=5){
+                return true;
+            }
+            else if(!isRed()&&targetRow<=4){
+                return true;
+            }
+            return false;
         }
         else {
             if (piece_target.isRed()==piece_current.isRed()){return false;}
-            else {
+            else if((isRed()&&targetRow>=5)||(!isRed()&&targetRow<=4)){
                 model.removePieces(piece_target);
                 return true;
             }
         }
+        return false;
     }
 }
