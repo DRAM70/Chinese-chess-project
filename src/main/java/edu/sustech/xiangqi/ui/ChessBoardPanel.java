@@ -1,5 +1,6 @@
 package edu.sustech.xiangqi.ui;
 
+import edu.sustech.xiangqi.Style;
 import edu.sustech.xiangqi.model.ChessBoardModel;
 import edu.sustech.xiangqi.model.AbstractPiece;
 
@@ -9,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ChessBoardPanel extends JPanel {
+    //这个panel的作用是在已经有了棋子之后，并且知道他们的位置，进行绘制的
     private final ChessBoardModel model;
     public JLabel label;
     /**
@@ -28,13 +30,23 @@ public class ChessBoardPanel extends JPanel {
 
     private AbstractPiece selectedPiece = null;
 
-    public ChessBoardPanel(ChessBoardModel model) {
+    public ChessBoardPanel(ChessBoardModel model, int style) {
         this.model = model;
         setPreferredSize(new Dimension(
                 CELL_SIZE * (ChessBoardModel.getCols() - 1) + MARGIN * 2,
                 CELL_SIZE * (ChessBoardModel.getRows() - 1) + MARGIN * 2
         ));
-        setBackground(new Color(220, 179, 92));
+//        switch(style){
+//            case 0:
+//                setBackground(new Color(220, 179, 92));
+//                break;
+//            case 1:
+//                setBackground(Color.DARK_GRAY);
+//                break;
+//        }
+
+        Style[] styleList = Style.values();
+        setBackground(styleList[style].getBackgroundColor());
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -43,6 +55,17 @@ public class ChessBoardPanel extends JPanel {
             }
         });
     }
+
+    public void repaint(int style){
+        if(style == 0){
+            setBackground(new Color(220, 179, 92));
+        }else{
+            setBackground(Color.DARK_GRAY );
+        }
+        this.getParent().repaint();
+
+    }
+
 
     private void handleMouseClick(int x, int y) {
         int col = Math.round((float)(x - MARGIN) / CELL_SIZE);

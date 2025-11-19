@@ -107,7 +107,9 @@ public class LoginFrame extends JFrame{
                 return;
             }
             if(isInUserListUP(a, b)){
-                GameFrame chessFrame = new GameFrame("中国象棋", a);
+                GameFrame chessFrame = new GameFrame("中国象棋", a, null, 0);
+                //此处将来可能会根据用户上一次存储的风格进行绘制
+
                 user = a;
                 this.setVisible(false);
                 chessFrame.setVisible(true);
@@ -138,7 +140,7 @@ public class LoginFrame extends JFrame{
 
 
         visitor.addActionListener(e -> {
-            GameFrame chessFrame = new GameFrame("中国象棋", "游客6060");
+            GameFrame chessFrame = new GameFrame("中国象棋", "游客6060", null, 0);
             user = "游客6060";
             this.setVisible(false);
             chessFrame.setVisible(true);
