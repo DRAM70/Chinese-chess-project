@@ -2,6 +2,8 @@ package edu.sustech.xiangqi;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.util.Scanner;
 
@@ -13,9 +15,20 @@ public class RegisterFrame extends JFrame {
     public RegisterFrame(String name){
         //register的界面
         super(name);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
         this.setSize(500, 500);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        //关闭程序时，同时删除可能存在的游客6060
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e){
+                deleteFile();
+                dispose();
+                System.exit(0);
+            }
+        });
+        //listener结束
 
 
         ImageIcon originalIcon = new ImageIcon(".\\src\\main\\resources\\loginBackground2.jpg");
@@ -222,6 +235,21 @@ public class RegisterFrame extends JFrame {
             writer.close();
         }catch(IOException e){
             System.out.println("Error, file" + s + ".txt is broken!");
+        }
+    }
+
+    private void deleteFile(){
+        try{
+            File fileToDelete = new File("UserData/游客6060.txt");
+            if(fileToDelete.exists()){
+                if(fileToDelete.delete()){
+                    System.out.println("visitor log successfully deleted!");
+                }else{
+                    System.out.println("visitor log deleting failed!");
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 }

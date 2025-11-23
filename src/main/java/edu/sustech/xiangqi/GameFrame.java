@@ -4,6 +4,9 @@ import edu.sustech.xiangqi.model.ChessBoardModel;
 import edu.sustech.xiangqi.ui.ChessBoardPanel;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
 
 public class GameFrame extends JFrame{
     public String user;
@@ -19,15 +22,26 @@ public class GameFrame extends JFrame{
         if(preModel != null){
             modelIN = preModel;
         }
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        ChessBoardModel model = new ChessBoardModel();
+        //关闭程序时，同时删除可能存在的游客6060
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e){
+                deleteFile();
+                dispose();
+                System.exit(0);
+            }
+        });
+        //listener结束
+
+        ChessBoardModel model = new ChessBoardModel(user);
         if(preModel != null){
             model = preModel;
         }else{
             modelIN = model;
         }
-        model.setUser(user);
+        //model.setUser(user);
         //这里的setUser在model初始化之后无效，为什么，因为在测试中使用logWriter时user还没有被赋值，已解决
 
 
@@ -114,6 +128,21 @@ public class GameFrame extends JFrame{
 
     public ChessBoardModel getModel(){
         return modelIN;
+    }
+
+    private void deleteFile(){
+        try{
+            File fileToDelete = new File("UserData/游客6060.txt");
+            if(fileToDelete.exists()){
+                if(fileToDelete.delete()){
+                    System.out.println("visitor log successfully deleted!");
+                }else{
+                    System.out.println("visitor log deleting failed!");
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
 
