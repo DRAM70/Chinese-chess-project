@@ -5,6 +5,8 @@ import edu.sustech.xiangqi.ui.ChessBoardPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class StyleFrame extends JFrame{
     private String user;
@@ -18,9 +20,24 @@ public class StyleFrame extends JFrame{
             //上面是login的界面，下面是象棋的界面
         this.user = user;
         this.newStyle = style;
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
         this.setSize(500, 500);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+
+        //关闭程序时，默认确认当前皮肤，并返回棋盘
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e){
+                setVisible(false);
+                GameFrame gameFrame = new GameFrame(originalFrame.getTitle(), originalFrame.user, originalFrame.getModel() ,newStyle);
+                gameFrame.setVisible(true);
+
+
+                System.out.println(user + " confirmed new style " + style);
+            }
+        });
+        //listener结束
 
 
 

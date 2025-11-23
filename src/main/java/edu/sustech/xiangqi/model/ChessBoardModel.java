@@ -19,9 +19,11 @@ public class ChessBoardModel {
         pieces.remove(piece);
     }
 
-    public ChessBoardModel() {
+    public ChessBoardModel(String user) {
+        this.user = user;
         pieces = new ArrayList<>();
         initializePieces();
+        initializeLog();
     }
 
     private void initializePieces() {
@@ -208,6 +210,26 @@ public class ChessBoardModel {
             writer.close();
         }catch(IOException e){
             System.out.println("Error, file" + user + ".txt is broken! And step log writing failed!");
+        }
+    }
+
+    public void initializeLog(){
+        try{
+            String relativePath = "UserData/" + user + ".txt";
+            File file = new File(relativePath);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+
+
+
+            writer.write( "");
+            System.out.println(user + "'s log file is initialized!");
+
+
+
+            writer.flush();
+            writer.close();
+        }catch(IOException e){
+            System.out.println("Error, file " + user + ".txt is broken! And log initializing failed!");
         }
     }
 }
