@@ -2,8 +2,8 @@ package edu.sustech.xiangqi.model;
 
 public class ElephantPiece extends AbstractPiece{
 
-    public ElephantPiece(String name, int row, int col, boolean isRed) {
-        super(name, row, col, isRed);
+    public ElephantPiece(String name, int row, int col, boolean isRed,int number) {
+        super(name, row, col, isRed,number);
     }
 
     @Override

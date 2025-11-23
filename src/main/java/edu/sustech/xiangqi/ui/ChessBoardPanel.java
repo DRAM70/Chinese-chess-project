@@ -76,9 +76,13 @@ public class ChessBoardPanel extends JPanel {
         }
 
         if (selectedPiece == null) {
-            selectedPiece = model.getPieceAt(row, col);
-            label.setText("选中棋子了");
-        } else {
+            AbstractPiece clickedPiece=model.getPieceAt(row,col);
+            if(clickedPiece!=null&&model.isCurrentTurnPiece(clickedPiece)){
+                selectedPiece = model.getPieceAt(row, col);
+                label.setText("选中棋子了");
+            }
+        }
+        else {
             model.movePiece(selectedPiece, row, col);
             selectedPiece = null;
         }
@@ -126,6 +130,20 @@ public class ChessBoardPanel extends JPanel {
                 g.drawLine(x, MARGIN + 5 * CELL_SIZE, x, MARGIN + (ChessBoardModel.getRows() - 1) * CELL_SIZE);
             }
         }
+
+        //绘制红方斜线
+        int x1=MARGIN+CELL_SIZE*3;
+        int x2=MARGIN+CELL_SIZE*5;
+        int y1=MARGIN+CELL_SIZE*7;
+        int y2=MARGIN+CELL_SIZE*9;
+        g.drawLine(x1,y1,x2,y2);
+        g.drawLine(x2,y1,x1,y2);
+
+        //绘制黑方斜线
+        int y3= MARGIN;
+        int y4=MARGIN+CELL_SIZE*2;
+        g.drawLine(x1,y3,x2,y4);
+        g.drawLine(x2,y3,x1,y4);
 
         // 绘制“楚河”和“汉界”这两个文字
         g.setColor(Color.BLACK);

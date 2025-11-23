@@ -5,12 +5,18 @@ public abstract class AbstractPiece {
     private final boolean isRed;
     private int row;
     private int col;
+    private final int number;
 
-    public AbstractPiece(String name, int row, int col, boolean isRed) {
+    public AbstractPiece(String name, int row, int col, boolean isRed,int number) {
         this.name = name;
         this.row = row;
         this.col = col;
         this.isRed = isRed;
+        this.number=number;
+    }
+
+    public int getNumber(){
+        return number;
     }
 
     public String getName() {
@@ -49,5 +55,5 @@ public abstract class AbstractPiece {
 
     public abstract boolean canMoveTo(int targetRow, int targetCol, ChessBoardModel model);
 
-
+    
 }

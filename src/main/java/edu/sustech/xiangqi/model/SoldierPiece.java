@@ -5,8 +5,8 @@ package edu.sustech.xiangqi.model;
  */
 public class SoldierPiece extends AbstractPiece {
 
-    public SoldierPiece(String name, int row, int col, boolean isRed) {
-        super(name, row, col, isRed);
+    public SoldierPiece(String name, int row, int col, boolean isRed,int number) {
+        super(name, row, col, isRed,number);
     }
 
     @Override

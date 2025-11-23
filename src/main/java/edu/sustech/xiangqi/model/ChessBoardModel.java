@@ -13,6 +13,7 @@ public class ChessBoardModel {
     private static final int ROWS = 10;
     private static final int COLS = 9;
     private String user;
+    private boolean isRedTurn=true;
 
     protected void removePieces(AbstractPiece piece){
         pieces.remove(piece);
@@ -25,40 +26,84 @@ public class ChessBoardModel {
 
     private void initializePieces() {
         // 黑方棋子
-        pieces.add(new GeneralPiece("將", 0, 4, false));
-        pieces.add(new SoldierPiece("卒", 3, 0, false));
-        pieces.add(new SoldierPiece("卒", 3, 2, false));
-        pieces.add(new SoldierPiece("卒", 3, 4, false));
-        pieces.add(new SoldierPiece("卒", 3, 6, false));
-        pieces.add(new SoldierPiece("卒", 3, 8, false));
-        pieces.add(new HorsePiece("马",0,1,false));
-        pieces.add(new HorsePiece("马",0,7,false));
-        pieces.add(new ChariotPiece("車",0,0,false));
-        pieces.add(new ChariotPiece("車",0,8,false));
-        pieces.add(new ElephantPiece("象",0,2,false));
-        pieces.add(new ElephantPiece("象",0,6,false));
-        pieces.add(new CannonPiece("炮",2,1,false));
-        pieces.add(new CannonPiece("炮",2,7,false));
-        pieces.add(new AdvisorPiece("士",0,3,false));
-        pieces.add(new AdvisorPiece("士",0,5,false));
+        pieces.add(new GeneralPiece("將", 0, 4, false,31));
+        pieces.add(new SoldierPiece("卒", 3, 0, false,32));
+        pieces.add(new SoldierPiece("卒", 3, 2, false,33));
+        pieces.add(new SoldierPiece("卒", 3, 4, false,34));
+        pieces.add(new SoldierPiece("卒", 3, 6, false,35));
+        pieces.add(new SoldierPiece("卒", 3, 8, false,36));
+        pieces.add(new HorsePiece("马",0,1,false,37));
+        pieces.add(new HorsePiece("马",0,7,false,38));
+        pieces.add(new ChariotPiece("車",0,0,false,39));
+        pieces.add(new ChariotPiece("車",0,8,false,40));
+        pieces.add(new ElephantPiece("象",0,2,false,41));
+        pieces.add(new ElephantPiece("象",0,6,false,42));
+        pieces.add(new CannonPiece("炮",2,1,false,43));
+        pieces.add(new CannonPiece("炮",2,7,false,44));
+        pieces.add(new AdvisorPiece("士",0,3,false,45));
+        pieces.add(new AdvisorPiece("士",0,5,false,46));
 
         // 红方棋子
-        pieces.add(new GeneralPiece("帅", 9, 4, true));
-        pieces.add(new SoldierPiece("兵", 6, 0, true));
-        pieces.add(new SoldierPiece("兵", 6, 2, true));
-        pieces.add(new SoldierPiece("兵", 6, 4, true));
-        pieces.add(new SoldierPiece("兵", 6, 6, true));
-        pieces.add(new SoldierPiece("兵", 6, 8, true));
-        pieces.add(new HorsePiece("马",9,1,true));
-        pieces.add(new HorsePiece("马",9,7,true));
-        pieces.add(new ChariotPiece("車",9,0,true));
-        pieces.add(new ChariotPiece("車",9,8,true));
-        pieces.add(new ElephantPiece("相",9,2,true));
-        pieces.add(new ElephantPiece("相",9,6,true));
-        pieces.add(new CannonPiece("炮",7,1,true));
-        pieces.add(new CannonPiece("炮",7,7,true));
-        pieces.add(new AdvisorPiece("仕",9,3,true));
-        pieces.add(new AdvisorPiece("仕",9,5,true));
+        pieces.add(new GeneralPiece("帅", 9, 4, true,11));
+        pieces.add(new SoldierPiece("兵", 6, 0, true,12));
+        pieces.add(new SoldierPiece("兵", 6, 2, true,13));
+        pieces.add(new SoldierPiece("兵", 6, 4, true,14));
+        pieces.add(new SoldierPiece("兵", 6, 6, true,15));
+        pieces.add(new SoldierPiece("兵", 6, 8, true,16));
+        pieces.add(new HorsePiece("马",9,1,true,17));
+        pieces.add(new HorsePiece("马",9,7,true,18));
+        pieces.add(new ChariotPiece("車",9,0,true,19));
+        pieces.add(new ChariotPiece("車",9,8,true,20));
+        pieces.add(new ElephantPiece("相",9,2,true,21));
+        pieces.add(new ElephantPiece("相",9,6,true,22));
+        pieces.add(new CannonPiece("炮",7,1,true,23));
+        pieces.add(new CannonPiece("炮",7,7,true,24));
+        pieces.add(new AdvisorPiece("仕",9,3,true,25));
+        pieces.add(new AdvisorPiece("仕",9,5,true,26));
+    }
+
+    //用来获取当前回合状态
+    public boolean isRedTurn(){
+        return isRedTurn;
+    }
+
+    public void switchTurn(){
+        isRedTurn=!isRedTurn;
+    }
+
+    public boolean isCurrentTurnPiece(AbstractPiece piece){
+        if(piece==null){
+            return false;
+        }
+        return (isRedTurn&&piece.isRed())||(!isRedTurn&&!piece.isRed());
+    }
+
+    //检测将帅是否照面
+    public boolean isGeneralMeeting(){
+        GeneralPiece redG=null;
+        GeneralPiece blackG=null;
+        //遍历找到将帅位置
+        for(AbstractPiece piece:pieces){
+            if(piece instanceof GeneralPiece){
+                if (piece.isRed()){
+                    redG=(GeneralPiece)piece;
+                }
+                else {
+                    blackG=(GeneralPiece)piece;
+                }
+            }
+        }
+        if(redG.getCol()!=blackG.getCol()){
+            return false;
+        }
+        else {
+            for(int i=redG.getRow()-1;i>=blackG.getRow()+1;i--){
+                if(getPieceAt(i,redG.getCol())!=null){
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
     public List<AbstractPiece> getPieces() {
@@ -83,9 +128,43 @@ public class ChessBoardModel {
             return false;
         }
 
+        if(!isCurrentTurnPiece(piece)){
+            return false;
+        }
+
+        //这个！使boolean值不直接回传，进而实现后续交换回合
         if (!piece.canMoveTo(newRow, newCol, this)) {
             return false;
         }
+
+        //模拟移动并记录，判断是否照面
+        int formerRow= piece.getRow();
+        int formerCol= piece.getCol();
+        AbstractPiece removement =getPieceAt(newRow,newCol);
+        piece.setRow(newRow);
+        piece.setCol(newCol);
+        if(removement !=null){
+            pieces.remove(removement);
+        }
+        boolean willFace=isGeneralMeeting();
+        piece.setRow(formerRow);
+        piece.setCol(formerCol);
+        if(removement!=null&&!pieces.contains(removement)){
+            pieces.add(removement);
+        }
+        if(willFace){
+            return false;
+        }
+        else {
+            piece.setRow(newRow);
+            piece.setCol(newCol);
+            if(removement!=null){
+                pieces.remove(removement);
+            }
+        }
+
+        //实现交换回合
+        switchTurn();
 
         piece.moveTo(newRow, newCol);
         //这里是一个示例，具体还有待开发
