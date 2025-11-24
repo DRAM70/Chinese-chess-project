@@ -1,6 +1,8 @@
 package edu.sustech.xiangqi;
 
 
+import edu.sustech.xiangqi.audio.BackgroundMusic;
+
 import javax.swing.*;
 
 public class XiangqiApplication {
@@ -8,6 +10,7 @@ public class XiangqiApplication {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+            BackgroundMusic.playLoop();
             LoginFrame loginFrame = new LoginFrame("中国象棋 登陆界面");
         });
     }

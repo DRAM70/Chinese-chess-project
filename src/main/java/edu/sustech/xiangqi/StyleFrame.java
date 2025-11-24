@@ -1,10 +1,9 @@
 package edu.sustech.xiangqi;
 
 import edu.sustech.xiangqi.model.ChessBoardModel;
-import edu.sustech.xiangqi.ui.ChessBoardPanel;
+import edu.sustech.xiangqi.ui.Style;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
