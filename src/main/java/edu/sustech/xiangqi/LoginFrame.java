@@ -19,9 +19,7 @@ public class LoginFrame extends JFrame{
 
 
     public LoginFrame(String title){
-
         super(title);
-
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
         this.setSize(500, 500);

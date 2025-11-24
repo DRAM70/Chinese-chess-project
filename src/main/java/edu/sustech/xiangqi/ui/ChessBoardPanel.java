@@ -1,6 +1,5 @@
 package edu.sustech.xiangqi.ui;
 
-import edu.sustech.xiangqi.Style;
 import edu.sustech.xiangqi.model.ChessBoardModel;
 import edu.sustech.xiangqi.model.AbstractPiece;
 
