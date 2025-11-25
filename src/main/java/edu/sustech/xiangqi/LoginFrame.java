@@ -6,6 +6,9 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -111,6 +114,7 @@ public class LoginFrame extends JFrame{
                 user = a;
                 this.setVisible(false);
                 chessFrame.setVisible(true);
+                createFolder();
                 //这里还没有检测是否存在log文档去写入，尽管在移动棋子后可以直接生成新的userData文件，
                 // 但是以防在loginFrame里也需要检测的情况，下面还是贴上write函数的代码
 
@@ -142,6 +146,7 @@ public class LoginFrame extends JFrame{
             user = "游客6060";
             this.setVisible(false);
             chessFrame.setVisible(true);
+            createFolder();
 //            chessFrame.label.setText("游客");
 //            chessFrame.user = "游客";
         });
@@ -256,6 +261,16 @@ public class LoginFrame extends JFrame{
             writer.close();
         }catch(IOException e){
             System.out.println("Error, writing " + s + " to UserInfo.txt failed!");
+        }
+    }
+
+    private void createFolder(){
+        Path path = Paths.get("UserData/" + user);
+        try{
+            Files.createDirectories(path);
+            System.out.println(user + "'s log folder ready!");
+        }catch(IOException e){
+            System.err.println(e.getMessage());
         }
     }
 }

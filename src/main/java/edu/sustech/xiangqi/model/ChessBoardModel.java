@@ -170,8 +170,8 @@ public class ChessBoardModel {
 
         piece.moveTo(newRow, newCol);
         //这里是一个示例，具体还有待开发
-        String move = piece.getName() + " moved to (" + newRow + ", " + newCol + ")";
-        logWriter(move, true);
+        String move = "" + piece.getNumber()  + "0" +  newRow + "0" + newCol + "0" + ((piece.isRed()) ? 1 : 2);
+        logWriter(move);
         //示例结束
         return true;
         //return piece.legalMove(newRow,newCol,this);
@@ -193,16 +193,17 @@ public class ChessBoardModel {
     //现在这里还没有完工
     //目前实现了在特定文件里写入特定语句的功能，对于损坏的log还要检测
     //检测log是否损坏的一个想法：结束后对log进行一个hashcode或者什么的加密，形成一串字符，在读取log之前将两者进行比对，任一方不符合对方都会不读取log
-    public void logWriter(String move, boolean isRed){
+    public void logWriter(String move){
         try{
-            String relativePath = "UserData/" + user + ".txt";
+            String relativePath = "UserData/" + user + "/" + user +".txt";
             File file = new File(relativePath);
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
 
 
-
-            writer.write( "nenenen6666   " + user + "   " +move +   "\n");
-            System.out.println(user + ": New step log written! Log: "  + isRed + move);
+            String s = move + "\n";
+            writer.write(s);
+//            System.out.println(user + ": New step log written! Log: " + move);
+            System.out.print(user + ": Newly written log content: " + s);
 
 
 
@@ -215,7 +216,7 @@ public class ChessBoardModel {
 
     public void initializeLog(){
         try{
-            String relativePath = "UserData/" + user + ".txt";
+            String relativePath = "UserData/" + user + "/" + user +".txt";
             File file = new File(relativePath);
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
 

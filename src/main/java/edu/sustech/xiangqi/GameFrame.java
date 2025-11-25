@@ -132,7 +132,7 @@ public class GameFrame extends JFrame{
 
     private void deleteFile(){
         try{
-            File fileToDelete = new File("UserData/游客6060.txt");
+            File fileToDelete = new File("UserData/游客6060/游客6060.txt");
             if(fileToDelete.exists()){
                 if(fileToDelete.delete()){
                     System.out.println("visitor log successfully deleted!");
