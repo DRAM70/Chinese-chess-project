@@ -26,6 +26,7 @@ public class ChessBoardModel {
         initializeLog();
     }
 
+
     private void initializePieces() {
         // 黑方棋子
         pieces.add(new GeneralPiece("將", 0, 4, false,31));
@@ -125,7 +126,27 @@ public class ChessBoardModel {
         return row >= 0 && row < ROWS && col >= 0 && col < COLS;
     }
 
+    public boolean pauseButton(){
+        return false;
+    }
+
+    public boolean checkMove(int toNumber,int toRow,int toCol){
+        if((toNumber>=11&&toNumber<=26)||(toNumber>=31&&toNumber<=46)){
+            for(int i=0;i<pieces.size();i++){
+                if(pieces.get(i).getNumber()==toNumber){
+                    return movePiece(pieces.get(i),toRow,toCol);
+                }
+            }
+        }
+        return false;
+    }
+
+
     public boolean movePiece(AbstractPiece piece, int newRow, int newCol) {
+        if(pauseButton()){
+            return false;
+        }
+
         if (!isValidPosition(newRow, newCol)) {
             return false;
         }
