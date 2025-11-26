@@ -126,8 +126,9 @@ public class ChessBoardModel {
         return row >= 0 && row < ROWS && col >= 0 && col < COLS;
     }
 
-    public boolean pauseButton(){
-        return false;
+    int a=0;
+    public void pauseButton(){
+        a++;
     }
 
     public boolean checkMove(int toNumber,int toRow,int toCol){
@@ -143,7 +144,7 @@ public class ChessBoardModel {
 
 
     public boolean movePiece(AbstractPiece piece, int newRow, int newCol) {
-        if(pauseButton()){
+        if(a%2==1){
             return false;
         }
 
