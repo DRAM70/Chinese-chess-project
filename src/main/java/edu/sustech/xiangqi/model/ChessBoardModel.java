@@ -1,5 +1,10 @@
 package edu.sustech.xiangqi.model;
 
+import edu.sustech.xiangqi.ui.ChessBoardPanel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -136,11 +141,20 @@ public class ChessBoardModel {
         }
     }
 
+
     public boolean checkMove(int toNumber,int toRow,int toCol){
         if((toNumber>=11&&toNumber<=26)||(toNumber>=31&&toNumber<=46)){
             for(int i=0;i<pieces.size();i++){
                 if(pieces.get(i).getNumber()==toNumber){
-                    return movePiece(pieces.get(i),toRow,toCol);
+                    if(movePiece(pieces.get(i),toRow,toCol)){
+                        SwingUtilities.invokeLater(()->{
+                            for(Window win:Window.getWindows()){
+                                if(win.isVisible()){
+                                    win.repaint();
+                                }
+                            }
+                        });
+                    }
                 }
             }
         }

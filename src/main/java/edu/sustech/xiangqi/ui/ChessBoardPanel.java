@@ -66,7 +66,7 @@ public class ChessBoardPanel extends JPanel {
     }
 
 
-    private void handleMouseClick(int x, int y) {
+    public void handleMouseClick(int x, int y) {
         int col = Math.round((float)(x - MARGIN) / CELL_SIZE);
         int row = Math.round((float)(y - MARGIN) / CELL_SIZE);
 
