@@ -51,6 +51,7 @@ public class StyleFrame extends JFrame{
             StyleFrame styleFrame = new StyleFrame("风格面板", originalFrame.user, originalFrame, originalFrame.getModel(), newStyle);
             styleFrame.setVisible(true);
             System.out.println(user + " tried style 1");
+//            model.pauseButton(false);
         });
 
 
@@ -65,6 +66,7 @@ public class StyleFrame extends JFrame{
             StyleFrame styleFrame = new StyleFrame("风格面板", originalFrame.user, originalFrame, originalFrame.getModel(), newStyle);
             styleFrame.setVisible(true);
             System.out.println(user + " tried style 2");
+//            model.pauseButton(true);
         });
 
 

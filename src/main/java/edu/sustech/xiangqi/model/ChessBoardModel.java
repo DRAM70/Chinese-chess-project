@@ -126,9 +126,14 @@ public class ChessBoardModel {
         return row >= 0 && row < ROWS && col >= 0 && col < COLS;
     }
 
+
+    //这是暂停全棋盘棋子移动的method
+    //i是true，暂停，i是false，继续
     int a=0;
-    public void pauseButton(){
-        a++;
+    public void pauseButton(boolean i){
+        if(i){
+            a++;
+        }
     }
 
     public boolean checkMove(int toNumber,int toRow,int toCol){
