@@ -12,7 +12,7 @@ public class GameFrame extends JFrame{
     public String user;
     private int style = 0;
     private JLabel label;
-    private ChessBoardModel modelIN;
+    private ChessBoardModel modelIN;//当前全局可使用的棋盘？？？？？？？？
 
 
     public GameFrame(String title, String user, ChessBoardModel preModel, int style){
@@ -78,6 +78,9 @@ public class GameFrame extends JFrame{
         retractPiece.addActionListener(e -> {
             //这里可能需要log相关的代码
             System.out.println(user + " retracted a piece^^^^");
+
+
+            modelIN.checkMove(12, 5, 0);
         });
 
         JButton changeStyle = new JButton("切换风格");
