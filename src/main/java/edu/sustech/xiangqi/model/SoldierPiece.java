@@ -40,7 +40,7 @@ public class SoldierPiece extends AbstractPiece {
                     else {
                         if (piece_target.isRed()==piece_current.isRed()){return false;}
                         else {
-                            model.removePieces(piece_target);
+                            //model.removePieces(piece_target);
                             return true;
                         }
                     }
@@ -54,7 +54,7 @@ public class SoldierPiece extends AbstractPiece {
                     else {
                         if (piece_target.isRed()==piece_current.isRed()){return false;}
                         else {
-                            model.removePieces(piece_target);
+                            //model.removePieces(piece_target);
                             return true;
                         }
                     }
@@ -74,7 +74,7 @@ public class SoldierPiece extends AbstractPiece {
                     else {
                         if (piece_target.isRed()==piece_current.isRed()){return false;}
                         else {
-                            model.removePieces(piece_target);
+                            //model.removePieces(piece_target);
                             return true;
                         }
                     }
@@ -88,7 +88,7 @@ public class SoldierPiece extends AbstractPiece {
                     else {
                         if (piece_target.isRed()==piece_current.isRed()){return false;}
                         else {
-                            model.removePieces(piece_target);
+                            //model.removePieces(piece_target);
                             return true;
                         }
                     }

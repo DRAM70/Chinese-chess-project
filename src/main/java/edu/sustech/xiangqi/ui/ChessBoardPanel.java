@@ -28,6 +28,10 @@ public class ChessBoardPanel extends JPanel {
     private static final int PIECE_RADIUS = 25;
 
     private AbstractPiece selectedPiece = null;
+    private int getCurrentRow;
+    private int getCurrentCol;
+    private int getLastRow;
+    private int getLastCol;
 
     public ChessBoardPanel(ChessBoardModel model, int style) {
         this.model = model;
@@ -78,11 +82,16 @@ public class ChessBoardPanel extends JPanel {
             AbstractPiece clickedPiece=model.getPieceAt(row,col);
             if(clickedPiece!=null&&model.isCurrentTurnPiece(clickedPiece)){
                 selectedPiece = model.getPieceAt(row, col);
+                getCurrentRow=row;
+                getCurrentCol=col;
                 label.setText("选中棋子了");
             }
         }
         else {
-            model.movePiece(selectedPiece, row, col);
+            if(model.movePiece(selectedPiece,row,col)){
+                getLastRow=getCurrentRow;
+                getLastCol=getCurrentCol;
+            }
             selectedPiece = null;
         }
 
@@ -102,6 +111,28 @@ public class ChessBoardPanel extends JPanel {
         // 因此绘制GUI的过程中需要自己手动计算每个组件的位置（坐标）
         drawBoard(g2d);
         drawPieces(g2d);
+        drawHighlight(g2d);
+    }
+
+    /**
+     * 绘制合法路径高亮
+     */
+    private void drawHighlight(Graphics2D g){
+        if(selectedPiece==null){
+            return;
+        }
+
+        g.setColor(new Color(0,255,0,120));
+        int highlightSize=15;
+        for(int row=0;row<=9;row++){
+            for(int col=0;col<=8;col++){
+                if(selectedPiece.canMoveTo(row,col,model)){
+                    int x=MARGIN+col*CELL_SIZE;
+                    int y=MARGIN+row*CELL_SIZE;
+                    g.fillOval(x-highlightSize/2,y-highlightSize/2,highlightSize,highlightSize);
+                }
+            }
+        }
     }
 
     /**
@@ -196,6 +227,10 @@ public class ChessBoardPanel extends JPanel {
             int textHeight = fm.getAscent();
             g.drawString(piece.getName(), x - textWidth / 2, y + textHeight / 2 - 2);
         }
+
+        int lastX=MARGIN+getLastCol*CELL_SIZE;
+        int lastY=MARGIN+getLastRow*CELL_SIZE;
+        drawCornerBorders(g,lastX,lastY);
     }
 
     /**

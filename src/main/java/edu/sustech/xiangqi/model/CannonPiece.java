@@ -36,7 +36,7 @@ public class CannonPiece extends AbstractPiece{
                     }
                 }
                 if(a==1&&piece_target!=null&&piece_target.isRed()!=piece_current.isRed()){
-                    model.removePieces(piece_target);
+                    //model.removePieces(piece_target);
                     return true;
                 }
                 if(piece_target==null){
@@ -58,7 +58,7 @@ public class CannonPiece extends AbstractPiece{
                     }
                 }
                 if(b==1&&piece_target!=null){
-                    model.removePieces(piece_target);
+                    //model.removePieces(piece_target);
                     return true;
                 }
                 if(piece_target==null){
@@ -82,7 +82,7 @@ public class CannonPiece extends AbstractPiece{
                     }
                 }
                 if(c ==1&&piece_target!=null){
-                    model.removePieces(piece_target);
+                    //model.removePieces(piece_target);
                     return true;
                 }
                 if(piece_target==null){
@@ -104,7 +104,7 @@ public class CannonPiece extends AbstractPiece{
                     }
                 }
                 if(d ==1&&piece_target!=null){
-                    model.removePieces(piece_target);
+                    //model.removePieces(piece_target);
                     return true;
                 }
                 if(piece_target==null){
