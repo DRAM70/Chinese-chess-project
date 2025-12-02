@@ -30,8 +30,8 @@ public class ChessBoardPanel extends JPanel {
     private AbstractPiece selectedPiece = null;
     private int getCurrentRow;
     private int getCurrentCol;
-    private int getLastRow;
-    private int getLastCol;
+    private int getLastRow=-1;
+    private int getLastCol=-1;
 
     public ChessBoardPanel(ChessBoardModel model, int style) {
         this.model = model;
@@ -230,7 +230,9 @@ public class ChessBoardPanel extends JPanel {
 
         int lastX=MARGIN+getLastCol*CELL_SIZE;
         int lastY=MARGIN+getLastRow*CELL_SIZE;
-        drawCornerBorders(g,lastX,lastY);
+        if(lastY>=0&&lastX>=0){
+            drawCornerBorders(g,lastX,lastY);
+        }
     }
 
     /**

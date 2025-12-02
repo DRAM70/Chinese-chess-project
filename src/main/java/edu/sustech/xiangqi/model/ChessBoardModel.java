@@ -162,6 +162,79 @@ public class ChessBoardModel {
     }
 
 
+    public boolean isInCheck(){
+        AbstractPiece generalPiece=null;
+        for(AbstractPiece piece:getPieces()){
+            String name= piece.getName();
+            if((isRedTurn()&&name.equals("帅"))||(!isRedTurn()&&name.equals("将"))){
+                generalPiece=piece;
+                break;
+            }
+        }
+
+        if(generalPiece==null){
+            return false;
+        }
+        int GeneralRow=generalPiece.getRow();
+        int GeneralCol=generalPiece.getCol();
+        for(AbstractPiece opponentPiece:getPieces()){
+            if(opponentPiece.isRed()==isRedTurn){
+                continue;
+            }
+            if(opponentPiece.canMoveTo(GeneralRow,GeneralCol,this)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    public boolean isCheckmate(){
+        if(!isInCheck()){
+            return false;
+        }
+
+        //遍历被将军方所有棋子，模拟是否可以解除将军
+        List<AbstractPiece> currentPieces=new ArrayList<>();
+        for(AbstractPiece piece:getPieces()){
+            if(piece.isRed()==isRedTurn){
+                currentPieces.add(piece);
+            }
+        }
+        for(AbstractPiece piece:currentPieces){
+            int formerRow=piece.getRow();
+            int formerCol=piece.getCol();
+            for(int targetRow=0;targetRow<=9;targetRow++){
+                for(int targetCol=0;targetCol<=8;targetCol++){
+                    if(!piece.canMoveTo(targetRow,targetCol,this)){
+                        continue;
+                    }
+
+                    AbstractPiece removement =getPieceAt(targetRow,targetCol);
+                    piece.setRow(targetRow);
+                    piece.setCol(targetCol);
+                    if(removement!=null){
+                        getPieces().remove(removement);
+                    }
+
+                    boolean stillInCheck=isInCheck();
+                    piece.setRow(formerRow);
+                    piece.setCol(formerCol);
+                    if(removement!=null){
+                        getPieces().add(removement);
+                    }
+
+                    if(!stillInCheck){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+
     public boolean movePiece(AbstractPiece piece, int newRow, int newCol) {
         if(a%2==1){
             return false;
