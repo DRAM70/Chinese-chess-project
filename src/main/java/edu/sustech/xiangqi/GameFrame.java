@@ -2,26 +2,30 @@ package edu.sustech.xiangqi;
 
 import edu.sustech.xiangqi.model.ChessBoardModel;
 import edu.sustech.xiangqi.ui.ChessBoardPanel;
+import edu.sustech.xiangqi.ui.Style;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
 public class GameFrame extends JFrame{
     public String user;
-    private int style = 0;
-    private JLabel label;
+//    private int style = 0;
+    public static JLabel label;
     private ChessBoardModel modelIN;//当前全局可使用的棋盘？？？？？？？？
 
 
     public GameFrame(String title, String user, ChessBoardModel preModel, int style){
-        super(title);
+        super("红黑对战");
             //上面是login的界面，下面是象棋的界面
         this.user = user;
         if(preModel != null){
             modelIN = preModel;
         }
+        Style[] styleList = Style.values();
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         //关闭程序时，同时删除可能存在的游客6060
@@ -35,7 +39,7 @@ public class GameFrame extends JFrame{
         });
         //listener结束
 
-        ChessBoardModel model = new ChessBoardModel(user);
+        ChessBoardModel model = new ChessBoardModel(user, true);
         if(preModel != null){
             model = preModel;
         }else{
@@ -45,14 +49,15 @@ public class GameFrame extends JFrame{
         //这里的setUser在model初始化之后无效，为什么，因为在测试中使用logWriter时user还没有被赋值，已解决
 
 
-        this.label = new JLabel(user);
+        label = new JLabel(user);
+        label.setForeground(styleList[style].getLabelColor());
         label.setLocation(600, 100);
         label.setSize(100, 50);
         this.add(label);//先添加的后绘制
 
         JButton button = new JButton("start");
         button.setLocation(600, 200);
-        button.setSize(100, 50);
+        button.setSize(120, 50);
         this.add(button);//先添加的后绘制
         button.addActionListener(e -> {
             System.out.println("hhhhhh");
@@ -61,7 +66,7 @@ public class GameFrame extends JFrame{
 
         JButton reset = new JButton("重开棋局");
         reset.setLocation(600, 400);
-        reset.setSize(100, 50);
+        reset.setSize(120, 50);
         this.add(reset);
         reset.addActionListener(e -> {
             GameFrame newFrame = new GameFrame("中国象棋", user, null, style);
@@ -73,7 +78,7 @@ public class GameFrame extends JFrame{
 
         JButton retractPiece = new JButton("悔棋");
         retractPiece.setLocation(600, 500);
-        retractPiece.setSize(100, 50);
+        retractPiece.setSize(120, 50);
         this.add(retractPiece);
         retractPiece.addActionListener(e -> {
             //这里可能需要log相关的代码
@@ -83,20 +88,18 @@ public class GameFrame extends JFrame{
             modelIN.checkMove(12, 5, 0);
         });
 
-        JButton changeStyle = new JButton("切换风格");
-        changeStyle.setLocation(600, 600);
-        changeStyle.setSize(100, 50);
-        this.add(changeStyle);
+        JButton backButton = new JButton("返回菜单");
+        backButton.setLocation(600, 600);
+        backButton.setSize(120, 50);
+        this.add(backButton);
 //        int style = 0;
         //这里需要进一步细化
-        changeStyle.addActionListener(e -> {
-            //这里可能需要log相关的代码，不需要了，只要使用原有model，就不会改变
-            //但是每个用户的style还没有储存
-            StyleFrame styleFrame = new StyleFrame("风格面板", user, GameFrame.this, modelIN, style);
+        backButton.addActionListener(e -> {
+            MenuFrame menuFrame = new MenuFrame(title, user, style);
             this.setVisible(false);
-            styleFrame.setVisible(true);
+            menuFrame.setVisible(true);
+            //这里可能需要log相关的代码，不需要了，只要使用原有model，就不会改变
 
-            System.out.println(user + " changed the style to ^^^^");
         });
 
 //        ChessBoardModel model = new ChessBoardModel();
@@ -125,9 +128,9 @@ public class GameFrame extends JFrame{
     }
 
 
-    public void setStyle(int style){
-        this.style = style;
-    }
+//    public void setStyle(int style){
+//        this.style = style;
+//    }
 
     public ChessBoardModel getModel(){
         return modelIN;
@@ -147,6 +150,18 @@ public class GameFrame extends JFrame{
             e.printStackTrace();
         }
     }
+
+
+//    public void sleepAction(int toNumber, int toRow, int toCol){
+//        Timer timer = new Timer(5000, new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                modelIN.checkMove(toNumber, toRow, toCol);
+//            }
+//        });
+//        timer.setRepeats(false);
+//        timer.start();
+//    }
 
 
 
