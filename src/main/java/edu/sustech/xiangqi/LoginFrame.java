@@ -3,29 +3,36 @@ package edu.sustech.xiangqi;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class LoginFrame extends JFrame{
     public String user;
     public static JLabel loginStatusLabel;
 //    public RegisterFrame registerFrame = new RegisterFrame("中国象棋 注册页面");
     public Font defaultFont = new Font("微软雅黑", Font.BOLD, 18);
+    private int style;
 
 
 
     public LoginFrame(String title){
         super(title);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
         this.setSize(500, 500);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e){
+                deleteFile();
+                dispose();
+                System.exit(0);
+            }
+        });
 
         ImageIcon originalIcon = new ImageIcon(".\\src\\main\\resources\\loginBackground2.jpg");
         Image scaledImage = originalIcon.getImage().getScaledInstance(500, 500, Image.SCALE_SMOOTH);
@@ -108,12 +115,12 @@ public class LoginFrame extends JFrame{
                 return;
             }
             if(isInUserListUP(a, b)){
-                GameFrame chessFrame = new GameFrame("中国象棋", a, null, 0);
-                //此处将来可能会根据用户上一次存储的风格进行绘制
+                MenuFrame menuFrame = new MenuFrame("中国象棋", a, style);
+                //此处将来可能会根据用户上一次存储的风格进行绘制,可以在判断用户存在的方法中为style赋值
 
                 user = a;
                 this.setVisible(false);
-                chessFrame.setVisible(true);
+                menuFrame.setVisible(true);
                 createFolder();
                 //这里还没有检测是否存在log文档去写入，尽管在移动棋子后可以直接生成新的userData文件，
                 // 但是以防在loginFrame里也需要检测的情况，下面还是贴上write函数的代码
@@ -142,13 +149,11 @@ public class LoginFrame extends JFrame{
 
 
         visitor.addActionListener(e -> {
-            GameFrame chessFrame = new GameFrame("中国象棋", "游客6060", null, 0);
+            MenuFrame menuFrame = new MenuFrame("中国象棋（游客模式）", "游客6060", 0);
             user = "游客6060";
             this.setVisible(false);
-            chessFrame.setVisible(true);
+            menuFrame.setVisible(true);
             createFolder();
-//            chessFrame.label.setText("游客");
-//            chessFrame.user = "游客";
         });
 
 /*这是login时使用回车键即可起到按登录按钮的效果的代码，必要时可以实现*/
@@ -191,7 +196,7 @@ public class LoginFrame extends JFrame{
 
 
 
-    public static boolean isInUserListUP(String name, String passcode){
+    public boolean isInUserListUP(String name, String passcode){
         File file = new File(".\\UserInfo.txt");
         Scanner in;
         try{
@@ -201,9 +206,15 @@ public class LoginFrame extends JFrame{
                 if(name.equals(existingUsername)){
                     String existingPasscode = in.nextLine();
                     if(passcode.equals(existingPasscode)){
+                        String stylePara = in.nextLine();
+//                        char c = stylePara.charAt(0);
+//                        style = c - '0';
+                        style = Integer.parseInt(stylePara);
                         return true;
                     }
                 }else{
+                    in.nextLine();
+                    in.nextLine();
                     in.nextLine();
                 }
             }
@@ -229,6 +240,8 @@ public class LoginFrame extends JFrame{
                     return true;
                 }else{
                     in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
                 }
             }
             System.out.println(name + " doesn't exist as a username!");
@@ -244,25 +257,25 @@ public class LoginFrame extends JFrame{
     返回的boolean值会告诉是否存在该用户，若存在（用户名相同），则返回false，不存在并且添加成功则返回true
     为注册的按钮添加事件监听，新页面中使用这个方法
      */
-    public static boolean addNewUser(String name, String passcode){
-        if(isInUserListUP(name, passcode)){
-            return false;
-        }
-        write(name);
-        write(passcode);
-        return true;
-    }
-
-    public static void write(String s){
-        try{
-            BufferedWriter writer = new BufferedWriter(new FileWriter("UserInfo.txt", true));
-            writer.write(s + "\n");
-            writer.flush();
-            writer.close();
-        }catch(IOException e){
-            System.out.println("Error, writing " + s + " to UserInfo.txt failed!");
-        }
-    }
+//    public static boolean addNewUser(String name, String passcode){
+//        if(isInUserListUP(name, passcode)){
+//            return false;
+//        }
+//        write(name);
+//        write(passcode);
+//        return true;
+//    }
+//
+//    public static void write(String s){
+//        try{
+//            BufferedWriter writer = new BufferedWriter(new FileWriter("UserInfo.txt", true));
+//            writer.write(s + "\n");
+//            writer.flush();
+//            writer.close();
+//        }catch(IOException e){
+//            System.out.println("Error, writing " + s + " to UserInfo.txt failed!");
+//        }
+//    }
 
     private void createFolder(){
         Path path = Paths.get("UserData/" + user);
@@ -271,6 +284,21 @@ public class LoginFrame extends JFrame{
             System.out.println(user + "'s log folder ready!");
         }catch(IOException e){
             System.err.println(e.getMessage());
+        }
+    }
+
+    private void deleteFile(){
+        try{
+            File fileToDelete = new File("UserData/游客6060/游客6060.txt");
+            if(fileToDelete.exists()){
+                if(fileToDelete.delete()){
+                    System.out.println("visitor log successfully deleted!");
+                }else{
+                    System.out.println("visitor log deleting failed!");
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 }

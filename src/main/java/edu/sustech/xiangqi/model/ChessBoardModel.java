@@ -19,16 +19,20 @@ public class ChessBoardModel {
     private static final int COLS = 9;
     private String user;
     private boolean isRedTurn=true;
+    private boolean doLogWrite;
 
     protected void removePieces(AbstractPiece piece){
         pieces.remove(piece);
     }
 
-    public ChessBoardModel(String user) {
+    public ChessBoardModel(String user, boolean doLogWrite) {
         this.user = user;
         pieces = new ArrayList<>();
+        this.doLogWrite = doLogWrite;
         initializePieces();
-        initializeLog();
+        if(doLogWrite){
+            initializeLog();
+        }
     }
 
 
@@ -143,6 +147,7 @@ public class ChessBoardModel {
 
 
     public boolean checkMove(int toNumber,int toRow,int toCol){
+        doLogWrite = false;
         if((toNumber>=11&&toNumber<=26)||(toNumber>=31&&toNumber<=46)){
             for(int i=0;i<pieces.size();i++){
                 if(pieces.get(i).getNumber()==toNumber){
@@ -284,8 +289,10 @@ public class ChessBoardModel {
 
         piece.moveTo(newRow, newCol);
         //这里是一个示例，具体还有待开发
-        String move = "" + piece.getNumber()  + "0" +  newRow + "0" + newCol + "0" + ((piece.isRed()) ? 1 : 2);
-        logWriter(move);
+        if(doLogWrite){
+            String move = "" + piece.getNumber()  + "0" +  newRow + "0" + newCol + "0" + ((piece.isRed()) ? 1 : 2);
+            logWriter(move);
+        }
         //示例结束
         return true;
         //return piece.legalMove(newRow,newCol,this);

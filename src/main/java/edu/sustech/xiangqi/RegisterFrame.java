@@ -18,6 +18,7 @@ public class RegisterFrame extends JFrame {
         this.setLayout(null);
         this.setSize(500, 500);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setLocationRelativeTo(null);
 
         //关闭程序时，同时删除可能存在的游客6060
         addWindowListener(new WindowAdapter() {
@@ -138,6 +139,8 @@ public class RegisterFrame extends JFrame {
                     }
                 }else{
                     in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
                 }
             }
             return false;
@@ -163,6 +166,8 @@ public class RegisterFrame extends JFrame {
                     return true;
                 }else{
                     in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
                 }
             }
             System.out.println(name + " doesn't exist as a username!");
@@ -184,6 +189,8 @@ public class RegisterFrame extends JFrame {
         }
         write(name);
         write(passcode);
+        write("0");
+        write("？？？？");//这里是为了文档损坏准备的,可能使用hashcode方法
         newUserData(name);
         return true;
     }

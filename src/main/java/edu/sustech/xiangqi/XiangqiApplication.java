@@ -11,7 +11,7 @@ public class XiangqiApplication {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             BackgroundMusic.playLoop();
-            LoginFrame loginFrame = new LoginFrame("中国象棋 登陆界面");
+            LoginFrame loginFrame = new LoginFrame("中国象棋 登录界面");
         });
     }
 

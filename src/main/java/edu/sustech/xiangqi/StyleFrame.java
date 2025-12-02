@@ -6,6 +6,13 @@ import edu.sustech.xiangqi.ui.Style;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.*;
+import java.nio.Buffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Scanner;
 
 public class StyleFrame extends JFrame{
     private String user;
@@ -14,14 +21,15 @@ public class StyleFrame extends JFrame{
 
   //  public JFrame chessFrame;
 
-    public StyleFrame(String title, String user, GameFrame originalFrame, ChessBoardModel model, int style){
-        super(title);
+    public StyleFrame(String title, String user, int style){
+        super("风格面板");
             //上面是login的界面，下面是象棋的界面
         this.user = user;
         this.newStyle = style;
         this.setLayout(null);
         this.setSize(500, 500);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setLocationRelativeTo(null);
 
 
         //关闭程序时，默认确认当前皮肤，并返回棋盘
@@ -29,11 +37,11 @@ public class StyleFrame extends JFrame{
             @Override
             public void windowClosing(WindowEvent e){
                 setVisible(false);
-                GameFrame gameFrame = new GameFrame(originalFrame.getTitle(), originalFrame.user, originalFrame.getModel() ,newStyle);
-                gameFrame.setVisible(true);
+                MenuFrame menuFrame = new MenuFrame(title, user, newStyle);
+                menuFrame.setVisible(true);
 
 
-                System.out.println(user + " confirmed new style " + style);
+                System.out.println(user + " confirmed new style " + newStyle);
             }
         });
         //listener结束
@@ -48,8 +56,9 @@ public class StyleFrame extends JFrame{
             //这里可能需要log相关的代码
             newStyle = 0;
             this.setVisible(false);
-            StyleFrame styleFrame = new StyleFrame("风格面板", originalFrame.user, originalFrame, originalFrame.getModel(), newStyle);
+            StyleFrame styleFrame = new StyleFrame(title, user, newStyle);
             styleFrame.setVisible(true);
+            lineRewriter(0);
             System.out.println(user + " tried style 1");
 //            model.pauseButton(false);
         });
@@ -63,8 +72,9 @@ public class StyleFrame extends JFrame{
             //这里可能需要log相关的代码
             newStyle = 1;
             this.setVisible(false);
-            StyleFrame styleFrame = new StyleFrame("风格面板", originalFrame.user, originalFrame, originalFrame.getModel(), newStyle);
+            StyleFrame styleFrame = new StyleFrame(title, user, newStyle);
             styleFrame.setVisible(true);
+            lineRewriter(1);
             System.out.println(user + " tried style 2");
 //            model.pauseButton(true);
         });
@@ -75,10 +85,11 @@ public class StyleFrame extends JFrame{
         confirm.setSize(100, 50);
         this.add(confirm);
         confirm.addActionListener(e -> {
-//            StyleFrame newFrame = new StyleFrame("中国象棋", user);
             this.setVisible(false);
-            GameFrame gameFrame = new GameFrame(originalFrame.getTitle(), originalFrame.user, originalFrame.getModel() ,newStyle);
-            gameFrame.setVisible(true);
+            MenuFrame menuFrame = new MenuFrame(title, user, newStyle);
+            menuFrame.setVisible(true);
+
+
 
 
             System.out.println(user + " confirmed new style " + style);
@@ -107,6 +118,92 @@ public class StyleFrame extends JFrame{
 //                setBackground();
 //                break;
 //        }
+    }
+
+
+    private void lineRewriter(int a){
+        File originalFile = new File(".\\UserInfo.txt");
+        File tmpFile = new File(".\\UserInfoTemp.txt");
+
+
+        if (!originalFile.setWritable(true)) {
+            System.out.println("UserInfo can't be set readable!");
+        }
+
+        if (!tmpFile.setWritable(true)) {
+            System.out.println("UserInfo can't be set readable!");
+        }
+
+
+
+
+        try(BufferedReader reader = new BufferedReader(new FileReader(originalFile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tmpFile))){
+
+            String currentLine;
+
+            while((currentLine = reader.readLine()) != null){
+                writer.write(currentLine);
+                writer.newLine();
+                if(user.equals(currentLine)){
+                    writer.write(reader.readLine());
+                    writer.newLine();
+
+                    reader.readLine();
+                    writer.write("" + a);
+                    writer.newLine();
+
+                    writer.write(reader.readLine());
+                    writer.newLine();
+                }else{
+                    writer.write(reader.readLine());
+                    writer.newLine();
+                    writer.write(reader.readLine());
+                    writer.newLine();
+                    writer.write(reader.readLine());
+                    writer.newLine();
+                }
+            }
+        }catch(Exception e){
+            System.out.println("LineRewriter failed!");
+        }
+
+        try{
+            Path filePath = Paths.get(".\\UserInfo.txt");
+            Files.newBufferedWriter(filePath, StandardOpenOption.TRUNCATE_EXISTING).close();
+            System.out.println("UserInfo.txt is empty now!");
+        }catch(IOException e){
+            System.out.println("Fail to empty UserInfo.txt!");
+        }
+
+
+
+
+        try(BufferedReader reader = new BufferedReader(new FileReader(tmpFile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(originalFile))){
+
+
+
+
+
+            String currentLine;
+//            int i= 1;
+
+            while((currentLine = reader.readLine()) != null){
+                writer.write(currentLine);
+                writer.newLine();
+            }
+            writer.flush();
+            writer.close();
+            reader.close();
+
+            if(!tmpFile.delete()){
+                System.out.println("File deletion failed!");
+                throw new IOException("File deletion failed!");
+            }
+        }catch(Exception e){
+            System.out.println("LineRewriter failed!");
+        }
     }
 }
 
