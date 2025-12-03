@@ -7,9 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,7 +22,7 @@ public class MenuFrame extends JFrame{
 
     //  public JFrame chessFrame;
 
-    public MenuFrame(String title, String user, int style){
+    public MenuFrame(String title, String user, int style, ChessBoardModel preModel){
         super(title);
         UIManager.put("Label.font", defaultFont);
         UIManager.put("Button.font", defaultFont);
@@ -38,6 +36,18 @@ public class MenuFrame extends JFrame{
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e){
+                String a = "";
+                if(preModel != null){
+                    a = "（未完成的棋局会自动结束）";
+                }
+                if(ChoiceBox.choiceBox("退出确认", "要退出吗？" + a)){
+                    ToolBox.confirmToEnd(user);
+                    deleteFile();
+                    dispose();
+                    System.exit(0);
+                }
+
+
                 deleteFile();
                 dispose();
                 System.exit(0);
@@ -72,17 +82,34 @@ public class MenuFrame extends JFrame{
         newGameButton.setSize(400, 50);
         this.add(newGameButton);
         newGameButton.addActionListener(e -> {
-            GameFrame chessFrame = new GameFrame(title, user, null, style);
-            this.setVisible(false);
-            chessFrame.setVisible(true);
-            createFolder();
-            //这里可能需要log相关的代码
-//            newStyle = 0;
-//            this.setVisible(false);
-//            StyleFrame styleFrame = new StyleFrame("风格面板", originalFrame.user, originalFrame, originalFrame.getModel(), newStyle);
-//            styleFrame.setVisible(true);
-//            System.out.println(user + " tried style 1");
-//            model.pauseButton(false);
+            String relativePath = "UserData/" + user + "/" + user +"Temp.txt";
+            Path path = Paths.get(relativePath).toAbsolutePath().normalize();
+
+            try{
+                if(Files.exists(path)){
+                    if(Files.size(path) != 0){
+                        if(ChoiceBox.choiceBox("新游戏确认", "存档上一盘并开始新游戏吗？")){
+                            ToolBox.confirmToEnd(user);
+                            GameFrame chessFrame = new GameFrame(title, user, null, style);
+                            this.setVisible(false);
+                            chessFrame.setVisible(true);
+                            createFolder();
+                        }
+                    }else{
+                        GameFrame chessFrame = new GameFrame(title, user, null, style);
+                        this.setVisible(false);
+                        chessFrame.setVisible(true);
+                        createFolder();
+                    }
+                }else{
+                    GameFrame chessFrame = new GameFrame(title, user, null, style);
+                    this.setVisible(false);
+                    chessFrame.setVisible(true);
+                    createFolder();
+                }
+            }catch (IOException ne){
+                System.out.println("???");
+            }
         });
 
 
@@ -98,6 +125,15 @@ public class MenuFrame extends JFrame{
 //            styleFrame.setVisible(true);
 //            System.out.println(user + " tried style 2");
 //            model.pauseButton(true);
+            if(preModel != null){
+                GameFrame gameFrame = new GameFrame(title, user, preModel, style);
+                this.setVisible(false);
+                gameFrame.setVisible(true);
+            }else{
+                NoticeBox noticeBox = new NoticeBox("提示", user, style, "您需要开始新棋局！");
+                noticeBox.setVisible(true);
+            }
+
         });
 
 
@@ -106,7 +142,7 @@ public class MenuFrame extends JFrame{
         aiChessButton.setSize(400, 50);
         this.add(aiChessButton);
         aiChessButton.addActionListener(e -> {
-
+            System.out.println("这个功能还没有完成");
         });
 
         JButton lastChessButton = new JButton("上一局回放");
@@ -115,9 +151,15 @@ public class MenuFrame extends JFrame{
         this.add(lastChessButton);
         lastChessButton.addActionListener(e -> {
             if(checkLogLiteExistence()){
-                ReplayFrame replayFrame = new ReplayFrame(title, user, null, style);
-                this.setVisible(false);
-                replayFrame.setVisible(true);
+                if(decoder()){
+                    ReplayFrame replayFrame = new ReplayFrame(title, user, preModel, style);
+                    this.setVisible(false);
+                    replayFrame.setVisible(true);
+                }else{
+                    deleteBrokenLog();
+                    NoticeBox noticeBox = new NoticeBox("警告", user, style, "您的存档已损坏！已清理！");
+                    noticeBox.setVisible(true);
+                }
             }
 
 
@@ -128,7 +170,7 @@ public class MenuFrame extends JFrame{
         styleButton.setSize(400, 50);
         this.add(styleButton);
         styleButton.addActionListener(e -> {
-            StyleFrame styleFrame = new StyleFrame(title, user, style);
+            StyleFrame styleFrame = new StyleFrame(title, user, style, preModel);
             this.setVisible(false);
             styleFrame.setVisible(true);
 
@@ -140,10 +182,18 @@ public class MenuFrame extends JFrame{
         exitButton.setSize(400, 50);
         this.add(exitButton);
         exitButton.addActionListener(e -> {
-            LoginFrame loginFrame = new LoginFrame("中国象棋 登录界面");
-            this.setVisible(false);
-            deleteFile();
-            loginFrame.setVisible(true);
+            String a = "";
+            if(preModel != null){
+                a = "（未完成的棋局会自动结束）";
+            }
+            if(ChoiceBox.choiceBox("退出确认", "要退出吗？" + a)){
+                ToolBox.confirmToEnd(user);
+                LoginFrame loginFrame = new LoginFrame("中国象棋 登录界面");
+                this.setVisible(false);
+                deleteFile();
+                loginFrame.setVisible(true);
+            }
+
         });
 
 
@@ -200,15 +250,78 @@ public class MenuFrame extends JFrame{
     private boolean checkLogLiteExistence(){
         File file = new File("UserData/" + user + "/" + user +".txt");
         if(!file.exists()){
-            NoticeFrame noticeFrame = new NoticeFrame(getTitle(), user, style, "您还没有存档，快去玩新游戏吧！");
-            noticeFrame.setVisible(true);
+            NoticeBox noticeBox = new NoticeBox("提示", user, style, "您还没有存档，快去玩新游戏吧！");
+            noticeBox.setVisible(true);
             return false;
         }
         return true;
+    }
 
+    private boolean decoder(){
+        int code = 0;
+
+        File moveFile = new File("UserData/" + user + "/" + user +".txt");
+
+
+        if (!moveFile.setWritable(true)) {
+            System.out.println(user + ".txt can't be set readable!");
+        }
+        ///
+        try(BufferedReader reader = new BufferedReader(new FileReader(moveFile))){
+
+            String currentLine;
+            while((currentLine = reader.readLine()) != null){
+                code += Integer.parseInt(currentLine);
+            }
+            reader.close();
+        }catch(Exception e){
+            System.out.println("encoder failed!");
+        }
+
+        int tempCode = (code-13*17)*31;
+        int logCode = logCodeKey();
+
+        if(tempCode == logCode){
+            return true;
+        }else{
+            return false;
+        }
 
     }
 
+    private int logCodeKey(){
+        File file = new File(".\\UserInfo.txt");
+        Scanner in;
+        try{
+            in = new Scanner(file);
+            while(in.hasNextLine()){
+                String existingUsername = in.nextLine();
+                if(user.equals(existingUsername)){
+                    in.nextLine();
+                    in.nextLine();
+                    return Integer.parseInt(in.nextLine());
+                }else{
+                    in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
+                }
+            }
+            System.out.println(user + " doesn't exist as a username!");
+            return -1;
+        }catch(FileNotFoundException e){
+            System.out.println("File UserInfo.txt not found!");
+        }
+        return -1;
+    }
+
+    private void deleteBrokenLog(){
+        File file = new File("UserData/" + user + "/" + user +".txt");
+        if(file.delete()){
+            System.out.println(user + ".txt failed to delete!");
+        }else{
+            System.out.println(user + ".txt successfully deleted!");
+        }
+    }
 
 }
 

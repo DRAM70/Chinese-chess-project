@@ -115,7 +115,7 @@ public class LoginFrame extends JFrame{
                 return;
             }
             if(isInUserListUP(a, b)){
-                MenuFrame menuFrame = new MenuFrame("中国象棋", a, style);
+                MenuFrame menuFrame = new MenuFrame("中国象棋", a, style, null);
                 //此处将来可能会根据用户上一次存储的风格进行绘制,可以在判断用户存在的方法中为style赋值
 
                 user = a;
@@ -149,7 +149,7 @@ public class LoginFrame extends JFrame{
 
 
         visitor.addActionListener(e -> {
-            MenuFrame menuFrame = new MenuFrame("中国象棋（游客模式）", "游客6060", 0);
+            MenuFrame menuFrame = new MenuFrame("中国象棋（游客模式）", "游客6060", 0, null);
             user = "游客6060";
             this.setVisible(false);
             menuFrame.setVisible(true);

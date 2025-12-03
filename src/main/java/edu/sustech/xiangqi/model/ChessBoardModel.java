@@ -1,5 +1,6 @@
 package edu.sustech.xiangqi.model;
 
+import edu.sustech.xiangqi.audio.BackgroundMusic;
 import edu.sustech.xiangqi.ui.ChessBoardPanel;
 
 import javax.swing.*;
@@ -31,7 +32,7 @@ public class ChessBoardModel {
         this.doLogWrite = doLogWrite;
         initializePieces();
         if(doLogWrite){
-            initializeLog();
+            initializeTempLog();
         }
     }
 
@@ -293,6 +294,7 @@ public class ChessBoardModel {
             String move = "" + piece.getNumber()  + "0" +  newRow + "0" + newCol + "0" + ((piece.isRed()) ? 1 : 2);
             logWriter(move);
         }
+        BackgroundMusic.playClick();
         //示例结束
         return true;
         //return piece.legalMove(newRow,newCol,this);
@@ -316,7 +318,7 @@ public class ChessBoardModel {
     //检测log是否损坏的一个想法：结束后对log进行一个hashcode或者什么的加密，形成一串字符，在读取log之前将两者进行比对，任一方不符合对方都会不读取log
     public void logWriter(String move){
         try{
-            String relativePath = "UserData/" + user + "/" + user +".txt";
+            String relativePath = "UserData/" + user + "/" + user +"Temp.txt";
             File file = new File(relativePath);
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
 
@@ -335,23 +337,23 @@ public class ChessBoardModel {
         }
     }
 
-    public void initializeLog(){
+    public void initializeTempLog(){
         try{
-            String relativePath = "UserData/" + user + "/" + user +".txt";
+            String relativePath = "UserData/" + user + "/" + user +"Temp.txt";
             File file = new File(relativePath);
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
 
 
 
             writer.write( "");
-            System.out.println(user + "'s log file is initialized!");
+            System.out.println(user + "'s Templog file is initialized!");
 
 
 
             writer.flush();
             writer.close();
         }catch(IOException e){
-            System.out.println("Error, file " + user + ".txt is broken! And log initializing failed!");
+            System.out.println("Error, file " + user + "Temp.txt is broken! And log initializing failed!");
         }
     }
 }

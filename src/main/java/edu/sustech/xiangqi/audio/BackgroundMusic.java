@@ -1,8 +1,13 @@
 package edu.sustech.xiangqi.audio;
 
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.*;
 import java.applet.Applet;
 import java.applet.AudioClip;
+import java.io.File;
 import java.net.URL;
 
 public class BackgroundMusic {
@@ -14,13 +19,14 @@ public class BackgroundMusic {
         String path = ".\\src\\main\\resources\\backLoop2.wav";
 //        String path = "/backLoop.wav";
         try{
-            if(audio != null){
-                audio.stop();
-            }
+            Clip clip;
+            AudioInputStream audio = AudioSystem.getAudioInputStream(new File(path));
+            clip = AudioSystem.getClip();
+            clip.open(audio);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.start();
+            //独立线程播放，解决音乐中断问题
 
-            URL url = new java.io.File(path).toURI().toURL();
-            audio = Applet.newAudioClip(url);
-            audio.loop();
         }catch(Exception e){
             System.out.println("unable to play background music " + path);
         }
