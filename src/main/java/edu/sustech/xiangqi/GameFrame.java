@@ -9,13 +9,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 public class GameFrame extends JFrame{
     public String user;
 //    private int style = 0;
     public static JLabel label;
-    private ChessBoardModel modelIN;//当前全局可使用的棋盘？？？？？？？？
+    private ChessBoardModel modelIN;//当前全局可使用的棋盘,请使用这个
 
 
     public GameFrame(String title, String user, ChessBoardModel preModel, int style){
@@ -32,9 +36,12 @@ public class GameFrame extends JFrame{
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e){
-                deleteFile();
-                dispose();
-                System.exit(0);
+                if(ChoiceBox.choiceBox("退出确认", "要退出吗？（当前棋局会自动结束）")){
+                    ToolBox.confirmToEnd(user);
+                    deleteFile();
+                    dispose();
+                    System.exit(0);
+                }
             }
         });
         //listener结束
@@ -55,12 +62,23 @@ public class GameFrame extends JFrame{
         label.setSize(100, 50);
         this.add(label);//先添加的后绘制
 
-        JButton button = new JButton("start");
+        JButton button = new JButton("认输");
         button.setLocation(600, 200);
         button.setSize(120, 50);
         this.add(button);//先添加的后绘制
         button.addActionListener(e -> {
             System.out.println("hhhhhh");
+
+            //这里面还要添加认输确认，添加到log
+
+
+            if(ChoiceBox.choiceBox("结束确认", "要认输吗？")){
+                ToolBox.confirmToEnd(user);
+                MenuFrame menuFrame = new MenuFrame(title, user, style, null);
+                this.setVisible(false);
+                menuFrame.setVisible(true);
+            }
+
         });
 
 
@@ -69,11 +87,17 @@ public class GameFrame extends JFrame{
         reset.setSize(120, 50);
         this.add(reset);
         reset.addActionListener(e -> {
-            GameFrame newFrame = new GameFrame("中国象棋", user, null, style);
-            this.setVisible(false);
-            newFrame.setVisible(true);
-            //这里可能还要添加存储log相关的代码
-            System.out.println("A new GameFrame for " + user);
+            if(ChoiceBox.choiceBox("重开确认", "确定要开始新棋局吗？（当前棋局会自动结束）")){
+                ToolBox.confirmToEnd(user);
+                GameFrame newFrame = new GameFrame("中国象棋", user, null, style);
+                this.setVisible(false);
+                newFrame.setVisible(true);
+                //这里可能还要添加存储log相关的代码
+
+
+
+                System.out.println("A new GameFrame for " + user);
+            }
         });
 
         JButton retractPiece = new JButton("悔棋");
@@ -85,7 +109,7 @@ public class GameFrame extends JFrame{
             System.out.println(user + " retracted a piece^^^^");
 
 
-            modelIN.checkMove(12, 5, 0);
+//            modelIN.checkMove(12, 5, 0);
         });
 
         JButton backButton = new JButton("返回菜单");
@@ -95,7 +119,7 @@ public class GameFrame extends JFrame{
 //        int style = 0;
         //这里需要进一步细化
         backButton.addActionListener(e -> {
-            MenuFrame menuFrame = new MenuFrame(title, user, style);
+            MenuFrame menuFrame = new MenuFrame(title, user, style, modelIN);
             this.setVisible(false);
             menuFrame.setVisible(true);
             //这里可能需要log相关的代码，不需要了，只要使用原有model，就不会改变
@@ -162,8 +186,6 @@ public class GameFrame extends JFrame{
 //        timer.setRepeats(false);
 //        timer.start();
 //    }
-
-
 
 
 }

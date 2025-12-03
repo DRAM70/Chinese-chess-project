@@ -1,21 +1,13 @@
 package edu.sustech.xiangqi;
 
-import edu.sustech.xiangqi.model.ChessBoardModel;
 import edu.sustech.xiangqi.ui.Style;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Scanner;
 
-public class NoticeFrame extends JFrame{
+public class NoticeBox extends JFrame{
     private String user;
     private int newStyle;
     public Font defaultFont = new Font("微软雅黑", Font.BOLD, 18);
@@ -24,8 +16,8 @@ public class NoticeFrame extends JFrame{
 
     //  public JFrame chessFrame;
 
-    public NoticeFrame(String title, String user, int style, String content){
-        super("警告");
+    public NoticeBox(String title, String user, int style, String content){
+        super(title);
         UIManager.put("Label.font", defaultFont);
         UIManager.put("Button.font", defaultFont);
         //上面是login的界面，下面是象棋的界面

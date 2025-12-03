@@ -5,15 +5,9 @@ import edu.sustech.xiangqi.ui.ChessBoardPanel;
 import edu.sustech.xiangqi.ui.Style;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -43,7 +37,7 @@ public class ReplayFrame extends JFrame{
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e){
-                MenuFrame menuFrame = new MenuFrame(title, user, style);
+                MenuFrame menuFrame = new MenuFrame(title, user, style, preModel);
                 setVisible(false);
                 menuFrame.setVisible(true);
 
@@ -73,7 +67,7 @@ public class ReplayFrame extends JFrame{
         lastStepButton.setSize(120, 50);
         this.add(lastStepButton);//先添加的后绘制
         lastStepButton.addActionListener(e -> {
-            System.out.println("ahhhhhhh   这里需要悔棋相关的代码");
+            System.out.println("ahhhhhhh   这里需要悔棋相关的代码，这个功能还没有完成");
 
             //需要判断可不可以上一步
 //            if(stepIndex == 0){
@@ -118,8 +112,8 @@ public class ReplayFrame extends JFrame{
 //
 //            modelIN.checkMove(12, 5, 0);
 
-            NoticeFrame noticeFrame = new NoticeFrame(title, user, style, "您目前没有存档！");
-            noticeFrame.setVisible(true);
+            NoticeBox noticeBox = new NoticeBox(title, user, style, "您目前没有存档！");
+            noticeBox.setVisible(true);
         });
 
         JButton backButton = new JButton("返回菜单");
@@ -129,7 +123,7 @@ public class ReplayFrame extends JFrame{
 //        int style = 0;
         //这里需要进一步细化
         backButton.addActionListener(e -> {
-            MenuFrame menuFrame = new MenuFrame(title, user, style);
+            MenuFrame menuFrame = new MenuFrame(title, user, style, preModel);
             this.setVisible(false);
             menuFrame.setVisible(true);
 
