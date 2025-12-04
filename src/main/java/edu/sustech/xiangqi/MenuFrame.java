@@ -38,19 +38,15 @@ public class MenuFrame extends JFrame{
             public void windowClosing(WindowEvent e){
                 String a = "";
                 if(preModel != null){
-                    a = "（未完成的棋局会自动结束）";
+                    a = "（未完成的棋局会自动保存）";
                 }
                 if(ChoiceBox.choiceBox("退出确认", "要退出吗？" + a)){
-                    ToolBox.confirmToEnd(user);
-                    deleteFile();
+                    ToolBox.tempEnd(user);
+                    ToolBox.deleteVisitorFile();
                     dispose();
                     System.exit(0);
                 }
 
-
-                deleteFile();
-                dispose();
-                System.exit(0);
             }
         });
         Style[] styleList = Style.values();
@@ -87,7 +83,7 @@ public class MenuFrame extends JFrame{
 
             try{
                 if(Files.exists(path)){
-                    if(Files.size(path) != 0){
+                    if(Files.size(path) != 0 || preModel != null){
                         if(ChoiceBox.choiceBox("新游戏确认", "存档上一盘并开始新游戏吗？")){
                             ToolBox.confirmToEnd(user);
                             GameFrame chessFrame = new GameFrame(title, user, null, style);
@@ -125,7 +121,7 @@ public class MenuFrame extends JFrame{
 //            styleFrame.setVisible(true);
 //            System.out.println(user + " tried style 2");
 //            model.pauseButton(true);
-            if(preModel != null){
+            if(preModel != null){//需要修改
                 GameFrame gameFrame = new GameFrame(title, user, preModel, style);
                 this.setVisible(false);
                 gameFrame.setVisible(true);
@@ -157,12 +153,10 @@ public class MenuFrame extends JFrame{
                     replayFrame.setVisible(true);
                 }else{
                     deleteBrokenLog();
-                    NoticeBox noticeBox = new NoticeBox("警告", user, style, "您的存档已损坏！已清理！");
+                    NoticeBox noticeBox = new NoticeBox("警告", user, style, "您的回放已损坏！已清理！");
                     noticeBox.setVisible(true);
                 }
             }
-
-
         });
 
         JButton styleButton = new JButton("切换皮肤");
@@ -184,13 +178,13 @@ public class MenuFrame extends JFrame{
         exitButton.addActionListener(e -> {
             String a = "";
             if(preModel != null){
-                a = "（未完成的棋局会自动结束）";
+                a = "（未完成的棋局会自动保存）";
             }
             if(ChoiceBox.choiceBox("退出确认", "要退出吗？" + a)){
-                ToolBox.confirmToEnd(user);
+                ToolBox.tempEnd(user);
                 LoginFrame loginFrame = new LoginFrame("中国象棋 登录界面");
                 this.setVisible(false);
-                deleteFile();
+                ToolBox.deleteVisitorFile();
                 loginFrame.setVisible(true);
             }
 
@@ -232,20 +226,20 @@ public class MenuFrame extends JFrame{
         }
     }
 
-    private void deleteFile(){
-        try{
-            File fileToDelete = new File("UserData/游客6060/游客6060.txt");
-            if(fileToDelete.exists()){
-                if(fileToDelete.delete()){
-                    System.out.println("visitor log successfully deleted!");
-                }else{
-                    System.out.println("visitor log deleting failed!");
-                }
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
+//    private void deleteFile(){
+//        try{
+//            File fileToDelete = new File("UserData/游客6060/游客6060.txt");
+//            if(fileToDelete.exists()){
+//                if(fileToDelete.delete()){
+//                    System.out.println("visitor log successfully deleted!");
+//                }else{
+//                    System.out.println("visitor log deleting failed!");
+//                }
+//            }
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
     private boolean checkLogLiteExistence(){
         File file = new File("UserData/" + user + "/" + user +".txt");
@@ -301,6 +295,9 @@ public class MenuFrame extends JFrame{
                     in.nextLine();
                     return Integer.parseInt(in.nextLine());
                 }else{
+                    in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
                     in.nextLine();
                     in.nextLine();
                     in.nextLine();

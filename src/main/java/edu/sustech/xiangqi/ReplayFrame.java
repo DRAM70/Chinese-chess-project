@@ -112,8 +112,11 @@ public class ReplayFrame extends JFrame{
 //
 //            modelIN.checkMove(12, 5, 0);
 
-            NoticeBox noticeBox = new NoticeBox(title, user, style, "您目前没有存档！");
-            noticeBox.setVisible(true);
+//            NoticeBox noticeBox = new NoticeBox(title, user, style, "您目前没有存档！");
+//            noticeBox.setVisible(true);
+//            if(ChoiceBox.notice("yanshi", "hahahah")){
+//                System.out.println("ceshichenggong");
+//            }
         });
 
         JButton backButton = new JButton("返回菜单");
@@ -196,7 +199,7 @@ public class ReplayFrame extends JFrame{
     private void checkLogLiteContent(){
         File file = new File("UserData/" + user + "/" + user +".txt");
         //这里要判断hashcode的符合情况
-
+        //已经在按钮点击时判断了
 
 
 

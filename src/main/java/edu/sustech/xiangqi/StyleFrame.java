@@ -155,7 +155,22 @@ public class StyleFrame extends JFrame{
 
                     writer.write(reader.readLine());
                     writer.newLine();
+
+                    writer.write(reader.readLine());
+                    writer.newLine();
+
+                    writer.write(reader.readLine());
+                    writer.newLine();
+
+                    writer.write(reader.readLine());
+                    writer.newLine();
                 }else{
+                    writer.write(reader.readLine());
+                    writer.newLine();
+                    writer.write(reader.readLine());
+                    writer.newLine();
+                    writer.write(reader.readLine());
+                    writer.newLine();
                     writer.write(reader.readLine());
                     writer.newLine();
                     writer.write(reader.readLine());

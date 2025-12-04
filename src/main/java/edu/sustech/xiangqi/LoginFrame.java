@@ -1,6 +1,8 @@
 package edu.sustech.xiangqi;
 
 
+import edu.sustech.xiangqi.model.ChessBoardModel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -115,12 +117,20 @@ public class LoginFrame extends JFrame{
                 return;
             }
             if(isInUserListUP(a, b)){
-                MenuFrame menuFrame = new MenuFrame("中国象棋", a, style, null);
+                this.setVisible(false);
+                ChessBoardModel model = new ChessBoardModel(a, true);
+                if(ToolBox.emptyCheck(a)){
+                    MenuFrame menuFrame = new MenuFrame("中国象棋", a, style, null);
+                    menuFrame.setVisible(true);
+                }else{
+                    model = ToolBox.originalModel(a, model);
+                    MenuFrame menuFrame = new MenuFrame("中国象棋", a, style, model);
+                    menuFrame.setVisible(true);
+                }
+
                 //此处将来可能会根据用户上一次存储的风格进行绘制,可以在判断用户存在的方法中为style赋值
 
                 user = a;
-                this.setVisible(false);
-                menuFrame.setVisible(true);
                 createFolder();
                 //这里还没有检测是否存在log文档去写入，尽管在移动棋子后可以直接生成新的userData文件，
                 // 但是以防在loginFrame里也需要检测的情况，下面还是贴上write函数的代码
@@ -216,6 +226,9 @@ public class LoginFrame extends JFrame{
                     in.nextLine();
                     in.nextLine();
                     in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
                 }
             }
             return false;
@@ -239,6 +252,9 @@ public class LoginFrame extends JFrame{
 //                    }
                     return true;
                 }else{
+                    in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
                     in.nextLine();
                     in.nextLine();
                     in.nextLine();
