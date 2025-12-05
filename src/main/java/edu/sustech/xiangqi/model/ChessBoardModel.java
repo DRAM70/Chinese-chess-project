@@ -1,5 +1,6 @@
 package edu.sustech.xiangqi.model;
 
+import edu.sustech.xiangqi.GameFrame;
 import edu.sustech.xiangqi.audio.BackgroundMusic;
 import edu.sustech.xiangqi.ui.ChessBoardPanel;
 
@@ -176,7 +177,7 @@ public class ChessBoardModel {
         AbstractPiece generalPiece=null;
         for(AbstractPiece piece:getPieces()){
             String name= piece.getName();
-            if((isRedTurn()&&name.equals("帅"))||(!isRedTurn()&&name.equals("将"))){
+            if((isRedTurn()&&name.equals("帅"))||(!isRedTurn()&&name.equals("將"))){
                 generalPiece=piece;
                 break;
             }
@@ -195,16 +196,11 @@ public class ChessBoardModel {
                 return true;
             }
         }
-
         return false;
     }
 
 
     public boolean isCheckmate(){
-        if(!isInCheck()){
-            return false;
-        }
-
         //遍历被将军方所有棋子，模拟是否可以解除将军
         List<AbstractPiece> currentPieces=new ArrayList<>();
         for(AbstractPiece piece:getPieces()){
@@ -263,6 +259,38 @@ public class ChessBoardModel {
             return false;
         }
 
+        //这段先留着，应该是没用了（不确定）
+
+//        //被将时，如果能解除则优先，其它走法违法
+//        if(isInCheck()){
+//            if(isCheckmate()){
+//                GameFrame.label.setText("将死");
+//                return false;
+//            }
+//            else{
+//                GameFrame.label.setText("将");
+//                int formerRow= piece.getRow();
+//                int formerCol= piece.getCol();
+//                AbstractPiece removement =getPieceAt(newRow,newCol);
+//                piece.setRow(newRow);
+//                piece.setCol(newCol);
+//                if(removement !=null){
+//                    pieces.remove(removement);
+//                }
+//                boolean alsoInCheck=isInCheck();
+//                piece.setRow(formerRow);
+//                piece.setCol(formerCol);
+//                if(removement!=null&&!pieces.contains(removement)){
+//                    pieces.add(removement);
+//                }
+//                if(alsoInCheck){
+//                    return false;
+//                }
+//            }
+//
+//
+//        }
+
         //模拟移动并记录，判断是否照面
         int formerRow= piece.getRow();
         int formerCol= piece.getCol();
@@ -273,24 +301,59 @@ public class ChessBoardModel {
             pieces.remove(removement);
         }
         boolean willFace=isGeneralMeeting();
+        // 这里检查 不能主动被将
+        boolean willBeChecked=isInCheck();
         piece.setRow(formerRow);
         piece.setCol(formerCol);
         if(removement!=null&&!pieces.contains(removement)){
             pieces.add(removement);
         }
-        if(willFace){
+
+        if(willBeChecked){
+            GameFrame.label.setText("被将");
             return false;
         }
+
+        else if (willFace){
+            GameFrame.label.setText("将帅照面");
+            return false;
+        }
+
         else {
             piece.setRow(newRow);
             piece.setCol(newCol);
             if(removement!=null){
+                if(isRedTurn){
+                    System.out.println("吃黑方"+piece.getName());
+                }
+                else {
+                    System.out.println("吃红方"+piece.getName());
+                }
                 pieces.remove(removement);
             }
         }
 
         //实现交换回合
         switchTurn();
+        if(isRedTurn){
+            GameFrame.label.setText("红方执子");
+        }
+        else {
+            GameFrame.label.setText("黑方执子");
+        }
+
+
+        //被将时，如果能解除则优先，其它走法违法
+        if(isInCheck()){
+            if(isCheckmate()){
+                GameFrame.label.setText("将死");
+                return false;
+            }
+            else{
+                GameFrame.label.setText("将");
+            }
+
+        }
 
         piece.moveTo(newRow, newCol);
         //这里是一个示例，具体还有待开发
