@@ -49,7 +49,7 @@ public class ToolBox {
         return true;
     }
 
-    public static ChessBoardModel originalModel(String tmpUser, ChessBoardModel model){//返回之前未完成的model
+    public static ChessBoardModel originalModel(String tmpUser, ChessBoardModel model){//返回之前未完成的model,并开启log
         user = tmpUser;
         if(emptyCheck(user)){
             return null;
@@ -66,6 +66,7 @@ public class ToolBox {
                             moveBreaker(i, 1),
                             moveBreaker(i, 2));
                 }
+                model.switchLogWrite(true);
                 return model;
             }else{
                 deleteBrokenLog();

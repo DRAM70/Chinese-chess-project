@@ -118,7 +118,7 @@ public class LoginFrame extends JFrame{
             }
             if(isInUserListUP(a, b)){
                 this.setVisible(false);
-                ChessBoardModel model = new ChessBoardModel(a, true);
+                ChessBoardModel model = new ChessBoardModel(a, false);
                 if(ToolBox.emptyCheck(a)){
                     MenuFrame menuFrame = new MenuFrame("中国象棋", a, style, null);
                     menuFrame.setVisible(true);

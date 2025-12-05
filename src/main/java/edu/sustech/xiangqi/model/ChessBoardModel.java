@@ -37,6 +37,7 @@ public class ChessBoardModel {
     }
 
 
+
     private void initializePieces() {
         // 黑方棋子
         pieces.add(new GeneralPiece("將", 0, 4, false,31));
