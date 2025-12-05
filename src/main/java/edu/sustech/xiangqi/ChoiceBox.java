@@ -22,4 +22,28 @@ public class ChoiceBox {
             return false;
         }
     }
+
+    public static boolean notice(String title, String message){
+//        int userChoice = JOptionPane.showConfirmDialog(
+//                null,
+//                message,
+//                title,
+//                JOptionPane.YES_OPTION,
+//                JOptionPane.QUESTION_MESSAGE
+//        );
+//        if(userChoice == JOptionPane.YES_OPTION){
+//            System.out.println("ChoiceBox choosing YES");
+//            return true;
+//        }else if(userChoice == JOptionPane.NO_OPTION){
+//            System.out.println("ChoiceBox choosing NO");
+//            return true;
+//        }else{
+//            System.out.println("ChoiceBox closed, automatically choosing NO");
+//            return true;
+//        }
+
+        JOptionPane.showMessageDialog(null, message);
+        return true;
+    }
+
 }

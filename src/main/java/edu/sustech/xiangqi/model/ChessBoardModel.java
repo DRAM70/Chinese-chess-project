@@ -168,6 +168,10 @@ public class ChessBoardModel {
         return false;
     }
 
+    public void switchLogWrite(boolean choice){
+        doLogWrite = choice;
+    }
+
 
     public boolean isInCheck(){
         AbstractPiece generalPiece=null;

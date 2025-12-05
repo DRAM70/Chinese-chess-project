@@ -36,9 +36,9 @@ public class GameFrame extends JFrame{
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e){
-                if(ChoiceBox.choiceBox("退出确认", "要退出吗？（当前棋局会自动结束）")){
-                    ToolBox.confirmToEnd(user);
-                    deleteFile();
+                if(ChoiceBox.choiceBox("退出确认", "要退出吗？（当前棋局会自动保存）")){
+                    ToolBox.tempEnd(user);
+                    ToolBox.deleteVisitorFile();
                     dispose();
                     System.exit(0);
                 }
@@ -160,20 +160,20 @@ public class GameFrame extends JFrame{
         return modelIN;
     }
 
-    private void deleteFile(){
-        try{
-            File fileToDelete = new File("UserData/游客6060/游客6060.txt");
-            if(fileToDelete.exists()){
-                if(fileToDelete.delete()){
-                    System.out.println("visitor log successfully deleted!");
-                }else{
-                    System.out.println("visitor log deleting failed!");
-                }
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
+//    private void deleteFile(){
+//        try{
+//            File fileToDelete = new File("UserData/游客6060/游客6060.txt");
+//            if(fileToDelete.exists()){
+//                if(fileToDelete.delete()){
+//                    System.out.println("visitor log successfully deleted!");
+//                }else{
+//                    System.out.println("visitor log deleting failed!");
+//                }
+//            }
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
 
 //    public void sleepAction(int toNumber, int toRow, int toCol){
