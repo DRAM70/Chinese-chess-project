@@ -265,11 +265,15 @@ public class ChessBoardModel {
 //        //被将时，如果能解除则优先，其它走法违法
 //        if(isInCheck()){
 //            if(isCheckmate()){
-//                GameFrame.label.setText("将死");
+//                if(GameFrame.label != null){
+//                    GameFrame.label.setText("将死");
+//                }
 //                return false;
 //            }
 //            else{
-//                GameFrame.label.setText("将");
+//                if(GameFrame.label != null){
+//                    GameFrame.label.setText("将");
+//                }
 //                int formerRow= piece.getRow();
 //                int formerCol= piece.getCol();
 //                AbstractPiece removement =getPieceAt(newRow,newCol);
@@ -311,12 +315,16 @@ public class ChessBoardModel {
         }
 
         if(willBeChecked){
-            GameFrame.label.setText("被将");
+            if(GameFrame.label != null){
+                GameFrame.label.setText("被将");
+            }
             return false;
         }
 
         else if (willFace){
-            GameFrame.label.setText("将帅照面");
+            if(GameFrame.label != null){
+                GameFrame.label.setText("将帅照面");
+            }
             return false;
         }
 
@@ -337,21 +345,29 @@ public class ChessBoardModel {
         //实现交换回合
         switchTurn();
         if(isRedTurn){
-            GameFrame.label.setText("红方执子");
+            if(GameFrame.label != null){
+                GameFrame.label.setText("红方执子");
+            }
         }
         else {
-            GameFrame.label.setText("黑方执子");
+            if(GameFrame.label != null){
+                GameFrame.label.setText("黑方执子");
+            }
         }
 
 
         //被将时，如果能解除则优先，其它走法违法
         if(isInCheck()){
             if(isCheckmate()){
-                GameFrame.label.setText("将死");
+                if(GameFrame.label != null){
+                    GameFrame.label.setText("将死");
+                }
                 return false;
             }
             else{
-                GameFrame.label.setText("将");
+                if(GameFrame.label != null){
+                    GameFrame.label.setText("将");
+                }
             }
 
         }
