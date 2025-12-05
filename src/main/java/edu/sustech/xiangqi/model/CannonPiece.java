@@ -57,7 +57,7 @@ public class CannonPiece extends AbstractPiece{
                         b++;
                     }
                 }
-                if(b==1&&piece_target!=null){
+                if(b==1&&piece_target!=null&&piece_target.isRed()!=piece_current.isRed()){
                     //model.removePieces(piece_target);
                     return true;
                 }
@@ -81,7 +81,7 @@ public class CannonPiece extends AbstractPiece{
                         c++;
                     }
                 }
-                if(c ==1&&piece_target!=null){
+                if(c ==1&&piece_target!=null&&piece_target.isRed()!=piece_current.isRed()){
                     //model.removePieces(piece_target);
                     return true;
                 }
@@ -103,7 +103,7 @@ public class CannonPiece extends AbstractPiece{
                         d++;
                     }
                 }
-                if(d ==1&&piece_target!=null){
+                if(d ==1&&piece_target!=null&&piece_target.isRed()!=piece_current.isRed()){
                     //model.removePieces(piece_target);
                     return true;
                 }

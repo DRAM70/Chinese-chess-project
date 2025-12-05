@@ -75,6 +75,7 @@ public class ChessBoardPanel extends JPanel {
         int row = Math.round((float)(y - MARGIN) / CELL_SIZE);
 
         if (!model.isValidPosition(row, col)) {
+            label.setText("请选择");
             return;
         }
 
@@ -88,6 +89,13 @@ public class ChessBoardPanel extends JPanel {
             }
         }
         else {
+            if(model.isRedTurn()){
+                label.setText("红方执子");
+            }
+            else {
+                label.setText("黑方执子");
+            }
+
             if(model.movePiece(selectedPiece,row,col)){
                 getLastRow=getCurrentRow;
                 getLastCol=getCurrentCol;
@@ -127,9 +135,18 @@ public class ChessBoardPanel extends JPanel {
         for(int row=0;row<=9;row++){
             for(int col=0;col<=8;col++){
                 if(selectedPiece.canMoveTo(row,col,model)){
-                    int x=MARGIN+col*CELL_SIZE;
-                    int y=MARGIN+row*CELL_SIZE;
-                    g.fillOval(x-highlightSize/2,y-highlightSize/2,highlightSize,highlightSize);
+                    int lastRow=selectedPiece.getRow();
+                    int lastCol=selectedPiece.getCol();
+                    selectedPiece.setRow(row);
+                    selectedPiece.setCol(col);
+                    boolean isMeeting=model.isGeneralMeeting();
+                    selectedPiece.setRow(lastRow);
+                    selectedPiece.setCol(lastCol);
+                    if(!isMeeting){
+                        int x=MARGIN+col*CELL_SIZE;
+                        int y=MARGIN+row*CELL_SIZE;
+                        g.fillOval(x-highlightSize/2,y-highlightSize/2,highlightSize,highlightSize);
+                    }
                 }
             }
         }
