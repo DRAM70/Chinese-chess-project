@@ -14,7 +14,8 @@ import java.util.Scanner;
 public class ReplayFrame extends JFrame{
     public String user;
     private int style;
-    private static JLabel label;
+    public static JLabel label;
+    public static JLabel label2;
     private ChessBoardModel modelIN;//当前全局可使用的棋盘？？？？？？？？//应该确定了
     private ArrayList<String> moveList = new ArrayList<>();
     private int stepIndex = 0;
@@ -55,12 +56,19 @@ public class ReplayFrame extends JFrame{
         //这里的setUser在model初始化之后无效，为什么，因为在测试中使用logWriter时user还没有被赋值，已解决
 
 
-        label = new JLabel(user);
+        label = new JLabel("你好，" + user);
         label.setForeground(styleList[style].getLabelColor());
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setLocation(520, 100);
         label.setSize(300, 50);
         this.add(label);//先添加的后绘制
+
+        label2 = new JLabel("你好，" + user);
+        label2.setForeground(styleList[style].getLabelColor());
+        label2.setHorizontalAlignment(SwingConstants.CENTER);
+        label2.setLocation(520, 140);
+        label2.setSize(300, 50);
+        this.add(label2);//先添加的后绘制
 
         JButton lastStepButton = new JButton("上一步");
         lastStepButton.setLocation(600, 200);
@@ -71,7 +79,7 @@ public class ReplayFrame extends JFrame{
 
             //需要判断可不可以上一步
 //            if(stepIndex == 0){
-//                label.setText("已经回到第一步啦！");
+//                label2.setText("已经回到第一步啦！");
 //            }else{
 //                stepIndex--;
 //                modelIN.checkMove(moveBreaker(stepIndex, 0),
@@ -90,7 +98,7 @@ public class ReplayFrame extends JFrame{
             //需要判断可不可以下一步
             //有蓝色框框效果会更好一些
             if(stepIndex == moveList.size()){
-                label.setText("已经是最后一步啦！");
+                label2.setText("已经是最后一步啦！");
             }else{
                 modelIN.checkMove(moveBreaker(stepIndex, 0),
                                     moveBreaker(stepIndex, 1),
@@ -149,7 +157,7 @@ public class ReplayFrame extends JFrame{
 
 
         ChessBoardPanel boardPanel = new ChessBoardPanel(modelIN, style);
-        boardPanel.label = label;
+        boardPanel.label = label2;
         this.add(boardPanel);
 //            chessFrame.pack();//大小适于内容
         this.setSize(800, 700);

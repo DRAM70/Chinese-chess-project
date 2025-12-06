@@ -141,8 +141,16 @@ public class MenuFrame extends JFrame{
             System.out.println("这个功能还没有完成");
         });
 
+        JButton timingChessButton = new JButton("计时模式");
+        timingChessButton.setLocation(50, 400);
+        timingChessButton.setSize(400, 50);
+        this.add(timingChessButton);
+        timingChessButton.addActionListener(e -> {
+            System.out.println("这个功能还没有完成");
+        });
+
         JButton lastChessButton = new JButton("上一局回放");
-        lastChessButton.setLocation(50, 400);
+        lastChessButton.setLocation(50, 500);
         lastChessButton.setSize(400, 50);
         this.add(lastChessButton);
         lastChessButton.addActionListener(e -> {
@@ -160,7 +168,7 @@ public class MenuFrame extends JFrame{
         });
 
         JButton styleButton = new JButton("切换皮肤");
-        styleButton.setLocation(50, 500);
+        styleButton.setLocation(50, 600);
         styleButton.setSize(400, 50);
         this.add(styleButton);
         styleButton.addActionListener(e -> {
@@ -172,7 +180,7 @@ public class MenuFrame extends JFrame{
         });
 
         JButton exitButton = new JButton("退出");
-        exitButton.setLocation(50, 600);
+        exitButton.setLocation(50, 700);
         exitButton.setSize(400, 50);
         this.add(exitButton);
         exitButton.addActionListener(e -> {

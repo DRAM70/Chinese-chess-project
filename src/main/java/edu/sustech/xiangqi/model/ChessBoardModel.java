@@ -1,12 +1,10 @@
 package edu.sustech.xiangqi.model;
 
-import edu.sustech.xiangqi.GameFrame;
+import edu.sustech.xiangqi.ToolBox;
 import edu.sustech.xiangqi.audio.BackgroundMusic;
-import edu.sustech.xiangqi.ui.ChessBoardPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -271,9 +269,10 @@ public class ChessBoardModel {
 //                return false;
 //            }
 //            else{
-//                if(GameFrame.label != null){
-//                    GameFrame.label.setText("将");
-//                }
+////                if(GameFrame.label != null){
+////                    GameFrame.label.setText("将");
+////                }
+//        ToolBox.labelTextPlayer("将");
 //                int formerRow= piece.getRow();
 //                int formerCol= piece.getCol();
 //                AbstractPiece removement =getPieceAt(newRow,newCol);
@@ -315,16 +314,19 @@ public class ChessBoardModel {
         }
 
         if(willBeChecked){
-            if(GameFrame.label != null){
-                GameFrame.label.setText("被将");
-            }
+//            if(GameFrame.label != null){
+//                GameFrame.label.setText("被将");
+//            }
+            ToolBox.labelTextStatus("被将");
+            BackgroundMusic.playGeneralInDanger();
             return false;
         }
 
         else if (willFace){
-            if(GameFrame.label != null){
-                GameFrame.label.setText("将帅照面");
-            }
+//            if(GameFrame.label != null){
+//                GameFrame.label.setText("将帅照面");
+//            }
+            ToolBox.labelTextStatus("将帅照面");
             return false;
         }
 
@@ -345,29 +347,33 @@ public class ChessBoardModel {
         //实现交换回合
         switchTurn();
         if(isRedTurn){
-            if(GameFrame.label != null){
-                GameFrame.label.setText("红方执子");
-            }
+//            if(GameFrame.label != null){
+//                GameFrame.label.setText("红方执子");
+//            }
+            ToolBox.labelTextPlayer("红方执子");
         }
         else {
-            if(GameFrame.label != null){
-                GameFrame.label.setText("黑方执子");
-            }
+//            if(GameFrame.label != null){
+//                GameFrame.label.setText("黑方执子");
+//            }
+            ToolBox.labelTextPlayer("黑方执子");
         }
 
 
         //被将时，如果能解除则优先，其它走法违法
         if(isInCheck()){
             if(isCheckmate()){
-                if(GameFrame.label != null){
-                    GameFrame.label.setText("将死");
-                }
+//                if(GameFrame.label != null){
+//                    GameFrame.label.setText("将死");
+//                }
+                ToolBox.labelTextStatus("将死");
                 return false;
             }
             else{
-                if(GameFrame.label != null){
-                    GameFrame.label.setText("将");
-                }
+//                if(GameFrame.label != null){
+//                    GameFrame.label.setText("将");
+//                }
+                ToolBox.labelTextStatus("将");
             }
 
         }
