@@ -90,12 +90,12 @@ public class ChessBoardPanel extends JPanel {
                 }
             }
             else {
-                if(model.isRedTurn()){
-                    label.setText("红方执子");
-                }
-                else {
-                    label.setText("黑方执子");
-                }
+//                if(model.isRedTurn()){
+//                    label.setText("红方执子");
+//                }
+//                else {
+//                    label.setText("黑方执子");
+//                }
 
                 if(model.movePiece(selectedPiece,row,col)){
                     getLastRow=getCurrentRow;
