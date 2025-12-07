@@ -100,7 +100,7 @@ public class ChessBoardPanel extends JPanel {
                 if(model.movePiece(selectedPiece,row,col)){
                     getLastRow=getCurrentRow;
                     getLastCol=getCurrentCol;
-                    AIDebate();
+//                    AIDebate();
                 }
                 selectedPiece = null;
             }
