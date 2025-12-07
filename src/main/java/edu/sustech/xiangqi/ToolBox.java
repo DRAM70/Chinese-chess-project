@@ -14,6 +14,22 @@ public class ToolBox {
     private static String user;
     private static ArrayList<String> moveList = new ArrayList<>();
 
+    public static void labelTextPlayer(String s){
+        if(GameFrame.label != null){
+            GameFrame.label.setText(s);
+        }else if(ReplayFrame.label != null){
+            ReplayFrame.label.setText(s);
+        }//可能还要添加计时模式的label
+    }
+
+    public static void labelTextStatus(String s){
+        if(GameFrame.label != null){
+            GameFrame.label.setText(s);
+        }else if(ReplayFrame.label != null){
+            ReplayFrame.label.setText(s);
+        }
+    }
+
     public static void confirmToEnd(String userOp){//本方法可以保存已完成的存档，保留log的缩减形式以供确认
         user = userOp;
         initializeLog();

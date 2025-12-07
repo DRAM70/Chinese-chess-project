@@ -48,7 +48,7 @@ public class StyleFrame extends JFrame{
 
 
 
-        JButton style1 = new JButton("风格1， 注意还要把风格添加到用户资料里");
+        JButton style1 = new JButton("风格1");
         style1.setLocation(50, 50);
         style1.setSize(400, 50);
         this.add(style1);
@@ -65,8 +65,8 @@ public class StyleFrame extends JFrame{
 
 
         JButton style2 = new JButton("风格2");
-        style2.setLocation(150, 100);
-        style2.setSize(100, 50);
+        style2.setLocation(50, 150);
+        style2.setSize(400, 50);
         this.add(style2);
         style2.addActionListener(e -> {
             //这里可能需要log相关的代码
@@ -79,10 +79,25 @@ public class StyleFrame extends JFrame{
 //            model.pauseButton(true);
         });
 
+        JButton style3 = new JButton("风格3");
+        style3.setLocation(50, 250);
+        style3.setSize(400, 50);
+        this.add(style3);
+        style3.addActionListener(e -> {
+            //这里可能需要log相关的代码
+            newStyle = 2;
+            this.setVisible(false);
+            StyleFrame styleFrame = new StyleFrame(title, user, newStyle, preModel);
+            styleFrame.setVisible(true);
+            lineRewriter(2);
+            System.out.println(user + " tried style 3");
+//            model.pauseButton(true);
+        });
+
 
         JButton confirm = new JButton("返回");
-        confirm.setLocation(60, 400);
-        confirm.setSize(100, 50);
+        confirm.setLocation(150, 350);
+        confirm.setSize(200, 50);
         this.add(confirm);
         confirm.addActionListener(e -> {
             this.setVisible(false);

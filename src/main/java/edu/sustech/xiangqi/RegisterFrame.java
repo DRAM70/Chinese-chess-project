@@ -141,6 +141,9 @@ public class RegisterFrame extends JFrame {
                     in.nextLine();
                     in.nextLine();
                     in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
                 }
             }
             return false;
@@ -168,6 +171,9 @@ public class RegisterFrame extends JFrame {
                     in.nextLine();
                     in.nextLine();
                     in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
+                    in.nextLine();
                 }
             }
             System.out.println(name + " doesn't exist as a username!");
@@ -190,7 +196,10 @@ public class RegisterFrame extends JFrame {
         write(name);
         write(passcode);
         write("0");
-        write("？？？？");//这里是为了文档损坏准备的,可能使用hashcode方法
+        write("23232");//这里是为了文档损坏准备的,可能使用hashcode方法
+        write("23232");
+        write("23232");
+        write("23232");
         newUserData(name);
         return true;
     }
@@ -228,7 +237,7 @@ public class RegisterFrame extends JFrame {
 //                System.out.println("写入文件时出错: " + e.getMessage());
 //                e.printStackTrace();
 //            }
-            String relativePath = "UserData/" + s + ".txt";
+            String relativePath = "UserData/" + s + "/" + s + ".txt";
             File file = new File(relativePath);
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
 
