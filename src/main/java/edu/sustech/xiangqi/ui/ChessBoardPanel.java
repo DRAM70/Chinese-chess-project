@@ -1,5 +1,6 @@
 package edu.sustech.xiangqi.ui;
 
+import edu.sustech.xiangqi.model.ChessAI;
 import edu.sustech.xiangqi.model.ChessBoardModel;
 import edu.sustech.xiangqi.model.AbstractPiece;
 
@@ -71,41 +72,60 @@ public class ChessBoardPanel extends JPanel {
 
 
     private void handleMouseClick(int x, int y) {
-        int col = Math.round((float)(x - MARGIN) / CELL_SIZE);
-        int row = Math.round((float)(y - MARGIN) / CELL_SIZE);
+            int col = Math.round((float)(x - MARGIN) / CELL_SIZE);
+            int row = Math.round((float)(y - MARGIN) / CELL_SIZE);
 
-        if (!model.isValidPosition(row, col)) {
-            label.setText("请选择");
-            return;
-        }
-
-        if (selectedPiece == null) {
-            AbstractPiece clickedPiece=model.getPieceAt(row,col);
-            if(clickedPiece!=null&&model.isCurrentTurnPiece(clickedPiece)){
-                selectedPiece = model.getPieceAt(row, col);
-                getCurrentRow=row;
-                getCurrentCol=col;
-                label.setText("选中棋子了");
+            if (!model.isValidPosition(row, col)) {
+                label.setText("请选择");
+                return;
             }
-        }
-        else {
-            if(model.isRedTurn()){
-                label.setText("红方执子");
+
+            if (selectedPiece == null) {
+                AbstractPiece clickedPiece=model.getPieceAt(row,col);
+                if(clickedPiece!=null&&model.isCurrentTurnPiece(clickedPiece)){
+                    selectedPiece = model.getPieceAt(row, col);
+                    getCurrentRow=row;
+                    getCurrentCol=col;
+                    label.setText("选中棋子了");
+                }
             }
             else {
-                label.setText("黑方执子");
-            }
+                if(model.isRedTurn()){
+                    label.setText("红方执子");
+                }
+                else {
+                    label.setText("黑方执子");
+                }
 
-            if(model.movePiece(selectedPiece,row,col)){
-                getLastRow=getCurrentRow;
-                getLastCol=getCurrentCol;
+                if(model.movePiece(selectedPiece,row,col)){
+                    getLastRow=getCurrentRow;
+                    getLastCol=getCurrentCol;
+                    AIDebate();
+                }
+                selectedPiece = null;
             }
-            selectedPiece = null;
+            // 处理完点击事件后，需要重新绘制ui界面才能让界面上的棋子“移动”起来
+            // Swing 会将多个请求合并后再重新绘制，因此调用 repaint 后gui不会立刻变更
+            // repaint 中会调用 paintComponent，从而重新绘制gui上棋子的位置等
+            this.getParent().repaint();
+    }
+
+    public void AIDebate(){
+        ChessAI chessAI=new ChessAI(model);
+        int[] AIMove= chessAI.getAIMove();
+        if(AIMove!=null){
+            int formerRow=AIMove[0];
+            int formerCol=AIMove[1];
+            int targetRow=AIMove[2];
+            int targetCol=AIMove[3];
+
+            AbstractPiece AIPiece= model.getPieceAt(formerRow,formerCol);
+            model.switchTurn();
+            if(AIPiece!=null&&!model.isRedTurn()){
+                model.movePiece(AIPiece,targetRow,targetCol);
+                System.out.println("aaa");
+            }
         }
-
-        // 处理完点击事件后，需要重新绘制ui界面才能让界面上的棋子“移动”起来
-        // Swing 会将多个请求合并后再重新绘制，因此调用 repaint 后gui不会立刻变更
-        // repaint 中会调用 paintComponent，从而重新绘制gui上棋子的位置等
         this.getParent().repaint();
     }
 
