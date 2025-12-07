@@ -24,6 +24,9 @@ public class ChessBoardModel {
     protected void removePieces(AbstractPiece piece){
         pieces.remove(piece);
     }
+    protected void addPiece(AbstractPiece piece){
+        pieces.add(piece);
+    }
 
     public ChessBoardModel(String user, boolean doLogWrite) {
         this.user = user;
