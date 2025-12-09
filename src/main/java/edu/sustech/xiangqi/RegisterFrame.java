@@ -197,9 +197,9 @@ public class RegisterFrame extends JFrame {
         write(passcode);
         write("0");
         write("23232");//这里是为了文档损坏准备的,可能使用hashcode方法
-        write("23232");
-        write("23232");
-        write("23232");
+        write("232321");
+        write("232322");
+        write("232323");
         newUserData(name);
         return true;
     }
