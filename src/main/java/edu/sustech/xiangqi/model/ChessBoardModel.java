@@ -225,7 +225,7 @@ public class ChessBoardModel {
             int formerCol=piece.getCol();
             for(int targetRow=0;targetRow<=9;targetRow++){
                 for(int targetCol=0;targetCol<=8;targetCol++){
-                    if(!piece.canMoveTo(targetRow,targetCol,this)){
+                    if(!piece.canMoveTo(targetRow,targetCol,this)||this.isGeneralMeeting()||!this.isCurrentTurnPiece(piece)){
                         continue;
                     }
 
@@ -249,6 +249,30 @@ public class ChessBoardModel {
                 }
             }
         }
+//        return true;
+//    }
+//
+//
+//    public boolean isTrapped(){
+//
+//        for(AbstractPiece eachPiece:pieces){
+//            int oldRow=eachPiece.getRow();
+//            int oldCol=eachPiece.getCol();
+//            for(int targetRow=0;targetRow<=9;targetRow++){
+//                for(int targetCol=0;targetCol<=8;targetCol++){
+//                    AbstractPiece changeStep =getPieceAt(targetRow,targetCol);
+//                    if(!movePiece(eachPiece,targetRow,targetCol)){
+//                        continue;
+//                    }
+//                    eachPiece.setRow(oldRow);
+//                    eachPiece.setCol(oldCol);
+//                    if(changeStep!=null){
+//                        getPieces().add(changeStep);
+//                    }
+//                    return false;
+//                }
+//            }
+//        }
         return true;
     }
 
@@ -391,6 +415,12 @@ public class ChessBoardModel {
 
         }
 
+//        else{
+//            if(isTrapped()){
+//                return false;
+//            }
+//        }
+//
         piece.moveTo(newRow, newCol);
         //这里是一个示例，具体还有待开发
         if(doLogWrite){
