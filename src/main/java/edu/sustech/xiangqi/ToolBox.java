@@ -19,14 +19,25 @@ public class ToolBox {
             GameFrame.label.setText(s);
         }else if(ReplayFrame.label != null){
             ReplayFrame.label.setText(s);
-        }//可能还要添加计时模式的label
+        }else if(AIFrame.label != null){
+            AIFrame.label.setText(s);
+        }else if(TimingFrame.label != null){
+            TimingFrame.label.setText(s);
+        }
+
+
+        //可能还要添加计时模式的label
     }
 
     public static void labelTextStatus(String s){
-        if(GameFrame.label != null){
-            GameFrame.label.setText(s);
-        }else if(ReplayFrame.label != null){
-            ReplayFrame.label.setText(s);
+        if(GameFrame.label2 != null){
+            GameFrame.label2.setText(s);
+        }else if(ReplayFrame.label2 != null){
+            ReplayFrame.label2.setText(s);
+        }else if(AIFrame.label2 != null){
+            AIFrame.label2.setText(s);
+        }else if(TimingFrame.label2 != null){
+            TimingFrame.label2.setText(s);
         }
     }
 
