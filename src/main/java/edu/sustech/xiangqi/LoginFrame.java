@@ -118,15 +118,36 @@ public class LoginFrame extends JFrame{
             }
             if(isInUserListUP(a, b)){
                 this.setVisible(false);
-                ChessBoardModel model = new ChessBoardModel(a, false);
-                if(ToolBox.emptyCheck(a)){
-                    MenuFrame menuFrame = new MenuFrame("中国象棋", a, style, null);
-                    menuFrame.setVisible(true);
+                ChessBoardModel model1 = new ChessBoardModel(a, false, 1);
+                ChessBoardModel model2 = new ChessBoardModel(a, false, 2);
+                ChessBoardModel model3 = new ChessBoardModel(a, false, 3);
+                if(ToolBox.emptyCheck(a, 1)){
+                   model1 = null;
                 }else{
-                    model = ToolBox.originalModel(a, model);
-                    MenuFrame menuFrame = new MenuFrame("中国象棋", a, style, model);
-                    menuFrame.setVisible(true);
+                    model1 = ToolBox.originalModel(a, model1, 1);
                 }
+                if(ToolBox.emptyCheck(a, 2)){
+                    model2 = null;
+                }else{
+                    model2 = ToolBox.originalModel(a, model2, 2);
+                }
+                if(ToolBox.emptyCheck(a, 3)){
+                    model3 = null;
+                }else{
+                    model3 = ToolBox.originalModel(a, model3, 3);
+                }
+                MenuFrame menuFrame = new MenuFrame("中国象棋", a, style, model1, model2, model3);
+                menuFrame.setVisible(true);
+
+
+//                if(ToolBox.emptyCheck(a)){
+//                    MenuFrame menuFrame = new MenuFrame("中国象棋", a, style, null, aiModel, timingModel);
+//                    menuFrame.setVisible(true);
+//                }else{
+//                    model = ToolBox.originalModel(a, model);
+//                    MenuFrame menuFrame = new MenuFrame("中国象棋", a, style, model, aiModel, timingModel);
+//                    menuFrame.setVisible(true);
+//                }
 
                 //此处将来可能会根据用户上一次存储的风格进行绘制,可以在判断用户存在的方法中为style赋值
 
@@ -159,7 +180,7 @@ public class LoginFrame extends JFrame{
 
 
         visitor.addActionListener(e -> {
-            MenuFrame menuFrame = new MenuFrame("中国象棋（游客模式）", "游客6060", 0, null);
+            MenuFrame menuFrame = new MenuFrame("中国象棋（游客模式）", "游客6060", 0, null, null, null);
             user = "游客6060";
             this.setVisible(false);
             menuFrame.setVisible(true);
