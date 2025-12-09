@@ -21,7 +21,7 @@ public class ReplayFrame extends JFrame{
     private int stepIndex = 0;
 
 
-    public ReplayFrame(String title, String user, ChessBoardModel preModel, int style){
+    public ReplayFrame(String title, String user, ChessBoardModel preModel, ChessBoardModel aiModel, ChessBoardModel timingModel, int style){
         super("回放");
         //上面是login的界面，下面是象棋的界面
         this.user = user;
@@ -29,7 +29,7 @@ public class ReplayFrame extends JFrame{
 //        if(preModel != null){
 //            modelIN = preModel;
 //        }
-        modelIN = new ChessBoardModel(user, false);
+        modelIN = new ChessBoardModel(user, false, 1);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         Style[] styleList = Style.values();
 
@@ -38,7 +38,7 @@ public class ReplayFrame extends JFrame{
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e){
-                MenuFrame menuFrame = new MenuFrame(title, user, style, preModel);
+                MenuFrame menuFrame = new MenuFrame(title, user, style, preModel, aiModel, timingModel);
                 setVisible(false);
                 menuFrame.setVisible(true);
 
@@ -134,7 +134,7 @@ public class ReplayFrame extends JFrame{
 //        int style = 0;
         //这里需要进一步细化
         backButton.addActionListener(e -> {
-            MenuFrame menuFrame = new MenuFrame(title, user, style, preModel);
+            MenuFrame menuFrame = new MenuFrame(title, user, style, preModel, aiModel, timingModel);
             this.setVisible(false);
             menuFrame.setVisible(true);
 

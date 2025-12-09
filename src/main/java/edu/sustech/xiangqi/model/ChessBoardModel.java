@@ -20,6 +20,7 @@ public class ChessBoardModel {
     private String user;
     private boolean isRedTurn=true;
     private boolean doLogWrite;
+    private String extra;
 
     protected void removePieces(AbstractPiece piece){
         pieces.remove(piece);
@@ -28,13 +29,22 @@ public class ChessBoardModel {
         pieces.add(piece);
     }
 
-    public ChessBoardModel(String user, boolean doLogWrite) {
+    public ChessBoardModel(String user, boolean doLogWrite, int index) {
+        if(index == 1){
+            extra = "Temp";
+        }
+        if(index == 2){
+            extra = "AITemp";
+        }
+        if(index == 3){
+            extra = "TimingTemp";
+        }
         this.user = user;
         pieces = new ArrayList<>();
         this.doLogWrite = doLogWrite;
         initializePieces();
         if(doLogWrite){
-            initializeTempLog();
+            initializeExtraLog();
         }
     }
 
@@ -411,7 +421,7 @@ public class ChessBoardModel {
     //检测log是否损坏的一个想法：结束后对log进行一个hashcode或者什么的加密，形成一串字符，在读取log之前将两者进行比对，任一方不符合对方都会不读取log
     public void logWriter(String move){
         try{
-            String relativePath = "UserData/" + user + "/" + user +"Temp.txt";
+            String relativePath = "UserData/" + user + "/" + user + extra + ".txt";
             File file = new File(relativePath);
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
 
@@ -426,13 +436,13 @@ public class ChessBoardModel {
             writer.flush();
             writer.close();
         }catch(IOException e){
-            System.out.println("Error, file" + user + ".txt is broken! And step log writing failed!");
+            System.out.println("Error, file" + user + extra + ".txt is broken! And step log writing failed!");
         }
     }
 
-    public void initializeTempLog(){
+    public void initializeExtraLog(){
         try{
-            String relativePath = "UserData/" + user + "/" + user +"Temp.txt";
+            String relativePath = "UserData/" + user + "/" + user  +  extra +".txt";
             File file = new File(relativePath);
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
 
@@ -446,7 +456,7 @@ public class ChessBoardModel {
             writer.flush();
             writer.close();
         }catch(IOException e){
-            System.out.println("Error, file " + user + "Temp.txt is broken! And log initializing failed!");
+            System.out.println("Error, file " + user + extra +  ".txt is broken! And log initializing failed!");
         }
     }
 }

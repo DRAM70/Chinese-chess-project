@@ -30,24 +30,43 @@ public class ToolBox {
         }
     }
 
-    public static void confirmToEnd(String userOp){//本方法可以保存已完成的存档，保留log的缩减形式以供确认
+    public static void confirmToEnd(String userOp, int index){//本方法可以保存已完成的存档，保留log的缩减形式以供确认
         user = userOp;
-        initializeLog();
-        confirmWriter();
+        initializeLog(0);
+        initializeLog(1);
+        initializeLog(2);
+        initializeLog(3);
+        confirmWriter(index);
         encoder(0);
     }
     public static void tempEnd(String userOp){//本方法可以暂时存储temp不变，保留log的缩减形式以供确认
         user = userOp;
-        initializeLog();
+        initializeLog(0);
+        initializeLog(1);
+        initializeLog(2);
+        initializeLog(3);
         //confirmWriter();
         encoder(1);
+        encoder(2);
+        encoder(3);
     }
 
 
 
-    public static boolean emptyCheck(String tmpUser){//如果存档(Temp)为空，返回true
+    public static boolean emptyCheck(String tmpUser, int index){//如果存档(Temp)为空，返回true
+        String extra = "";
+        if(index == 1){
+            extra = "Temp";
+        }
+        if(index == 2){
+            extra = "AITemp";
+        }
+        if(index == 3){
+            extra = "TimingTemp";
+        }
+
         user = tmpUser;
-        String relativePath = "UserData/" + user + "/" + user +"Temp.txt";
+        String relativePath = "UserData/" + user + "/" + user  + extra +".txt";
         Path path = Paths.get(relativePath).toAbsolutePath().normalize();
 
         try{
@@ -65,18 +84,28 @@ public class ToolBox {
         return true;
     }
 
-    public static ChessBoardModel originalModel(String tmpUser, ChessBoardModel model){//返回之前未完成的model,并开启log
+    public static ChessBoardModel originalModel(String tmpUser, ChessBoardModel model, int index){//返回之前未完成的model,并开启log
+//        String extra = "";
+//        if(index == 1){
+//            extra = "Temp";
+//        }
+//        if(index == 2){
+//            extra = "AITemp";
+//        }
+//        if(index == 3){
+//            extra = "TimingTemp";
+//        }
         user = tmpUser;
-        if(emptyCheck(user)){
+        if(emptyCheck(user, index)){
             return null;
         }
 
-        if(checkLogLiteExistence()){
-            if(decoder()){
+        if(checkLogLiteExistence(index)){
+            if(decoder(index)){
 //                ReplayFrame replayFrame = new ReplayFrame(title, user, preModel, style);
 //                this.setVisible(false);
 //                replayFrame.setVisible(true);
-                readRecord();
+                readRecord(index);
                 for(int i = 0; i < moveList.size(); i++){
                     model.checkMove(moveBreaker(i, 0),
                             moveBreaker(i, 1),
@@ -85,7 +114,7 @@ public class ToolBox {
                 model.switchLogWrite(true);
                 return model;
             }else{
-                deleteBrokenLog();
+                deleteBrokenLog(index);
                 ChoiceBox.notice("警告", "您的存档已损坏！已清理！");
                 return null;
             }
@@ -103,19 +132,25 @@ public class ToolBox {
 //        }
     }
 
-    private static int logCodeKey(){
+    private static int logCodeKey(int index){
         File file = new File(".\\UserInfo.txt");
         Scanner in;
         try{
             in = new Scanner(file);
             while(in.hasNextLine()){
-                String existingUsername = in.nextLine();
+                String existingUsername = in.nextLine();//user
                 if(user.equals(existingUsername)){
-                    in.nextLine();
-                    in.nextLine();
-                    in.nextLine();
+                    in.nextLine();//passcode
+                    in.nextLine();//style
+                    in.nextLine();//formal log
 //                    in.nextLine();
 //                    in.nextLine();
+                    if(index == 2 || index == 3){
+                        in.nextLine();
+                    }
+                    if(index == 3){
+                        in.nextLine();
+                    }
                     return Integer.parseInt(in.nextLine());
                 }else{
                     in.nextLine();
@@ -134,10 +169,21 @@ public class ToolBox {
         return -1;
     }
 
-    private static boolean decoder(){
+    private static boolean decoder(int index){
+        String extra = "";
+        if(index == 1){
+            extra = "Temp";
+        }
+        if(index == 2){
+            extra = "AITemp";
+        }
+        if(index == 3){
+            extra = "TimingTemp";
+        }
+
         int code = 0;
 
-        File moveFile = new File("UserData/" + user + "/" + user +"Temp.txt");
+        File moveFile = new File("UserData/" + user + "/" + user  + extra +".txt");
 
 
         if (!moveFile.setWritable(true)) {
@@ -156,7 +202,7 @@ public class ToolBox {
         }
 
         int tempCode = (code-13*17)*31;
-        int logCode = logCodeKey();
+        int logCode = logCodeKey(index);
 
         if(tempCode == logCode){
             return true;
@@ -166,18 +212,39 @@ public class ToolBox {
 
     }
 
-    private static boolean checkLogLiteExistence(){
-        File file = new File("UserData/" + user + "/" + user +"Temp.txt");
+    private static boolean checkLogLiteExistence(int index){
+        String extra = "";
+        if(index == 1){
+            extra = "Temp";
+        }
+        if(index == 2){
+            extra = "AITemp";
+        }
+        if(index == 3){
+            extra = "TimingTemp";
+        }
+
+        File file = new File("UserData/" + user + "/" + user + extra + ".txt");
         if(!file.exists()){
             return false;
         }
         return true;
     }
 
-    private static void readRecord(){
+    private static void readRecord(int index){
         //需要实现checklog来保证log不变
 //        decoder();
-        File file = new File("UserData/" + user + "/" + user +"Temp.txt");
+        String extra = "";
+        if(index == 1){
+            extra = "Temp";
+        }
+        if(index == 2){
+            extra = "AITemp";
+        }
+        if(index == 3){
+            extra = "TimingTemp";
+        }
+        File file = new File("UserData/" + user + "/" + user + extra + ".txt");
         try{
             Scanner sc = new Scanner(file);
             moveList = new ArrayList<>();
@@ -211,8 +278,19 @@ public class ToolBox {
         return -1;
     }
 
-    private static void deleteBrokenLog(){
-        File file = new File("UserData/" + user + "/" + user + "Temp.txt");
+    private static void deleteBrokenLog(int index){
+        String extra = "";
+        if(index == 1){
+            extra = "Temp";
+        }
+        if(index == 2){
+            extra = "AITemp";
+        }
+        if(index == 3){
+            extra = "TimingTemp";
+        }
+
+        File file = new File("UserData/" + user + "/" + user + extra + ".txt");
         if(file.delete()){
             System.out.println(user + "Temp.txt failed to delete!");
         }else{
@@ -224,28 +302,51 @@ public class ToolBox {
 
 
     //下面是结束时用的
-    private static void initializeLog(){
+    private static void initializeLog(int index){
+        String extra = "";
+        if(index == 1){
+            extra = "Temp";
+        }
+        if(index == 2){
+            extra = "AITemp";
+        }
+        if(index == 3){
+            extra = "TimingTemp";
+        }
         try{
-            String relativePath = "UserData/" + user + "/" + user +".txt";
-            File file = new File(relativePath);
+            File file = new File("UserData/" + user + "/" + user + extra + ".txt");//这里已经挪动完毕了
+//            String relativePath = "UserData/" + user + "/" + user +".txt";
+//            File file = new File(relativePath);
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
 
 
 
             writer.write( "");
-            System.out.println(user + "'s log file is initialized!");
+            System.out.println(user + "'s " + extra + " log file is initialized!");
 
 
 
             writer.flush();
             writer.close();
         }catch(IOException e){
-            System.out.println("Error, file " + user + "Temp.txt is broken! And log initializing failed!");
+            System.out.println("Error, file " + user + extra + ".txt is broken! And log initializing failed!");
         }
     }
 
-    private static void confirmWriter(){
-        File bluePrint = new File("UserData/" + user + "/" + user +"Temp.txt");
+    //没有0的选项
+    private static void confirmWriter(int index){
+        String extra = "";
+        if(index == 1){
+            extra = "Temp";
+        }
+        if(index == 2){
+            extra = "AITemp";
+        }
+        if(index == 3){
+            extra = "TimingTemp";
+        }
+
+        File bluePrint = new File("UserData/" + user + "/" + user + extra +".txt");
         File formalPrint = new File("UserData/" + user + "/" + user +".txt");
 
 
@@ -287,14 +388,15 @@ public class ToolBox {
 
 
         try{
-            Path filePath = Paths.get("UserData/" + user + "/" + user +"Temp.txt");
+            Path filePath = Paths.get("UserData/" + user + "/" + user  +  extra+".txt");
             Files.newBufferedWriter(filePath, StandardOpenOption.TRUNCATE_EXISTING).close();
-            System.out.println(user + "Temp.txt is empty now!");
+            System.out.println(user + extra + ".txt is empty now!");
         }catch(IOException e){
-            System.out.println("Fail to empty " + user + "Temp.txt!");
+            System.out.println("Fail to empty " + user +  extra+ ".txt!");
         }
     }
 
+    //该方法写入UserInfo的新密钥， index：0为回放，1为普通对战，2为ai对战，3为计时对战
     private static void lineRewriterCode(int a, int index){
         File originalFile = new File(".\\UserInfo.txt");
         File tmpFile = new File(".\\UserInfoTemp.txt");
@@ -335,6 +437,12 @@ public class ToolBox {
 
                         writer.write(reader.readLine());
                         writer.newLine();
+
+                        writer.write(reader.readLine());
+                        writer.newLine();
+
+                        writer.write(reader.readLine());
+                        writer.newLine();
                     }
 
                     if(index == 1){
@@ -344,13 +452,45 @@ public class ToolBox {
                         reader.readLine();
                         writer.write("" + a);
                         writer.newLine();
+
+                        writer.write(reader.readLine());
+                        writer.newLine();
+
+                        writer.write(reader.readLine());
+                        writer.newLine();
                     }
 
-                    writer.write(reader.readLine());
-                    writer.newLine();
+                    if(index == 2){
+                        writer.write(reader.readLine());
+                        writer.newLine();
 
-                    writer.write(reader.readLine());
-                    writer.newLine();
+                        writer.write(reader.readLine());
+                        writer.newLine();
+
+                        reader.readLine();
+                        writer.write("" + a);
+                        writer.newLine();
+
+                        writer.write(reader.readLine());
+                        writer.newLine();
+                    }
+
+                    if(index == 3){
+                        writer.write(reader.readLine());
+                        writer.newLine();
+
+                        writer.write(reader.readLine());
+                        writer.newLine();
+
+                        writer.write(reader.readLine());
+                        writer.newLine();
+
+                        reader.readLine();
+                        writer.write("" + a);
+                        writer.newLine();
+                    }
+
+
                 }else{
                     writer.write(reader.readLine());
                     writer.newLine();
@@ -414,6 +554,12 @@ public class ToolBox {
         if(index == 1){
             extra = "Temp";
         }
+        if(index == 2){
+            extra = "AITemp";
+        }
+        if(index == 3){
+            extra = "TimingTemp";
+        }
         File moveFile = new File("UserData/" + user + "/" + user + extra + ".txt");//这里已经挪动完毕了
 
 
@@ -443,8 +589,10 @@ public class ToolBox {
         try{
             File fileToDelete = new File("UserData/游客6060/游客6060.txt");
             File fileToDelete2 = new File("UserData/游客6060/游客6060Temp.txt");
+            File fileToDelete3 = new File("UserData/游客6060/游客6060AITemp.txt");
+            File fileToDelete4 = new File("UserData/游客6060/游客6060TimingTemp.txt");
             if(fileToDelete.exists()){
-                if(fileToDelete.delete() && fileToDelete2.delete()){
+                if(fileToDelete.delete() && fileToDelete2.delete() && fileToDelete3.delete() && fileToDelete4.delete()){
                     System.out.println("visitor log successfully deleted!");
                 }else{
                     System.out.println("visitor log deleting failed!");

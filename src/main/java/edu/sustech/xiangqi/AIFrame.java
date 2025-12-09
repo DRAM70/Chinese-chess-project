@@ -15,20 +15,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-public class GameFrame extends JFrame{
+public class AIFrame extends JFrame{
     public String user;
-//    private int style = 0;
+    //    private int style = 0;
     public static JLabel label;
     public static JLabel label2;
     private ChessBoardModel modelIN;//当前全局可使用的棋盘,请使用这个
 
 
-    public GameFrame(String title, String user, ChessBoardModel preModel, ChessBoardModel aiModel, ChessBoardModel timingModel, int style){
-        super("红黑对战");
-            //上面是login的界面，下面是象棋的界面
+    public AIFrame(String title, String user, ChessBoardModel preModel, ChessBoardModel aiModel, ChessBoardModel timingModel, int style){
+        super("AI对战");
+        //上面是login的界面，下面是象棋的界面
         this.user = user;
-        if(preModel != null){
-            modelIN = preModel;
+        if(aiModel != null){
+            modelIN = aiModel;
         }
         Style[] styleList = Style.values();
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -47,9 +47,9 @@ public class GameFrame extends JFrame{
         });
         //listener结束
 
-        ChessBoardModel model = new ChessBoardModel(user, true, 1);
-        if(preModel != null){
-            model = preModel;
+        ChessBoardModel model = new ChessBoardModel(user, true, 2);
+        if(aiModel != null){
+            model = aiModel;
         }else{
             modelIN = model;
         }
@@ -82,8 +82,8 @@ public class GameFrame extends JFrame{
 
 
             if(ChoiceBox.choiceBox("结束确认", "要认输吗？")){
-                ToolBox.confirmToEnd(user, 1);
-                MenuFrame menuFrame = new MenuFrame(title, user, style, null, aiModel, timingModel);
+                ToolBox.confirmToEnd(user, 2);
+                MenuFrame menuFrame = new MenuFrame(title, user, style, preModel, null, timingModel);
                 this.setVisible(false);
                 menuFrame.setVisible(true);
             }
@@ -97,29 +97,30 @@ public class GameFrame extends JFrame{
         this.add(reset);
         reset.addActionListener(e -> {
             if(ChoiceBox.choiceBox("重开确认", "确定要开始新棋局吗？（当前棋局会自动结束）")){
-                ToolBox.confirmToEnd(user, 1);
-                GameFrame newFrame = new GameFrame(title, user, null, aiModel, timingModel, style);
+                ToolBox.confirmToEnd(user, 2);
+//                GameFrame newFrame = new GameFrame("中国象棋", user, null, aiModel, timingModel, style);
+                AIFrame newFrame = new AIFrame(title, user, preModel, null, timingModel, style);
                 this.setVisible(false);
                 newFrame.setVisible(true);
                 //这里可能还要添加存储log相关的代码
 
 
 
-                System.out.println("A new GameFrame for " + user);
+                System.out.println("A new AIFrame for " + user);
             }
         });
 
-        JButton retractPiece = new JButton("悔棋");
-        retractPiece.setLocation(600, 500);
-        retractPiece.setSize(120, 50);
-        this.add(retractPiece);
-        retractPiece.addActionListener(e -> {
-            //这里可能需要log相关的代码
-            System.out.println(user + " retracted a piece^^^^");
-
-
-//            modelIN.checkMove(12, 5, 0);
-        });
+//        JButton retractPiece = new JButton("悔棋");
+//        retractPiece.setLocation(600, 500);
+//        retractPiece.setSize(120, 50);
+//        this.add(retractPiece);
+//        retractPiece.addActionListener(e -> {
+//            //这里可能需要log相关的代码
+//            System.out.println(user + " retracted a piece^^^^");
+//
+//
+////            modelIN.checkMove(12, 5, 0);
+//        });
 
         JButton backButton = new JButton("返回菜单");
         backButton.setLocation(600, 600);
@@ -128,7 +129,7 @@ public class GameFrame extends JFrame{
 //        int style = 0;
         //这里需要进一步细化
         backButton.addActionListener(e -> {
-            MenuFrame menuFrame = new MenuFrame(title, user, style, modelIN, aiModel, timingModel);
+            MenuFrame menuFrame = new MenuFrame(title, user, style, preModel, modelIN, timingModel);
             this.setVisible(false);
             menuFrame.setVisible(true);
             //这里可能需要log相关的代码，不需要了，只要使用原有model，就不会改变
