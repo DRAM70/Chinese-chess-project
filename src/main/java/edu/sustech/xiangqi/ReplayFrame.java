@@ -21,7 +21,7 @@ public class ReplayFrame extends JFrame{
     private int stepIndex = 0;
 
 
-    public ReplayFrame(String title, String user, ChessBoardModel preModel, ChessBoardModel aiModel, ChessBoardModel timingModel, int style){
+    public ReplayFrame(String title, String user, ChessBoardModel preModel, ChessBoardModel aiModel, ChessBoardModel timingModel, int style, int step){
         super("回放");
         //上面是login的界面，下面是象棋的界面
         this.user = user;
@@ -30,6 +30,15 @@ public class ReplayFrame extends JFrame{
 //            modelIN = preModel;
 //        }
         modelIN = new ChessBoardModel(user, false, 1);
+        readRecord();
+        this.stepIndex =  step;
+        if(stepIndex != 0){
+            for(int i = 0; i < stepIndex; i++){
+                modelIN.checkMove(moveBreaker(i, 0),
+                        moveBreaker(i, 1),
+                        moveBreaker(i, 2));
+            }
+        }
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         Style[] styleList = Style.values();
 
@@ -75,17 +84,33 @@ public class ReplayFrame extends JFrame{
         lastStepButton.setSize(120, 50);
         this.add(lastStepButton);//先添加的后绘制
         lastStepButton.addActionListener(e -> {
-            System.out.println("ahhhhhhh   这里需要悔棋相关的代码，这个功能还没有完成");
+//            System.out.println("ahhhhhhh   这里需要悔棋相关的代码，这个功能还没有完成");
 
             //需要判断可不可以上一步
-//            if(stepIndex == 0){
-//                label2.setText("已经回到第一步啦！");
-//            }else{
-//                stepIndex--;
-//                modelIN.checkMove(moveBreaker(stepIndex, 0),
-//                        moveBreaker(stepIndex, 1),
-//                        moveBreaker(stepIndex, 2));
-//            }
+            if(stepIndex == 0){
+                label2.setText("已经回到第一步啦！");
+            }else{
+                stepIndex--;
+                ChessBoardModel model = new ChessBoardModel(user, false, 1);
+                for(int i = 0; i < stepIndex; i++){
+                    model.checkMove(moveBreaker(i, 0),
+                            moveBreaker(i, 1),
+                            moveBreaker(i, 2));
+                }
+//                modelIN = model;
+//                modelIN.repaintModel();
+
+//                ChessBoardPanel boardPanel = new ChessBoardPanel(modelIN, style);
+//                boardPanel.label = label2;
+//                this.add(boardPanel);
+
+                ReplayFrame replayFrame = new ReplayFrame(title, user, preModel, aiModel, timingModel, style, stepIndex);
+                this.setVisible(false);
+                replayFrame.setVisible(true);
+
+
+
+            }
 
         });
 
@@ -162,7 +187,7 @@ public class ReplayFrame extends JFrame{
 //            chessFrame.pack();//大小适于内容
         this.setSize(800, 700);
         this.setLocationRelativeTo(null);
-        readRecord();
+//        readRecord();
         //chessFrame.setVisible(true);
     }
 
@@ -190,7 +215,7 @@ public class ReplayFrame extends JFrame{
 
 
 
-        checkLogLiteContent();
+//        checkLogLiteContent();
         File file = new File("UserData/" + user + "/" + user +".txt");
         try{
             Scanner sc = new Scanner(file);
@@ -204,17 +229,17 @@ public class ReplayFrame extends JFrame{
         }
     }
 
-    private void checkLogLiteContent(){
-        File file = new File("UserData/" + user + "/" + user +".txt");
-        //这里要判断hashcode的符合情况
-        //已经在按钮点击时判断了
-
-
-
-
-
-
-    }
+//    private void checkLogLiteContent(){
+//        File file = new File("UserData/" + user + "/" + user +".txt");
+//        //这里要判断hashcode的符合情况
+//        //已经在按钮点击时判断了
+//
+//
+//
+//
+//
+//
+//    }
 
     private int moveBreaker(int index, int part){
         //part 0: the code for the chess
@@ -235,13 +260,6 @@ public class ReplayFrame extends JFrame{
         }
         return -1;
     }
-
-
-
-
-
-
-
 }
 
 
