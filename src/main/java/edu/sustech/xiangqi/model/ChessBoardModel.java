@@ -378,6 +378,7 @@ public class ChessBoardModel {
                 else {
                     System.out.println("吃红方"+piece.getName());
                 }
+                BackgroundMusic.playEat();
                 pieces.remove(removement);
             }
         }
