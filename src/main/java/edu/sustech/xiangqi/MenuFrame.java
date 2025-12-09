@@ -22,7 +22,7 @@ public class MenuFrame extends JFrame{
 
     //  public JFrame chessFrame;
 
-    public MenuFrame(String title, String user, int style, ChessBoardModel preModel){
+    public MenuFrame(String title, String user, int style, ChessBoardModel preModel, ChessBoardModel aiModel, ChessBoardModel timingModel){
         super(title);
         UIManager.put("Label.font", defaultFont);
         UIManager.put("Button.font", defaultFont);
@@ -85,20 +85,20 @@ public class MenuFrame extends JFrame{
                 if(Files.exists(path)){
                     if(Files.size(path) != 0 || preModel != null){
                         if(ChoiceBox.choiceBox("新游戏确认", "存档上一盘并开始新游戏吗？")){
-                            ToolBox.confirmToEnd(user);
-                            GameFrame chessFrame = new GameFrame(title, user, null, style);
+                            ToolBox.confirmToEnd(user, 1);
+                            GameFrame chessFrame = new GameFrame(title, user, null, aiModel, timingModel, style);
                             this.setVisible(false);
                             chessFrame.setVisible(true);
                             createFolder();
                         }
                     }else{
-                        GameFrame chessFrame = new GameFrame(title, user, null, style);
+                        GameFrame chessFrame = new GameFrame(title, user, null, aiModel, timingModel, style);
                         this.setVisible(false);
                         chessFrame.setVisible(true);
                         createFolder();
                     }
                 }else{
-                    GameFrame chessFrame = new GameFrame(title, user, null, style);
+                    GameFrame chessFrame = new GameFrame(title, user, null, aiModel, timingModel, style);
                     this.setVisible(false);
                     chessFrame.setVisible(true);
                     createFolder();
@@ -122,7 +122,7 @@ public class MenuFrame extends JFrame{
 //            System.out.println(user + " tried style 2");
 //            model.pauseButton(true);
             if(preModel != null){//需要修改
-                GameFrame gameFrame = new GameFrame(title, user, preModel, style);
+                GameFrame gameFrame = new GameFrame(title, user, preModel, aiModel, timingModel, style);
                 this.setVisible(false);
                 gameFrame.setVisible(true);
             }else{
@@ -139,6 +139,39 @@ public class MenuFrame extends JFrame{
         this.add(aiChessButton);
         aiChessButton.addActionListener(e -> {
             System.out.println("这个功能还没有完成");
+            String relativePath = "UserData/" + user + "/" + user +"AITemp.txt";
+            Path path = Paths.get(relativePath).toAbsolutePath().normalize();
+
+            try{
+                if(Files.exists(path)){
+                    if(Files.size(path) != 0 || aiModel != null){
+                        if(ChoiceBox.choiceBox("新游戏确认", "存档上一盘并开始新游戏吗？")){
+                            ToolBox.confirmToEnd(user, 2);
+                            AIFrame aiFrame = new AIFrame(title, user, preModel, null, timingModel, style);
+                            this.setVisible(false);
+                            aiFrame.setVisible(true);
+                            createFolder();
+                        }else{
+                            AIFrame aiFrame = new AIFrame(title, user, preModel, aiModel, timingModel, style);
+                            this.setVisible(false);
+                            aiFrame.setVisible(true);
+                        }
+                    }else{
+                        AIFrame aiFrame = new AIFrame(title, user, preModel, null, timingModel, style);
+                        this.setVisible(false);
+                        aiFrame.setVisible(true);
+                        createFolder();
+                    }
+                }else{
+                    AIFrame aiFrame = new AIFrame(title, user, preModel, null, timingModel, style);
+                    this.setVisible(false);
+                    aiFrame.setVisible(true);
+                    createFolder();
+                }
+            }catch (IOException ne){
+                System.out.println("???");
+            }
+
         });
 
         JButton timingChessButton = new JButton("计时模式");
@@ -147,6 +180,39 @@ public class MenuFrame extends JFrame{
         this.add(timingChessButton);
         timingChessButton.addActionListener(e -> {
             System.out.println("这个功能还没有完成");
+            String relativePath = "UserData/" + user + "/" + user +"TimingTemp.txt";
+            Path path = Paths.get(relativePath).toAbsolutePath().normalize();
+
+            try{
+                if(Files.exists(path)){
+                    if(Files.size(path) != 0 || timingModel != null){
+                        if(ChoiceBox.choiceBox("新游戏确认", "存档上一盘并开始新游戏吗？")){
+                            ToolBox.confirmToEnd(user, 3);
+                            TimingFrame timingFrame = new TimingFrame(title, user, preModel, aiModel, null, style);
+                            this.setVisible(false);
+                            timingFrame.setVisible(true);
+                            createFolder();
+                        }else{
+                            TimingFrame timingFrame = new TimingFrame(title, user, preModel, aiModel, timingModel, style);
+                            this.setVisible(false);
+                            timingFrame.setVisible(true);
+                        }
+                    }else{
+                        TimingFrame timingFrame = new TimingFrame(title, user, preModel, aiModel, null, style);
+                        this.setVisible(false);
+                        timingFrame.setVisible(true);
+                        createFolder();
+                    }
+                }else{
+                    TimingFrame timingFrame = new TimingFrame(title, user, preModel, aiModel, null, style);
+                    this.setVisible(false);
+                    timingFrame.setVisible(true);
+                    createFolder();
+                }
+            }catch (IOException ne){
+                System.out.println("???");
+            }
+
         });
 
         JButton lastChessButton = new JButton("上一局回放");
@@ -156,7 +222,7 @@ public class MenuFrame extends JFrame{
         lastChessButton.addActionListener(e -> {
             if(checkLogLiteExistence()){
                 if(decoder()){
-                    ReplayFrame replayFrame = new ReplayFrame(title, user, preModel, style);
+                    ReplayFrame replayFrame = new ReplayFrame(title, user, preModel, aiModel, timingModel, style);
                     this.setVisible(false);
                     replayFrame.setVisible(true);
                 }else{
@@ -172,7 +238,7 @@ public class MenuFrame extends JFrame{
         styleButton.setSize(400, 50);
         this.add(styleButton);
         styleButton.addActionListener(e -> {
-            StyleFrame styleFrame = new StyleFrame(title, user, style, preModel);
+            StyleFrame styleFrame = new StyleFrame(title, user, style, preModel, aiModel, timingModel);
             this.setVisible(false);
             styleFrame.setVisible(true);
 

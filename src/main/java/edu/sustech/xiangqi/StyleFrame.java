@@ -21,7 +21,7 @@ public class StyleFrame extends JFrame{
 
   //  public JFrame chessFrame;
 
-    public StyleFrame(String title, String user, int style, ChessBoardModel preModel){
+    public StyleFrame(String title, String user, int style, ChessBoardModel preModel, ChessBoardModel aiModel, ChessBoardModel timingModel){
         super("风格面板");
             //上面是login的界面，下面是象棋的界面
         this.user = user;
@@ -37,7 +37,7 @@ public class StyleFrame extends JFrame{
             @Override
             public void windowClosing(WindowEvent e){
                 setVisible(false);
-                MenuFrame menuFrame = new MenuFrame(title, user, newStyle, preModel);
+                MenuFrame menuFrame = new MenuFrame(title, user, newStyle, preModel, aiModel, timingModel);
                 menuFrame.setVisible(true);
 
 
@@ -56,7 +56,7 @@ public class StyleFrame extends JFrame{
             //这里可能需要log相关的代码
             newStyle = 0;
             this.setVisible(false);
-            StyleFrame styleFrame = new StyleFrame(title, user, newStyle, preModel);
+            StyleFrame styleFrame = new StyleFrame(title, user, newStyle, preModel, aiModel, timingModel);
             styleFrame.setVisible(true);
             lineRewriter(0);
             System.out.println(user + " tried style 1");
@@ -72,7 +72,7 @@ public class StyleFrame extends JFrame{
             //这里可能需要log相关的代码
             newStyle = 1;
             this.setVisible(false);
-            StyleFrame styleFrame = new StyleFrame(title, user, newStyle, preModel);
+            StyleFrame styleFrame = new StyleFrame(title, user, newStyle, preModel, aiModel, timingModel);
             styleFrame.setVisible(true);
             lineRewriter(1);
             System.out.println(user + " tried style 2");
@@ -87,7 +87,7 @@ public class StyleFrame extends JFrame{
             //这里可能需要log相关的代码
             newStyle = 2;
             this.setVisible(false);
-            StyleFrame styleFrame = new StyleFrame(title, user, newStyle, preModel);
+            StyleFrame styleFrame = new StyleFrame(title, user, newStyle, preModel, aiModel, timingModel);
             styleFrame.setVisible(true);
             lineRewriter(2);
             System.out.println(user + " tried style 3");
@@ -101,7 +101,7 @@ public class StyleFrame extends JFrame{
         this.add(confirm);
         confirm.addActionListener(e -> {
             this.setVisible(false);
-            MenuFrame menuFrame = new MenuFrame(title, user, newStyle, preModel);
+            MenuFrame menuFrame = new MenuFrame(title, user, newStyle, preModel, aiModel, timingModel);
             menuFrame.setVisible(true);
 
 
