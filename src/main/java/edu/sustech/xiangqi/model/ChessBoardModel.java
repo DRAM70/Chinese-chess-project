@@ -180,6 +180,16 @@ public class ChessBoardModel {
         return false;
     }
 
+    public void repaintModel(){
+        SwingUtilities.invokeLater(()->{
+            for(Window win:Window.getWindows()){
+                if(win.isVisible()){
+                    win.repaint();
+                }
+            }
+        });
+    }
+
     public void switchLogWrite(boolean choice){
         doLogWrite = choice;
     }

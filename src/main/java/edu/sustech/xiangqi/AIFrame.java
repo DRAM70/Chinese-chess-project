@@ -60,19 +60,19 @@ public class AIFrame extends JFrame{
         label = new JLabel("你好，" + user);
         label.setForeground(styleList[style].getLabelColor());
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setLocation(520, 100);
+        label.setLocation(520, 50);
         label.setSize(300, 50);
         this.add(label);//先添加的后绘制
 
         label2 = new JLabel("你好，" + user);
         label2.setForeground(styleList[style].getLabelColor());
         label2.setHorizontalAlignment(SwingConstants.CENTER);
-        label2.setLocation(520, 140);
+        label2.setLocation(520, 100);
         label2.setSize(300, 50);
         this.add(label2);//先添加的后绘制
 
         JButton button = new JButton("认输");
-        button.setLocation(600, 200);
+        button.setLocation(620, 400);
         button.setSize(120, 50);
         this.add(button);//先添加的后绘制
         button.addActionListener(e -> {
@@ -92,7 +92,7 @@ public class AIFrame extends JFrame{
 
 
         JButton reset = new JButton("重开棋局");
-        reset.setLocation(600, 400);
+        reset.setLocation(620, 500);
         reset.setSize(120, 50);
         this.add(reset);
         reset.addActionListener(e -> {
@@ -123,7 +123,7 @@ public class AIFrame extends JFrame{
 //        });
 
         JButton backButton = new JButton("返回菜单");
-        backButton.setLocation(600, 600);
+        backButton.setLocation(620, 600);
         backButton.setSize(120, 50);
         this.add(backButton);
 //        int style = 0;
