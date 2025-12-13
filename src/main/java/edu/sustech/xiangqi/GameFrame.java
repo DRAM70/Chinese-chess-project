@@ -60,19 +60,33 @@ public class GameFrame extends JFrame{
         label = new JLabel("你好，" + user);
         label.setForeground(styleList[style].getLabelColor());
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setLocation(520, 100);
+        label.setLocation(520, 50);
         label.setSize(300, 50);
         this.add(label);//先添加的后绘制
 
         label2 = new JLabel("你好，" + user);
         label2.setForeground(styleList[style].getLabelColor());
         label2.setHorizontalAlignment(SwingConstants.CENTER);
-        label2.setLocation(520, 140);
+        label2.setLocation(520, 100);
         label2.setSize(300, 50);
         this.add(label2);//先添加的后绘制
 
+        JButton retractPiece = new JButton("悔棋");
+        retractPiece.setLocation(620, 300);
+        retractPiece.setSize(120, 50);
+        this.add(retractPiece);
+        retractPiece.addActionListener(e -> {
+//            modelIN = RetractBox.retractModel(user, 1);
+
+            GameFrame newFrame = new GameFrame(title, user, RetractBox.retractModel(user, 1), aiModel, timingModel, style);
+            this.setVisible(false);
+            newFrame.setVisible(true);
+
+            System.out.println(user + " retracted a piece");
+        });
+
         JButton button = new JButton("认输");
-        button.setLocation(600, 200);
+        button.setLocation(620, 400);
         button.setSize(120, 50);
         this.add(button);//先添加的后绘制
         button.addActionListener(e -> {
@@ -92,7 +106,7 @@ public class GameFrame extends JFrame{
 
 
         JButton reset = new JButton("重开棋局");
-        reset.setLocation(600, 400);
+        reset.setLocation(620, 500);
         reset.setSize(120, 50);
         this.add(reset);
         reset.addActionListener(e -> {
@@ -109,20 +123,9 @@ public class GameFrame extends JFrame{
             }
         });
 
-        JButton retractPiece = new JButton("悔棋");
-        retractPiece.setLocation(600, 500);
-        retractPiece.setSize(120, 50);
-        this.add(retractPiece);
-        retractPiece.addActionListener(e -> {
-            //这里可能需要log相关的代码
-            System.out.println(user + " retracted a piece^^^^");
-
-
-//            modelIN.checkMove(12, 5, 0);
-        });
 
         JButton backButton = new JButton("返回菜单");
-        backButton.setLocation(600, 600);
+        backButton.setLocation(620, 600);
         backButton.setSize(120, 50);
         this.add(backButton);
 //        int style = 0;

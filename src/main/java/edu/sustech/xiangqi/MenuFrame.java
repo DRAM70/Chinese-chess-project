@@ -222,7 +222,7 @@ public class MenuFrame extends JFrame{
         lastChessButton.addActionListener(e -> {
             if(checkLogLiteExistence()){
                 if(decoder()){
-                    ReplayFrame replayFrame = new ReplayFrame(title, user, preModel, aiModel, timingModel, style);
+                    ReplayFrame replayFrame = new ReplayFrame(title, user, preModel, aiModel, timingModel, style, 0);
                     this.setVisible(false);
                     replayFrame.setVisible(true);
                 }else{
