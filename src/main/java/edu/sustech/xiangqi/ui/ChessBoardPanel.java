@@ -1,5 +1,6 @@
 package edu.sustech.xiangqi.ui;
 
+import edu.sustech.xiangqi.model.AdvancedAI;
 import edu.sustech.xiangqi.model.ChessAI;
 import edu.sustech.xiangqi.model.ChessBoardModel;
 import edu.sustech.xiangqi.model.AbstractPiece;
@@ -29,10 +30,13 @@ public class ChessBoardPanel extends JPanel {
     private static final int PIECE_RADIUS = 25;
 
     private AbstractPiece selectedPiece = null;
+    private AbstractPiece formerPiece=null;
     private int getCurrentRow;
     private int getCurrentCol;
     private int getLastRow=-1;
     private int getLastCol=-1;
+    private int getTargetRow=-1;
+    private int getTargetCol=-1;
 
     public ChessBoardPanel(ChessBoardModel model, int style) {
         this.model = model;
@@ -100,7 +104,11 @@ public class ChessBoardPanel extends JPanel {
                 if(model.movePiece(selectedPiece,row,col)){
                     getLastRow=getCurrentRow;
                     getLastCol=getCurrentCol;
-//                    AIDebate();
+                    getTargetRow=row;
+                    getTargetCol=col;
+                    formerPiece=selectedPiece;
+                    AIDebate();
+                    //AdvancedAIDebate();
                 }
                 selectedPiece = null;
             }
@@ -112,18 +120,35 @@ public class ChessBoardPanel extends JPanel {
 
     public void AIDebate(){
         ChessAI chessAI=new ChessAI(model);
-        int[] AIMove= chessAI.getAIMove();
+        int[] AIMove=chessAI.getAIMove();
         if(AIMove!=null){
             int formerRow=AIMove[0];
             int formerCol=AIMove[1];
             int targetRow=AIMove[2];
             int targetCol=AIMove[3];
 
-            AbstractPiece AIPiece= model.getPieceAt(formerRow,formerCol);
-            model.switchTurn();
+            AbstractPiece AIPiece=model.getPieceAt(formerRow,formerCol);
             if(AIPiece!=null&&!model.isRedTurn()){
                 model.movePiece(AIPiece,targetRow,targetCol);
                 System.out.println("aaa");
+            }
+        }
+        this.getParent().repaint();
+    }
+
+    public void AdvancedAIDebate(){
+        AdvancedAI advancedAI=new AdvancedAI(model);
+        int[] AIMove=advancedAI.getBestMove();
+        if(AIMove!=null){System.out.println(AIMove.length);
+            int formerRow=AIMove[0];
+            int formerCol=AIMove[1];
+            int targetRow=AIMove[2];
+            int targetCol=AIMove[3];
+
+            AbstractPiece AIPiece=model.getPieceAt(formerRow,formerCol);
+
+            if(AIPiece!=null&&!model.isRedTurn()){
+                model.movePiece(AIPiece,targetRow,targetCol);
             }
         }
         this.getParent().repaint();
@@ -249,6 +274,12 @@ public class ChessBoardPanel extends JPanel {
             g.drawOval(x - PIECE_RADIUS, y - PIECE_RADIUS, PIECE_RADIUS * 2, PIECE_RADIUS * 2);
 
             if (isSelected) {
+                if(selectedPiece.isRed()){
+                    g.setColor(new Color(255, 10, 25));
+                }
+                else {
+                    g.setColor(new Color(0,100,255));
+                }
                 drawCornerBorders(g, x, y);
             }
 
@@ -268,15 +299,38 @@ public class ChessBoardPanel extends JPanel {
         int lastX=MARGIN+getLastCol*CELL_SIZE;
         int lastY=MARGIN+getLastRow*CELL_SIZE;
         if(lastY>=0&&lastX>=0){
+            if(formerPiece!=null){
+                if(formerPiece.isRed()){
+                    g.setColor(new Color(255, 10, 25));
+                }
+                if(!formerPiece.isRed()){
+                    g.setColor(new Color(0,100,255));
+                }
+            }
             drawCornerBorders(g,lastX,lastY);
         }
+
+
+        int currentX=MARGIN+CELL_SIZE*getTargetCol;
+        int currentY=MARGIN+CELL_SIZE*getTargetRow;
+        if(currentY>=0&&currentX>=0){
+            if(formerPiece!=null){
+                if(formerPiece.isRed()){
+                    g.setColor(new Color(255, 10, 25));
+                }
+                if(!formerPiece.isRed()){
+                    g.setColor(new Color(0,100,255));
+                }
+            }
+            drawCornerBorders(g,currentX,currentY);
+        }
+
     }
 
     /**
      * 绘制选中棋子时的蓝色外边框效果
      */
     private void drawCornerBorders(Graphics2D g, int centerX, int centerY) {
-        g.setColor(new Color(0, 100, 255));
         g.setStroke(new BasicStroke(3));
 
         int cornerSize = 32;

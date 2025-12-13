@@ -30,7 +30,8 @@ public class ChessAI {
                 for(int toCol=0;toCol<=8;toCol++){
                     if(!piece.isRed()){
                         AbstractPiece targetPiece=model.getPieceAt(toRow,toCol);
-                        if(model.movePiece(piece,toRow,toCol)){
+                        if(model.moveWithoutLog(piece,toRow,toCol)){
+                            model.switchTurn();
                                 piece.setCol(formerCol);
                                 piece.setRow(formerRow);
                                 if(targetPiece!=null){
