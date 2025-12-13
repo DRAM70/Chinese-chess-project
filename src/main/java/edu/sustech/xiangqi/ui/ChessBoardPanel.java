@@ -107,7 +107,7 @@ public class ChessBoardPanel extends JPanel {
                     getTargetRow=row;
                     getTargetCol=col;
                     formerPiece=selectedPiece;
-                    AIDebate();
+                    //AIDebate();
                     //AdvancedAIDebate();
                 }
                 selectedPiece = null;
