@@ -70,6 +70,11 @@ public class GameFrame extends JFrame{
 
 
         label = new JLabel("你好，" + user);
+        if(modelIN.isRedTurn()){
+            label.setText("红方执子");
+        }else{
+            label.setText("黑方执子");
+        }
         label.setForeground(styleList[style].getLabelColor());
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setLocation(520, 50);
