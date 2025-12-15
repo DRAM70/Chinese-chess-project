@@ -362,18 +362,12 @@ public class ChessBoardModel {
         }
 
         if(willBeChecked){
-//            if(GameFrame.label != null){
-//                GameFrame.label.setText("被将");
-//            }
             ToolBox.labelTextStatus("被将");
             BackgroundMusic.playGeneralInDanger();
             return false;
         }
 
         else if (willFace){
-//            if(GameFrame.label != null){
-//                GameFrame.label.setText("将帅照面");
-//            }
             ToolBox.labelTextStatus("将帅照面");
             return false;
         }
@@ -396,15 +390,9 @@ public class ChessBoardModel {
         //实现交换回合
         switchTurn();
         if(isRedTurn){
-//            if(GameFrame.label != null){
-//                GameFrame.label.setText("红方执子");
-//            }
             ToolBox.labelTextPlayer("红方执子");
         }
         else {
-//            if(GameFrame.label != null){
-//                GameFrame.label.setText("黑方执子");
-//            }
             ToolBox.labelTextPlayer("黑方执子");
         }
 
@@ -412,16 +400,10 @@ public class ChessBoardModel {
         //被将时，如果能解除则优先，其它走法违法
         if(isInCheck()){
             if(isCheckmate()){
-//                if(GameFrame.label != null){
-//                    GameFrame.label.setText("将死");
-//                }
                 ToolBox.labelTextStatus("将死");
                 return false;
             }
             else{
-//                if(GameFrame.label != null){
-//                    GameFrame.label.setText("将");
-//                }
                 ToolBox.labelTextStatus("将");
             }
 

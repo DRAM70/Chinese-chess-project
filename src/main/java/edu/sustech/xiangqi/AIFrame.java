@@ -153,6 +153,7 @@ public class AIFrame extends JFrame{
 
 
         ChessBoardPanel boardPanel = new ChessBoardPanel(model, style);
+        boardPanel.switchAI(true);
         boardPanel.label = label2;
         this.add(boardPanel);
 //            chessFrame.pack();//大小适于内容
