@@ -306,42 +306,6 @@ public class ChessBoardModel {
             return false;
         }
 
-        //这段先留着，应该是没用了（不确定）
-
-//        //被将时，如果能解除则优先，其它走法违法
-//        if(isInCheck()){
-//            if(isCheckmate()){
-//                if(GameFrame.label != null){
-//                    GameFrame.label.setText("将死");
-//                }
-//                return false;
-//            }
-//            else{
-////                if(GameFrame.label != null){
-////                    GameFrame.label.setText("将");
-////                }
-//        ToolBox.labelTextPlayer("将");
-//                int formerRow= piece.getRow();
-//                int formerCol= piece.getCol();
-//                AbstractPiece removement =getPieceAt(newRow,newCol);
-//                piece.setRow(newRow);
-//                piece.setCol(newCol);
-//                if(removement !=null){
-//                    pieces.remove(removement);
-//                }
-//                boolean alsoInCheck=isInCheck();
-//                piece.setRow(formerRow);
-//                piece.setCol(formerCol);
-//                if(removement!=null&&!pieces.contains(removement)){
-//                    pieces.add(removement);
-//                }
-//                if(alsoInCheck){
-//                    return false;
-//                }
-//            }
-//
-//
-//        }
 
         //模拟移动并记录，判断是否照面
         int formerRow= piece.getRow();
@@ -377,10 +341,10 @@ public class ChessBoardModel {
             piece.setCol(newCol);
             if(removement!=null){
                 if(isRedTurn){
-                    System.out.println("吃黑方"+piece.getName());
+                    System.out.println("吃黑方"+removement.getName());
                 }
                 else {
-                    System.out.println("吃红方"+piece.getName());
+                    System.out.println("吃红方"+removement.getName());
                 }
                 BackgroundMusic.playEat();
                 pieces.remove(removement);
@@ -425,6 +389,14 @@ public class ChessBoardModel {
         //示例结束
         return true;
         //return piece.legalMove(newRow,newCol,this);
+    }
+
+    public boolean moveWithoutLog(AbstractPiece piece, int newRow, int newCol){
+        switchLogWrite(false);
+        //this.switchTurn();
+        boolean res = movePiece(piece, newRow, newCol);
+        switchLogWrite(true);
+        return res;
     }
 
     public static int getRows() {
