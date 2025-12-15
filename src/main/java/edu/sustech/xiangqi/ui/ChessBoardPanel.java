@@ -105,19 +105,10 @@ public class ChessBoardPanel extends JPanel {
                 if(model.movePiece(selectedPiece,row,col)){
                     getLastRow=getCurrentRow;
                     getLastCol=getCurrentCol;
-                    if(AISwitch){
-                        try{
-                            Thread.sleep(500);
-                        }catch (InterruptedException e){
-                            Thread.currentThread().interrupt();//清除线程中断状态
-                        }
-                        AIDebate();//这里ai和棋盘还是一起渲染的
-                    }
                     getTargetRow=row;
                     getTargetCol=col;
                     formerPiece=selectedPiece;
-                    //AIDebate();
-                    //AdvancedAIDebate();
+
                 }
                 selectedPiece = null;
             }
@@ -125,6 +116,16 @@ public class ChessBoardPanel extends JPanel {
             // Swing 会将多个请求合并后再重新绘制，因此调用 repaint 后gui不会立刻变更
             // repaint 中会调用 paintComponent，从而重新绘制gui上棋子的位置等
             this.getParent().repaint();
+        if(AISwitch){
+
+            AIDebate();//这里ai和棋盘还是一起渲染的
+//            try{
+//                Thread.sleep(100);
+//            }catch (InterruptedException e){
+//                Thread.currentThread().interrupt();//清除线程中断状态
+//            }
+//            AdvancedAIDebate();
+        }
     }
 
     public void switchAI(boolean choice){
@@ -161,7 +162,9 @@ public class ChessBoardPanel extends JPanel {
             AbstractPiece AIPiece=model.getPieceAt(formerRow,formerCol);
 
             if(AIPiece!=null&&!model.isRedTurn()){
-                model.movePiece(AIPiece,targetRow,targetCol);
+//                model.movePiece(AIPiece,targetRow,targetCol);
+                model.aiSwitch(true);
+                model.checkMove(AIPiece.getNumber(), targetRow, targetCol);
             }
         }
         this.getParent().repaint();
