@@ -43,6 +43,7 @@ public class GameFrame extends JFrame{
         this.timingModel = timingModel;
         this.style = style;
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        instance = this;
 
         //关闭程序时，同时删除可能存在的游客6060
         addWindowListener(new WindowAdapter() {
@@ -216,7 +217,7 @@ public class GameFrame extends JFrame{
 
 
     public void end(String s){
-        ToolBox.confirmToEnd(user, 3);
+        ToolBox.confirmToEnd(user, 1);
         MenuFrame menuFrame = new MenuFrame(title, user, style, null, aiModel, timingModel);
         this.setVisible(false);
 
