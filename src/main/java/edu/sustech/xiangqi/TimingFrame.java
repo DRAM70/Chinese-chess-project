@@ -10,29 +10,74 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class TimingFrame extends JFrame{
-    public String user;
+    public static String user;
     //    private int style = 0;
     public static JLabel label;
     public static JLabel label2;
+    public static JLabel redTimeLabel;
+    public static JLabel blackTimeLabel;
     private ChessBoardModel modelIN;//当前全局可使用的棋盘,请使用这个
+//    private TimeBox timeBox = new TimeBox(, );
+    public static int redTime;
+    public static int blackTime;
+
+
+    private static TimingFrame instance;
+    private static String title;
+    private static ChessBoardModel preModel;
+    private static ChessBoardModel aiModel;
+    private static int style;
 
 
     public TimingFrame(String title, String user, ChessBoardModel preModel, ChessBoardModel aiModel, ChessBoardModel timingModel, int style){
         super("计时对战");
         //上面是login的界面，下面是象棋的界面
         this.user = user;
+        this.title = title;
+        this.preModel = preModel;
+        this.aiModel = aiModel;
+        this.style = style;
+
+
+        ChessBoardModel model = new ChessBoardModel(user, true, 3);
+
         if(timingModel != null){
-            modelIN = timingModel;
+            model = timingModel;
+            modelIN = model;
+//            timeBox = new TimeBox(timingModel.redTime, timingModel.blackTime, timingModel);
+        }else{
+            redTime = ToolBox.readTime(true);
+            blackTime = ToolBox.readTime(false);
+            model.redTime = redTime;
+            model.blackTime = blackTime;
+            modelIN = model;
+//            timeBox = new TimeBox(600, 600, modelIN);
         }
+        TimeBox timeBox = new TimeBox(modelIN.redTime, modelIN.blackTime, modelIN);
+        timeBox.isRedTurn = modelIN.isRedTurn();
+
+
+
+//        if(timingModel != null){
+//            modelIN = timingModel;
+//
+//        }
+//        redTime = ToolBox.readTime(true);
+//        blackTime = ToolBox.readTime(false);
         Style[] styleList = Style.values();
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        instance = this;
 
         //关闭程序时，同时删除可能存在的游客6060
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e){
+                if(!timeBox.isPause){
+                    timeBox.isPause = !timeBox.isPause;
+                    label2.setText("已暂停");
+                }
                 if(ChoiceBox.choiceBox("退出确认", "要退出吗？（当前棋局会自动保存）")){
-                    ToolBox.tempEnd(user);
+                    ToolBox.tempEnd(user, timingModel);
                     ToolBox.deleteVisitorFile();
                     dispose();
                     System.exit(0);
@@ -41,17 +86,17 @@ public class TimingFrame extends JFrame{
         });
         //listener结束
 
-        ChessBoardModel model = new ChessBoardModel(user, true, 3);
-        if(timingModel != null){
-            model = timingModel;
-        }else{
-            modelIN = model;
-        }
+
         //model.setUser(user);
         //这里的setUser在model初始化之后无效，为什么，因为在测试中使用logWriter时user还没有被赋值，已解决
 
 
         label = new JLabel("你好，" + user);
+        if(modelIN.isRedTurn()){
+            label.setText("红方执子");
+        }else{
+            label.setText("黑方执子");
+        }
         label.setForeground(styleList[style].getLabelColor());
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setLocation(520, 50);
@@ -59,6 +104,9 @@ public class TimingFrame extends JFrame{
         this.add(label);//先添加的后绘制
 
         label2 = new JLabel("你好，" + user);
+        if(timeBox.isPause){
+            label2.setText("已暂停");
+        }
         label2.setForeground(styleList[style].getLabelColor());
         label2.setHorizontalAlignment(SwingConstants.CENTER);
         label2.setLocation(520, 100);
@@ -68,22 +116,24 @@ public class TimingFrame extends JFrame{
         JLabel blackLabel = new JLabel("黑方倒计时");
         blackLabel.setForeground(styleList[style].getLabelColor());
         blackLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        blackLabel.setLocation(520, 170);
+        blackLabel.setLocation(520, 150);
         blackLabel.setSize(300, 50);
         this.add(blackLabel);//先添加的后绘制
 
-        JLabel blackTimeLabel = new JLabel("shijian");
+        blackTimeLabel = new JLabel("--:--");
+        blackTimeLabel.setText(TimeBox.formatTime(blackTime));
         blackTimeLabel.setForeground(styleList[style].getLabelColor());
         blackTimeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        blackTimeLabel.setLocation(520, 220);
+        blackTimeLabel.setLocation(520, 180);
         blackTimeLabel.setSize(300, 50);
         this.add(blackTimeLabel);//先添加的后绘制
 
-        JLabel redTimeLabel = new JLabel("shijain");
+        redTimeLabel = new JLabel("--:--");
+        redTimeLabel.setText(TimeBox.formatTime(redTime));
         redTimeLabel.setForeground(Color.RED);
         //redLabel.setForeground(styleList[style].getLabelColor());
         redTimeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        redTimeLabel.setLocation(520, 270);
+        redTimeLabel.setLocation(520, 210);
         redTimeLabel.setSize(300, 50);
         this.add(redTimeLabel);//先添加的后绘制
 
@@ -91,9 +141,24 @@ public class TimingFrame extends JFrame{
         redLabel.setForeground(Color.RED);
         //redLabel.setForeground(styleList[style].getLabelColor());
         redLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        redLabel.setLocation(520, 320);
+        redLabel.setLocation(520, 240);
         redLabel.setSize(300, 50);
         this.add(redLabel);//先添加的后绘制
+
+        JButton pause = new JButton("暂停/继续");
+        pause.setLocation(620, 300);
+        pause.setSize(120, 50);
+        this.add(pause);//先添加的后绘制
+        pause.addActionListener(e -> {
+//            System.out.println("hhhhhh");
+            if(!timeBox.isPause){
+                label2.setText("已暂停");
+            }else{
+                label2.setText("已继续");
+            }
+            timeBox.isPause = !timeBox.isPause;
+
+        });
 
 
         JButton button = new JButton("认输");
@@ -105,7 +170,10 @@ public class TimingFrame extends JFrame{
 
             //这里面还要添加认输确认，添加到log
 
-
+            if(!timeBox.isPause){
+                timeBox.isPause = !timeBox.isPause;
+                label2.setText("已暂停");
+            }
             if(ChoiceBox.choiceBox("结束确认", "要认输吗？")){
                 ToolBox.confirmToEnd(user, 3);
                 MenuFrame menuFrame = new MenuFrame(title, user, style, preModel, aiModel, null);
@@ -121,6 +189,10 @@ public class TimingFrame extends JFrame{
         reset.setSize(120, 50);
         this.add(reset);
         reset.addActionListener(e -> {
+            if(!timeBox.isPause){
+                timeBox.isPause = !timeBox.isPause;
+                label2.setText("已暂停");
+            }
             if(ChoiceBox.choiceBox("重开确认", "确定要开始新棋局吗？（当前棋局会自动结束）")){
                 ToolBox.confirmToEnd(user, 3);
                 //GameFrame newFrame = new GameFrame("中国象棋", user, null, aiModel, timingModel, style);
@@ -154,6 +226,10 @@ public class TimingFrame extends JFrame{
 //        int style = 0;
         //这里需要进一步细化
         backButton.addActionListener(e -> {
+            if(!timeBox.isPause){
+                timeBox.isPause = !timeBox.isPause;
+                label2.setText("已暂停");
+            }
             MenuFrame menuFrame = new MenuFrame(title, user, style, preModel, aiModel, modelIN);
             this.setVisible(false);
             menuFrame.setVisible(true);
@@ -187,40 +263,28 @@ public class TimingFrame extends JFrame{
     }
 
 
-//    public void setStyle(int style){
-//        this.style = style;
-//    }
-
     public ChessBoardModel getModel(){
         return modelIN;
     }
 
-//    private void deleteFile(){
-//        try{
-//            File fileToDelete = new File("UserData/游客6060/游客6060.txt");
-//            if(fileToDelete.exists()){
-//                if(fileToDelete.delete()){
-//                    System.out.println("visitor log successfully deleted!");
-//                }else{
-//                    System.out.println("visitor log deleting failed!");
-//                }
-//            }
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//    }
+
+    public static TimingFrame getInstance(){
+        return instance;
+    }
 
 
-//    public void sleepAction(int toNumber, int toRow, int toCol){
-//        Timer timer = new Timer(5000, new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                modelIN.checkMove(toNumber, toRow, toCol);
-//            }
-//        });
-//        timer.setRepeats(false);
-//        timer.start();
-//    }
+    public void end(){
+        ToolBox.confirmToEnd(user, 3);
+        MenuFrame menuFrame = new MenuFrame(title, user, style, preModel, aiModel, null);
+        this.setVisible(false);
+
+        menuFrame.setVisible(true);
+        NoticeBox noticeBox = new NoticeBox("提示", user, style, "计时结束！");
+        noticeBox.setVisible(true);
+    }
+
+
+
 
 
 }

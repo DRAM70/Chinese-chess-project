@@ -38,7 +38,7 @@ public class GameFrame extends JFrame{
             @Override
             public void windowClosing(WindowEvent e){
                 if(ChoiceBox.choiceBox("退出确认", "要退出吗？（当前棋局会自动保存）")){
-                    ToolBox.tempEnd(user);
+                    ToolBox.tempEnd(user, timingModel);
                     ToolBox.deleteVisitorFile();
                     dispose();
                     System.exit(0);

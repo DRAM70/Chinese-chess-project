@@ -1,5 +1,6 @@
 package edu.sustech.xiangqi.model;
 
+import edu.sustech.xiangqi.TimeBox;
 import edu.sustech.xiangqi.ToolBox;
 import edu.sustech.xiangqi.audio.BackgroundMusic;
 
@@ -22,6 +23,8 @@ public class ChessBoardModel {
     private boolean doLogWrite;
     private String extra;
     private boolean ai = false;
+    public int redTime = 600;
+    public int blackTime = 600;
 
     protected void removePieces(AbstractPiece piece){
         pieces.remove(piece);
@@ -392,6 +395,7 @@ public class ChessBoardModel {
         if(doLogWrite){
             String move = "" + piece.getNumber()  + "0" +  newRow + "0" + newCol + "0" + ((piece.isRed()) ? 1 : 2);
             logWriter(move);
+            TimeBox.switchTurn();
         }
         BackgroundMusic.playClick();
         //示例结束
