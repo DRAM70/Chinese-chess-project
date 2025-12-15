@@ -21,6 +21,7 @@ public class ChessBoardModel {
     private boolean isRedTurn=true;
     private boolean doLogWrite;
     private String extra;
+    private boolean ai = false;
 
     protected void removePieces(AbstractPiece piece){
         pieces.remove(piece);
@@ -159,9 +160,16 @@ public class ChessBoardModel {
         }
     }
 
+    public void aiSwitch(boolean choice){
+        ai = choice;
+    }
+
 
     public boolean checkMove(int toNumber,int toRow,int toCol){
         doLogWrite = false;
+        if(ai){
+           doLogWrite = true;
+        }
         if((toNumber>=11&&toNumber<=26)||(toNumber>=31&&toNumber<=46)){
             for(int i=0;i<pieces.size();i++){
                 if(pieces.get(i).getNumber()==toNumber){
