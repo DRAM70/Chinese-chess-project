@@ -67,6 +67,7 @@ public class TimingFrame extends JFrame{
         Style[] styleList = Style.values();
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         instance = this;
+        ChessBoardPanel boardPanel = new ChessBoardPanel(model, style);
 
         //关闭程序时，同时删除可能存在的游客6060
         addWindowListener(new WindowAdapter() {
@@ -75,6 +76,7 @@ public class TimingFrame extends JFrame{
                 if(!timeBox.isPause){
                     timeBox.isPause = !timeBox.isPause;
                     label2.setText("已暂停");
+                    boardPanel.isClickable = false;
                 }
                 if(ChoiceBox.choiceBox("退出确认", "要退出吗？（当前棋局会自动保存）")){
                     ToolBox.tempEnd(user, timingModel);
@@ -106,6 +108,7 @@ public class TimingFrame extends JFrame{
         label2 = new JLabel("你好，" + user);
         if(timeBox.isPause){
             label2.setText("已暂停");
+            boardPanel.isClickable = false;
         }
         label2.setForeground(styleList[style].getLabelColor());
         label2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -153,8 +156,10 @@ public class TimingFrame extends JFrame{
 //            System.out.println("hhhhhh");
             if(!timeBox.isPause){
                 label2.setText("已暂停");
+                boardPanel.isClickable = false;
             }else{
                 label2.setText("已继续");
+                boardPanel.isClickable = true;
             }
             timeBox.isPause = !timeBox.isPause;
 
@@ -173,6 +178,7 @@ public class TimingFrame extends JFrame{
             if(!timeBox.isPause){
                 timeBox.isPause = !timeBox.isPause;
                 label2.setText("已暂停");
+                boardPanel.isClickable = false;
             }
             if(ChoiceBox.choiceBox("结束确认", "要认输吗？")){
                 ToolBox.confirmToEnd(user, 3);
@@ -192,6 +198,7 @@ public class TimingFrame extends JFrame{
             if(!timeBox.isPause){
                 timeBox.isPause = !timeBox.isPause;
                 label2.setText("已暂停");
+                boardPanel.isClickable = false;
             }
             if(ChoiceBox.choiceBox("重开确认", "确定要开始新棋局吗？（当前棋局会自动结束）")){
                 ToolBox.confirmToEnd(user, 3);
@@ -229,6 +236,7 @@ public class TimingFrame extends JFrame{
             if(!timeBox.isPause){
                 timeBox.isPause = !timeBox.isPause;
                 label2.setText("已暂停");
+                boardPanel.isClickable = false;
             }
             MenuFrame menuFrame = new MenuFrame(title, user, style, preModel, aiModel, modelIN);
             this.setVisible(false);
@@ -253,7 +261,7 @@ public class TimingFrame extends JFrame{
 //        boardPanel.label = label;
 
 
-        ChessBoardPanel boardPanel = new ChessBoardPanel(model, style);
+
         boardPanel.label = label2;
         this.add(boardPanel);
 //            chessFrame.pack();//大小适于内容

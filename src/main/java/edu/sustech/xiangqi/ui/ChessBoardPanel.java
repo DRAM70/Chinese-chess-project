@@ -44,6 +44,7 @@ public class ChessBoardPanel extends JPanel {
     public int targetRow=-10;
     public int targetCol=-10;
     private int record=0;
+    public boolean isClickable = true;
 
 
     public ChessBoardPanel(ChessBoardModel model, int style) {
@@ -64,10 +65,15 @@ public class ChessBoardPanel extends JPanel {
         Style[] styleList = Style.values();
         setBackground(styleList[style].getBackgroundColor());
 
+
+
         addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseClicked(MouseEvent e) {
-                handleMouseClick(e.getX(), e.getY());
+                if(isClickable){
+                    handleMouseClick(e.getX(), e.getY());
+                }
             }
         });
     }
