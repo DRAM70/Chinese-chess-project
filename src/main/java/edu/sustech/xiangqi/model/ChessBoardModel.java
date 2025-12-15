@@ -337,7 +337,7 @@ public class ChessBoardModel {
         }
 
         if(willBeChecked){
-            ToolBox.labelTextStatus("被将");
+            ToolBox.labelTextStatus("黑方被将");
             BackgroundMusic.playGeneralInDanger();
             return false;
         }
@@ -379,7 +379,8 @@ public class ChessBoardModel {
                 return false;
             }
             else{
-                ToolBox.labelTextStatus("将");
+                ToolBox.labelTextStatus("红方将");
+                BackgroundMusic.playGeneralInDanger();
             }
 
         }
