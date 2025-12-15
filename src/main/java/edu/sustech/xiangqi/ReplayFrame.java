@@ -134,23 +134,23 @@ public class ReplayFrame extends JFrame{
 
         });
 
-        JButton retractPiece = new JButton("测试弹窗");
-        retractPiece.setLocation(600, 500);
-        retractPiece.setSize(120, 50);
-        this.add(retractPiece);
-        retractPiece.addActionListener(e -> {
-            //这里可能需要log相关的代码
-//            System.out.println(user + " retracted a piece^^^^");
+//        JButton retractPiece = new JButton("测试弹窗");
+//        retractPiece.setLocation(600, 500);
+//        retractPiece.setSize(120, 50);
+//        this.add(retractPiece);
+//        retractPiece.addActionListener(e -> {
+//            //这里可能需要log相关的代码
+////            System.out.println(user + " retracted a piece^^^^");
+////
+////
+////            modelIN.checkMove(12, 5, 0);
 //
-//
-//            modelIN.checkMove(12, 5, 0);
-
-//            NoticeBox noticeBox = new NoticeBox(title, user, style, "您目前没有存档！");
-//            noticeBox.setVisible(true);
-//            if(ChoiceBox.notice("yanshi", "hahahah")){
-//                System.out.println("ceshichenggong");
-//            }
-        });
+////            NoticeBox noticeBox = new NoticeBox(title, user, style, "您目前没有存档！");
+////            noticeBox.setVisible(true);
+////            if(ChoiceBox.notice("yanshi", "hahahah")){
+////                System.out.println("ceshichenggong");
+////            }
+//        });
 
         JButton backButton = new JButton("返回菜单");
         backButton.setLocation(600, 600);
