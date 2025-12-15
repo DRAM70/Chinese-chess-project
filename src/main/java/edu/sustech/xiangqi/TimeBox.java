@@ -67,7 +67,7 @@ public class TimeBox {
 
                         if((isRedTurn && redTime <= 0) || (!isRedTurn && blackTime <= 0)){
                             stop();
-                            TimingFrame.getInstance().end();
+                            TimingFrame.getInstance().end("计时结束！");
                             Thread.currentThread().interrupt();
                             break;
                         }
