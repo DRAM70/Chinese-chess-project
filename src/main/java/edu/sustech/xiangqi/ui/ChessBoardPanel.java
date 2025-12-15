@@ -39,6 +39,13 @@ public class ChessBoardPanel extends JPanel {
     private int getTargetRow=-1;
     private int getTargetCol=-1;
 
+    public int formerRow=-10;
+    public int formerCol=-10;
+    public int targetRow=-10;
+    public int targetCol=-10;
+    private int record=0;
+
+
     public ChessBoardPanel(ChessBoardModel model, int style) {
         this.model = model;
         setPreferredSize(new Dimension(
@@ -154,15 +161,21 @@ public class ChessBoardPanel extends JPanel {
         AdvancedAI advancedAI=new AdvancedAI(model);
         int[] AIMove=advancedAI.getBestMove();
         if(AIMove!=null){System.out.println(AIMove.length);
-            int formerRow=AIMove[0];
-            int formerCol=AIMove[1];
-            int targetRow=AIMove[2];
-            int targetCol=AIMove[3];
+            formerRow=AIMove[0];
+            formerCol=AIMove[1];
+            targetRow=AIMove[2];
+            targetCol=AIMove[3];
 
             AbstractPiece AIPiece=model.getPieceAt(formerRow,formerCol);
 
             if(AIPiece!=null&&!model.isRedTurn()){
                 model.movePiece(AIPiece,targetRow,targetCol);
+                if (record==0){
+                    record+=1;
+                }
+                else {
+                    record+=2;
+                }
 //                model.aiSwitch(true);
 //                model.checkMove(AIPiece.getNumber(), targetRow, targetCol);
             }
@@ -181,6 +194,7 @@ public class ChessBoardPanel extends JPanel {
         drawBoard(g2d);
         drawPieces(g2d);
         drawHighlight(g2d);
+        drawAICornerBorders(g2d);
     }
 
     /**
@@ -341,6 +355,9 @@ public class ChessBoardPanel extends JPanel {
             drawCornerBorders(g,currentX,currentY);
         }
 
+        if(record%2==1){
+            drawAICornerBorders(g);
+        }
     }
 
     /**
@@ -378,4 +395,68 @@ public class ChessBoardPanel extends JPanel {
         g.drawLine(centerX + cornerSize, centerY + cornerSize,
                 centerX + cornerSize, centerY + cornerSize - lineLength);
     }
+
+    private void drawAICornerBorders(Graphics2D g){
+        g.setColor(new Color(0,100,255));
+        g.setStroke(new BasicStroke(3));
+
+        int cornerSize = 32;
+        int lineLength = 12;
+
+        int centerX=MARGIN+CELL_SIZE*targetCol;
+        int centerY=MARGIN+CELL_SIZE*targetRow;
+        // 选中效果的边框实际上是8条line，每两个line组成一个角落的边框
+
+        // 左上角的边框
+        g.drawLine(centerX - cornerSize, centerY - cornerSize,
+                centerX - cornerSize + lineLength, centerY - cornerSize);
+        g.drawLine(centerX - cornerSize, centerY - cornerSize,
+                centerX - cornerSize, centerY - cornerSize + lineLength);
+
+        // 右上角的边框
+        g.drawLine(centerX + cornerSize, centerY - cornerSize,
+                centerX + cornerSize - lineLength, centerY - cornerSize);
+        g.drawLine(centerX + cornerSize, centerY - cornerSize,
+                centerX + cornerSize, centerY - cornerSize + lineLength);
+
+        // 左下角的边框
+        g.drawLine(centerX - cornerSize, centerY + cornerSize,
+                centerX - cornerSize + lineLength, centerY + cornerSize);
+        g.drawLine(centerX - cornerSize, centerY + cornerSize,
+                centerX - cornerSize, centerY + cornerSize - lineLength);
+
+        // 右下角的边框
+        g.drawLine(centerX + cornerSize, centerY + cornerSize,
+                centerX + cornerSize - lineLength, centerY + cornerSize);
+        g.drawLine(centerX + cornerSize, centerY + cornerSize,
+                centerX + cornerSize, centerY + cornerSize - lineLength);
+
+        centerX=MARGIN+CELL_SIZE*formerCol;
+        centerY=MARGIN+CELL_SIZE*formerRow;
+
+        // 左上角的边框
+        g.drawLine(centerX - cornerSize, centerY - cornerSize,
+                centerX - cornerSize + lineLength, centerY - cornerSize);
+        g.drawLine(centerX - cornerSize, centerY - cornerSize,
+                centerX - cornerSize, centerY - cornerSize + lineLength);
+
+        // 右上角的边框
+        g.drawLine(centerX + cornerSize, centerY - cornerSize,
+                centerX + cornerSize - lineLength, centerY - cornerSize);
+        g.drawLine(centerX + cornerSize, centerY - cornerSize,
+                centerX + cornerSize, centerY - cornerSize + lineLength);
+
+        // 左下角的边框
+        g.drawLine(centerX - cornerSize, centerY + cornerSize,
+                centerX - cornerSize + lineLength, centerY + cornerSize);
+        g.drawLine(centerX - cornerSize, centerY + cornerSize,
+                centerX - cornerSize, centerY + cornerSize - lineLength);
+
+        // 右下角的边框
+        g.drawLine(centerX + cornerSize, centerY + cornerSize,
+                centerX + cornerSize - lineLength, centerY + cornerSize);
+        g.drawLine(centerX + cornerSize, centerY + cornerSize,
+                centerX + cornerSize, centerY + cornerSize - lineLength);
+    }
+
 }
