@@ -41,7 +41,7 @@ public class MenuFrame extends JFrame{
                     a = "（未完成的棋局会自动保存）";
                 }
                 if(ChoiceBox.choiceBox("退出确认", "要退出吗？" + a)){
-                    ToolBox.tempEnd(user);
+                    ToolBox.tempEnd(user, timingModel);
                     ToolBox.deleteVisitorFile();
                     dispose();
                     System.exit(0);
@@ -138,7 +138,7 @@ public class MenuFrame extends JFrame{
         aiChessButton.setSize(400, 50);
         this.add(aiChessButton);
         aiChessButton.addActionListener(e -> {
-            System.out.println("这个功能还没有完成");
+//            System.out.println("这个功能还没有完成");
             String relativePath = "UserData/" + user + "/" + user +"AITemp.txt";
             Path path = Paths.get(relativePath).toAbsolutePath().normalize();
 
@@ -255,7 +255,7 @@ public class MenuFrame extends JFrame{
                 a = "（未完成的棋局会自动保存）";
             }
             if(ChoiceBox.choiceBox("退出确认", "要退出吗？" + a)){
-                ToolBox.tempEnd(user);
+                ToolBox.tempEnd(user, timingModel);
                 LoginFrame loginFrame = new LoginFrame("中国象棋 登录界面");
                 this.setVisible(false);
                 ToolBox.deleteVisitorFile();

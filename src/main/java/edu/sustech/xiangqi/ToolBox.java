@@ -50,12 +50,16 @@ public class ToolBox {
         confirmWriter(index);
         encoder(0);
     }
-    public static void tempEnd(String userOp){//本方法可以暂时存储temp不变，保留log的缩减形式以供确认
+    public static void tempEnd(String userOp, ChessBoardModel time){//本方法可以暂时存储temp不变，保留log的缩减形式以供确认
         user = userOp;
         initializeLog(0);
         initializeLog(1);
         initializeLog(2);
         initializeLog(3);
+        if(time != null){
+            ToolBox.timeWriter("" + (71000 + time.redTime));
+            ToolBox.timeWriter("" + (81000 + time.blackTime));
+        }
         //confirmWriter();
         encoder(1);
         encoder(2);
@@ -74,6 +78,9 @@ public class ToolBox {
         }
         if(index == 3){
             extra = "TimingTemp";
+        }
+        if(index == 4){
+            extra = "Time";
         }
 
         user = tmpUser;
@@ -123,6 +130,8 @@ public class ToolBox {
                             moveBreaker(i, 2));
                 }
                 model.switchLogWrite(true);
+                model.redTime = ToolBox.readTime(true);
+                model.blackTime = ToolBox.readTime(false);
                 return model;
             }else{
                 deleteBrokenLog(index);
@@ -261,11 +270,72 @@ public class ToolBox {
             moveList = new ArrayList<>();
             while(sc.hasNextLine()){
                 String move = sc.nextLine();
-                moveList.add(move);
+                int i = Character.getNumericValue(move.charAt(0));//为什么这里不能直接charAt但是下面的moveBreaker可以
+                if(!(i == 7 || i == 8)){
+                    moveList.add(move);
+                }
             }
         }catch(FileNotFoundException e){
             //需要添加弹窗
             System.out.println(user + "'s log reading failed!");
+        }
+    }
+
+    public static int readTime(boolean isRed){
+        //需要实现checklog来保证log不变
+//        decoder();
+//        String extra = "";
+//        if(index == 1){
+//            extra = "Temp";
+//        }
+//        if(index == 2){
+//            extra = "AITemp";
+//        }
+//        if(index == 3){
+//            extra = "TimingTemp";
+//        }
+        File file = new File("UserData/" + user + "/" + user + "TimingTemp" + ".txt");
+        try{
+            Scanner sc = new Scanner(file);
+            while(sc.hasNextLine()){
+                String move = sc.nextLine();
+                if(isRed){
+                    if(Character.getNumericValue(move.charAt(0)) == 7){
+                        String time = "" + move.charAt(2) + move.charAt(3) + move.charAt(4);
+                        return Integer.parseInt(time);
+                    }
+                }else{
+                    if(Character.getNumericValue(move.charAt(0)) == 8){
+                        String time = "" + move.charAt(2) + move.charAt(3) + move.charAt(4);
+                        return Integer.parseInt(time);
+                    }
+                }
+            }
+        }catch(FileNotFoundException e){
+            //需要添加弹窗
+            System.out.println(user + "'s log reading failed!");
+        }
+        return 600;
+    }
+
+    public static void timeWriter(String move){
+        try{
+            String relativePath = "UserData/" + user + "/" + user + "TimingTemp" + ".txt";
+            File file = new File(relativePath);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+
+
+            String s = move + "\n";
+            writer.write(s);
+//            System.out.println(user + ": New step log written! Log: " + move);
+            System.out.print(user + ": Newly time content: " + s);
+
+
+
+            writer.flush();
+            writer.close();
+        }catch(IOException e){
+            System.out.println("Error, file" + user + "TimingTemp" + ".txt is broken! And step log writing failed!");
         }
     }
 
