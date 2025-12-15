@@ -42,6 +42,7 @@ public class AIFrame extends JFrame{
         }
         Style[] styleList = Style.values();
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        instance = this;
 
         //关闭程序时，同时删除可能存在的游客6060
         addWindowListener(new WindowAdapter() {
@@ -213,7 +214,7 @@ public class AIFrame extends JFrame{
     }
 
     public void end(String s){
-        ToolBox.confirmToEnd(user, 3);
+        ToolBox.confirmToEnd(user, 2);
         MenuFrame menuFrame = new MenuFrame(title, user, style, preModel, null, timingModel);
         this.setVisible(false);
 
