@@ -167,9 +167,9 @@ public class ChessBoardModel {
 
     public boolean checkMove(int toNumber,int toRow,int toCol){
         doLogWrite = false;
-        if(ai){
-           doLogWrite = true;
-        }
+//        if(ai){
+//           doLogWrite = true;
+//        }
         if((toNumber>=11&&toNumber<=26)||(toNumber>=31&&toNumber<=46)){
             for(int i=0;i<pieces.size();i++){
                 if(pieces.get(i).getNumber()==toNumber){

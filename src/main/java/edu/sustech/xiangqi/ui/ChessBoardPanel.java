@@ -118,13 +118,13 @@ public class ChessBoardPanel extends JPanel {
             this.getParent().repaint();
         if(AISwitch){
 
-            AIDebate();//这里ai和棋盘还是一起渲染的
+//            AIDebate();//这里ai和棋盘还是一起渲染的
 //            try{
 //                Thread.sleep(100);
 //            }catch (InterruptedException e){
 //                Thread.currentThread().interrupt();//清除线程中断状态
 //            }
-//            AdvancedAIDebate();
+            AdvancedAIDebate();
         }
     }
 
@@ -162,9 +162,9 @@ public class ChessBoardPanel extends JPanel {
             AbstractPiece AIPiece=model.getPieceAt(formerRow,formerCol);
 
             if(AIPiece!=null&&!model.isRedTurn()){
-//                model.movePiece(AIPiece,targetRow,targetCol);
-                model.aiSwitch(true);
-                model.checkMove(AIPiece.getNumber(), targetRow, targetCol);
+                model.movePiece(AIPiece,targetRow,targetCol);
+//                model.aiSwitch(true);
+//                model.checkMove(AIPiece.getNumber(), targetRow, targetCol);
             }
         }
         this.getParent().repaint();
