@@ -35,6 +35,7 @@ public class ChessBoardPanel extends JPanel {
     private int getCurrentCol;
     private int getLastRow=-1;
     private int getLastCol=-1;
+    private boolean AISwitch = false;
     private int getTargetRow=-1;
     private int getTargetCol=-1;
 
@@ -104,6 +105,14 @@ public class ChessBoardPanel extends JPanel {
                 if(model.movePiece(selectedPiece,row,col)){
                     getLastRow=getCurrentRow;
                     getLastCol=getCurrentCol;
+                    if(AISwitch){
+                        try{
+                            Thread.sleep(500);
+                        }catch (InterruptedException e){
+                            Thread.currentThread().interrupt();//清除线程中断状态
+                        }
+                        AIDebate();//这里ai和棋盘还是一起渲染的
+                    }
                     getTargetRow=row;
                     getTargetCol=col;
                     formerPiece=selectedPiece;
@@ -116,6 +125,10 @@ public class ChessBoardPanel extends JPanel {
             // Swing 会将多个请求合并后再重新绘制，因此调用 repaint 后gui不会立刻变更
             // repaint 中会调用 paintComponent，从而重新绘制gui上棋子的位置等
             this.getParent().repaint();
+    }
+
+    public void switchAI(boolean choice){
+        AISwitch = choice;
     }
 
     public void AIDebate(){

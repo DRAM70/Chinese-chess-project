@@ -6,15 +6,8 @@ import edu.sustech.xiangqi.ui.Style;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
 public class TimingFrame extends JFrame{
     public String user;
@@ -79,11 +72,26 @@ public class TimingFrame extends JFrame{
         blackLabel.setSize(300, 50);
         this.add(blackLabel);//先添加的后绘制
 
+        JLabel blackTimeLabel = new JLabel("shijian");
+        blackTimeLabel.setForeground(styleList[style].getLabelColor());
+        blackTimeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        blackTimeLabel.setLocation(520, 220);
+        blackTimeLabel.setSize(300, 50);
+        this.add(blackTimeLabel);//先添加的后绘制
+
+        JLabel redTimeLabel = new JLabel("shijain");
+        redTimeLabel.setForeground(Color.RED);
+        //redLabel.setForeground(styleList[style].getLabelColor());
+        redTimeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        redTimeLabel.setLocation(520, 270);
+        redTimeLabel.setSize(300, 50);
+        this.add(redTimeLabel);//先添加的后绘制
+
         JLabel redLabel = new JLabel("红方倒计时");
         redLabel.setForeground(Color.RED);
         //redLabel.setForeground(styleList[style].getLabelColor());
         redLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        redLabel.setLocation(520, 220);
+        redLabel.setLocation(520, 320);
         redLabel.setSize(300, 50);
         this.add(redLabel);//先添加的后绘制
 
