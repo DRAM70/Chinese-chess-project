@@ -22,11 +22,21 @@ public class AIFrame extends JFrame{
     public static JLabel label2;
     private ChessBoardModel modelIN;//当前全局可使用的棋盘,请使用这个
 
+    private static AIFrame instance;
+    private static String title;
+    private static ChessBoardModel preModel;
+    private static ChessBoardModel timingModel;
+    private static int style;
+
 
     public AIFrame(String title, String user, ChessBoardModel preModel, ChessBoardModel aiModel, ChessBoardModel timingModel, int style){
         super("AI对战");
         //上面是login的界面，下面是象棋的界面
         this.user = user;
+        this.title = title;
+        this.preModel = preModel;
+        this.timingModel = timingModel;
+        this.style = style;
         if(aiModel != null){
             modelIN = aiModel;
         }
@@ -197,6 +207,20 @@ public class AIFrame extends JFrame{
 //        timer.setRepeats(false);
 //        timer.start();
 //    }
+
+    public static AIFrame getInstance(){
+        return instance;
+    }
+
+    public void end(String s){
+        ToolBox.confirmToEnd(user, 3);
+        MenuFrame menuFrame = new MenuFrame(title, user, style, preModel, null, timingModel);
+        this.setVisible(false);
+
+        menuFrame.setVisible(true);
+        NoticeBox noticeBox = new NoticeBox("提示", user, style, s);
+        noticeBox.setVisible(true);
+    }
 
 
 }

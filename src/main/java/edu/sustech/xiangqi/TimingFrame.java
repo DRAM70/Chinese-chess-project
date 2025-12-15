@@ -281,13 +281,13 @@ public class TimingFrame extends JFrame{
     }
 
 
-    public void end(){
+    public void end(String s){
         ToolBox.confirmToEnd(user, 3);
         MenuFrame menuFrame = new MenuFrame(title, user, style, preModel, aiModel, null);
         this.setVisible(false);
 
         menuFrame.setVisible(true);
-        NoticeBox noticeBox = new NoticeBox("提示", user, style, "计时结束！");
+        NoticeBox noticeBox = new NoticeBox("提示", user, style, s);
         noticeBox.setVisible(true);
     }
 

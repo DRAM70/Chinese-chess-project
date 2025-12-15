@@ -22,6 +22,12 @@ public class GameFrame extends JFrame{
     public static JLabel label2;
     private ChessBoardModel modelIN;//当前全局可使用的棋盘,请使用这个
 
+    private static GameFrame instance;
+    private static String title;
+    private static ChessBoardModel aiModel;
+    private static ChessBoardModel timingModel;
+    private static int style;
+
 
     public GameFrame(String title, String user, ChessBoardModel preModel, ChessBoardModel aiModel, ChessBoardModel timingModel, int style){
         super("红黑对战");
@@ -31,6 +37,11 @@ public class GameFrame extends JFrame{
             modelIN = preModel;
         }
         Style[] styleList = Style.values();
+        this.user = user;
+        this.title = title;
+        this.aiModel = aiModel;
+        this.timingModel = timingModel;
+        this.style = style;
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         //关闭程序时，同时删除可能存在的游客6060
@@ -198,6 +209,21 @@ public class GameFrame extends JFrame{
 //        timer.setRepeats(false);
 //        timer.start();
 //    }
+
+    public static GameFrame getInstance(){
+        return instance;
+    }
+
+
+    public void end(String s){
+        ToolBox.confirmToEnd(user, 3);
+        MenuFrame menuFrame = new MenuFrame(title, user, style, null, aiModel, timingModel);
+        this.setVisible(false);
+
+        menuFrame.setVisible(true);
+        NoticeBox noticeBox = new NoticeBox("提示", user, style, s);
+        noticeBox.setVisible(true);
+    }
 
 
 }

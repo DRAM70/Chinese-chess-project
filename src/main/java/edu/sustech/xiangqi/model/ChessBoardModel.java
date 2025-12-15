@@ -1,7 +1,6 @@
 package edu.sustech.xiangqi.model;
 
-import edu.sustech.xiangqi.TimeBox;
-import edu.sustech.xiangqi.ToolBox;
+import edu.sustech.xiangqi.*;
 import edu.sustech.xiangqi.audio.BackgroundMusic;
 
 import javax.swing.*;
@@ -25,6 +24,7 @@ public class ChessBoardModel {
     private boolean ai = false;
     public int redTime = 600;
     public int blackTime = 600;
+    private int index;
 
     protected void removePieces(AbstractPiece piece){
         pieces.remove(piece);
@@ -34,6 +34,7 @@ public class ChessBoardModel {
     }
 
     public ChessBoardModel(String user, boolean doLogWrite, int index) {
+        this.index = index;
         if(index == 1){
             extra = "Temp";
         }
@@ -376,6 +377,26 @@ public class ChessBoardModel {
         if(isInCheck()){
             if(isCheckmate()){
                 ToolBox.labelTextStatus("将死");
+                try{
+                    Thread.sleep(2000);
+                }catch(InterruptedException e){
+                    Thread.currentThread().interrupt();//清除线程中断状态
+                }
+                ToolBox.labelTextStatus("3秒后关闭！");
+                try{
+                    Thread.sleep(3000);
+                }catch(InterruptedException e){
+                    Thread.currentThread().interrupt();//清除线程中断状态
+                }
+                if(index == 1){
+                    GameFrame.getInstance().end("已将死！");
+                }
+                if(index == 2){
+                    AIFrame.getInstance().end("已将死！");
+                }
+                if(index == 3){
+                    TimingFrame.getInstance().end("已将死！");
+                }
                 return false;
             }
             else{
