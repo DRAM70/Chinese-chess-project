@@ -312,7 +312,9 @@ public class ToolBox {
                     }
                 }
             }
-            return res;
+            if(res != 0){
+                return res;
+            }
         }catch(FileNotFoundException e){
             //需要添加弹窗
             System.out.println(user + "'s log reading failed!");
