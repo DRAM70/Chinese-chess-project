@@ -114,7 +114,11 @@ public class ChessBoardPanel extends JPanel {
 //                else {
 //                    label.setText("黑方执子");
 //                }
+<<<<<<< HEAD
                 label.setText("请选择棋子");
+=======
+
+>>>>>>> 52d4ad759b47126c5fa09d449fd5bdb6e3a9c8ac
                 if(model.movePiece(selectedPiece,row,col)){
                     getLastRow=getCurrentRow;
                     getLastCol=getCurrentCol;
