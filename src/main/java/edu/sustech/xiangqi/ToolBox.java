@@ -214,7 +214,11 @@ public class ToolBox {
 
             String currentLine;
             while((currentLine = reader.readLine()) != null){
-//                if()
+                for(char c : currentLine.toCharArray()){
+                    if (!Character.isDigit(c)) {
+                        return false;
+                    }
+                }
                 code += Integer.parseInt(currentLine);
             }
             reader.close();
