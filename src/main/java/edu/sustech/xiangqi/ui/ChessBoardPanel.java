@@ -94,7 +94,7 @@ public class ChessBoardPanel extends JPanel {
             int row = Math.round((float)(y - MARGIN) / CELL_SIZE);
 
             if (!model.isValidPosition(row, col)) {
-                label.setText("请选择");
+                label.setText("请选择棋子");
                 return;
             }
 
@@ -114,7 +114,7 @@ public class ChessBoardPanel extends JPanel {
 //                else {
 //                    label.setText("黑方执子");
 //                }
-
+                label.setText("请选择棋子");
                 if(model.movePiece(selectedPiece,row,col)){
                     getLastRow=getCurrentRow;
                     getLastCol=getCurrentCol;

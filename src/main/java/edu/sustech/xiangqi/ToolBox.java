@@ -297,20 +297,22 @@ public class ToolBox {
         File file = new File("UserData/" + user + "/" + user + "TimingTemp" + ".txt");
         try{
             Scanner sc = new Scanner(file);
+            int res = 0;
             while(sc.hasNextLine()){
                 String move = sc.nextLine();
                 if(isRed){
                     if(Character.getNumericValue(move.charAt(0)) == 7){
                         String time = "" + move.charAt(2) + move.charAt(3) + move.charAt(4);
-                        return Integer.parseInt(time);
+                        res = Integer.parseInt(time);
                     }
                 }else{
                     if(Character.getNumericValue(move.charAt(0)) == 8){
                         String time = "" + move.charAt(2) + move.charAt(3) + move.charAt(4);
-                        return Integer.parseInt(time);
+                        res = Integer.parseInt(time);
                     }
                 }
             }
+            return res;
         }catch(FileNotFoundException e){
             //需要添加弹窗
             System.out.println(user + "'s log reading failed!");
