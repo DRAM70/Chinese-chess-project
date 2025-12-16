@@ -338,13 +338,15 @@ public class ChessBoardModel {
         }
 
         if(willBeChecked){
-            if(!isRedTurn){
-                ToolBox.labelTextStatus("黑方被将");//ToolBox.labelTextStatus("黑方被将");
-                BackgroundMusic.playGeneralInDanger();
-            }
-            else {
-                ToolBox.labelTextStatus("红方被将");
-                BackgroundMusic.playGeneralInDanger();
+            if(!ai){
+                if(!isRedTurn){
+                    ToolBox.labelTextStatus("黑方被将");//ToolBox.labelTextStatus("黑方被将");
+                    BackgroundMusic.playGeneralInDanger();
+                }
+                else {
+                    ToolBox.labelTextStatus("红方被将");
+                    BackgroundMusic.playGeneralInDanger();
+                }
             }
             return false;
         }
@@ -409,13 +411,15 @@ public class ChessBoardModel {
                 return false;
             }
             else{
-                if(isRedTurn){
-                    ToolBox.labelTextStatus("黑方将军");
-                    BackgroundMusic.playGeneralInDanger();
-                }
-                else{
-                    ToolBox.labelTextStatus("红方将军");
-                    BackgroundMusic.playGeneralInDanger();
+                if(!ai){
+                    if(isRedTurn){
+                        ToolBox.labelTextStatus("黑方将军");
+                        BackgroundMusic.playGeneralInDanger();
+                    }
+                    else{
+                        ToolBox.labelTextStatus("红方将军");
+                        BackgroundMusic.playGeneralInDanger();
+                    }
                 }
             }
 
