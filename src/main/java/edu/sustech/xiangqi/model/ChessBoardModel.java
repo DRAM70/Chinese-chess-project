@@ -338,9 +338,12 @@ public class ChessBoardModel {
         }
 
         if(willBeChecked){
-            if(!ai){
-                ToolBox.labelTextStatus("红方被将");//ToolBox.labelTextStatus("黑方被将");
-                System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+            if(!isRedTurn){
+                ToolBox.labelTextStatus("黑方被将");//ToolBox.labelTextStatus("黑方被将");
+                BackgroundMusic.playGeneralInDanger();
+            }
+            else {
+                ToolBox.labelTextStatus("红方被将");
                 BackgroundMusic.playGeneralInDanger();
             }
             return false;
@@ -406,9 +409,12 @@ public class ChessBoardModel {
                 return false;
             }
             else{
-                if(!ai){
-                    ToolBox.labelTextStatus("黑方被将");
-                    System.out.println("??????????????????????????????????????????/");
+                if(isRedTurn){
+                    ToolBox.labelTextStatus("黑方将军");
+                    BackgroundMusic.playGeneralInDanger();
+                }
+                else{
+                    ToolBox.labelTextStatus("红方将军");
                     BackgroundMusic.playGeneralInDanger();
                 }
             }
