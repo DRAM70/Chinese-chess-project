@@ -242,14 +242,20 @@ public class LoginFrame extends JFrame{
 //                        style = c - '0';
                         style = Integer.parseInt(stylePara);
                         return true;
+                    }else{
+                        in.nextLine();//style
+                        in.nextLine();//log
+                        in.nextLine();//temp
+                        in.nextLine();//aitemp
+                        in.nextLine();//timingtemp
                     }
                 }else{
-                    in.nextLine();
-                    in.nextLine();
-                    in.nextLine();
-                    in.nextLine();
-                    in.nextLine();
-                    in.nextLine();
+                    in.nextLine();//密码
+                    in.nextLine();//style
+                    in.nextLine();//log
+                    in.nextLine();//temp
+                    in.nextLine();//aitemp
+                    in.nextLine();//timingtemp
                 }
             }
             return false;

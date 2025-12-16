@@ -164,9 +164,9 @@ public class ChessBoardModel {
         }
     }
 
-    public void aiSwitch(boolean choice){
-        ai = choice;
-    }
+//    public void aiSwitch(boolean choice){
+//        ai = choice;
+//    }
 
 
     public boolean checkMove(int toNumber,int toRow,int toCol){
@@ -338,8 +338,10 @@ public class ChessBoardModel {
         }
 
         if(willBeChecked){
-            ToolBox.labelTextStatus("黑方被将");
-            BackgroundMusic.playGeneralInDanger();
+            if(!ai){
+                ToolBox.labelTextStatus("红方将");//ToolBox.labelTextStatus("黑方被将");
+                BackgroundMusic.playGeneralInDanger();
+            }
             return false;
         }
 
@@ -354,9 +356,12 @@ public class ChessBoardModel {
             if(removement!=null){
                 if(isRedTurn){
                     System.out.println("吃黑方"+removement.getName());
+                    ToolBox.labelTextStatus("吃黑方"+removement.getName());
+
                 }
                 else {
                     System.out.println("吃红方"+removement.getName());
+                    ToolBox.labelTextStatus("吃红方"+removement.getName());
                 }
                 BackgroundMusic.playEat();
                 pieces.remove(removement);
@@ -400,8 +405,10 @@ public class ChessBoardModel {
                 return false;
             }
             else{
-                ToolBox.labelTextStatus("红方将");
-                BackgroundMusic.playGeneralInDanger();
+                if(!ai){
+                    ToolBox.labelTextStatus("黑方被将");
+                    BackgroundMusic.playGeneralInDanger();
+                }
             }
 
         }
@@ -427,9 +434,14 @@ public class ChessBoardModel {
 
     public boolean moveWithoutLog(AbstractPiece piece, int newRow, int newCol){
         switchLogWrite(false);
+        ai = true;
         //this.switchTurn();
+
+
+
         boolean res = movePiece(piece, newRow, newCol);
         switchLogWrite(true);
+        ai = false;
         return res;
     }
 

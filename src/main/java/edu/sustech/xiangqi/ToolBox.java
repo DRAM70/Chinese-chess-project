@@ -214,6 +214,7 @@ public class ToolBox {
 
             String currentLine;
             while((currentLine = reader.readLine()) != null){
+//                if()
                 code += Integer.parseInt(currentLine);
             }
             reader.close();
@@ -319,7 +320,8 @@ public class ToolBox {
             //需要添加弹窗
             System.out.println(user + "'s log reading failed!");
         }
-        return 600;
+//        return 600;
+        return 10;
     }
 
     public static void timeWriter(String move){
