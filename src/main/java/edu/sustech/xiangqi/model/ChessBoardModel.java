@@ -271,30 +271,6 @@ public class ChessBoardModel {
                 }
             }
         }
-//        return true;
-//    }
-//
-//
-//    public boolean isTrapped(){
-//
-//        for(AbstractPiece eachPiece:pieces){
-//            int oldRow=eachPiece.getRow();
-//            int oldCol=eachPiece.getCol();
-//            for(int targetRow=0;targetRow<=9;targetRow++){
-//                for(int targetCol=0;targetCol<=8;targetCol++){
-//                    AbstractPiece changeStep =getPieceAt(targetRow,targetCol);
-//                    if(!movePiece(eachPiece,targetRow,targetCol)){
-//                        continue;
-//                    }
-//                    eachPiece.setRow(oldRow);
-//                    eachPiece.setCol(oldCol);
-//                    if(changeStep!=null){
-//                        getPieces().add(changeStep);
-//                    }
-//                    return false;
-//                }
-//            }
-//        }
         /// /a comment
         return true;
     }
@@ -406,12 +382,34 @@ public class ChessBoardModel {
 
         }
 
-//        else{
-//            if(isTrapped()){
-//                return false;
-//            }
-//        }
-//
+        else{
+            List<int[]> validMoves=new ArrayList<>();
+            List<AbstractPiece> pieces=new ArrayList<>(this.getPieces());
+
+            for(AbstractPiece apiece:pieces){
+                int formerRow_a=apiece.getRow();
+                int formerCol_a=apiece.getCol();
+                for(int toRow=0;toRow<=9;toRow++){
+                    for(int toCol=0;toCol<=8;toCol++){
+                        AbstractPiece targetPiece=this.getPieceAt(toRow,toCol);
+                        if(apiece.canMoveTo(toRow,toCol,this)&&!isCheckmate()&&!isGeneralMeeting()){
+                            this.switchTurn();
+                            apiece.setCol(formerCol_a);
+                            apiece.setRow(formerRow_a);
+
+                            validMoves.add(new int[]{formerRow_a,formerCol_a,toRow,toCol});
+                        }
+                    }
+                }
+
+            }
+
+            if(validMoves.isEmpty()){
+                System.out.println(1111);
+                return false;
+            }
+        }
+
         piece.moveTo(newRow, newCol);
         //这里是一个示例，具体还有待开发
         if(doLogWrite){
