@@ -234,13 +234,15 @@ public class AdvancedAI {
 
 
     private double minimax(int depth, boolean isBlackTurn, double alpha, double beta) {
+        double maxScore = Double.MIN_VALUE;
+        double minScore = Double.MAX_VALUE;
+
         // 终止条件：搜索到最大深度，或分出胜负（将死/困毙）
         if (depth== 0||model.isCheckmate()) {
             return evaluate();
         }
 
         if (isBlackTurn) { // 黑方回合：最大化收益（Max层）
-            double maxScore = Double.MIN_VALUE;
             List<int[]> blackMoves = getValidMoves(true);
             if (blackMoves != null) {
                 for (int[] move : blackMoves) {
@@ -257,7 +259,7 @@ public class AdvancedAI {
                     double score = minimax(depth - 1, false, alpha, beta);
                     if(toPiece!=null){
                         double captureGain=getPieceValue(toPiece)-getPieceValue(formerPiece);
-                        score+=captureGain*20;
+                        score+=Math.abs(captureGain*200);
                     }
 
                     formerPiece.setRow(formerRow);
@@ -276,8 +278,8 @@ public class AdvancedAI {
         }
 
         else { // 红方回合：最小化黑方收益（Min层）
-            double minScore = Double.MAX_VALUE;
-            List<int[]> redMoves = getValidMoves(false); // 新增：获取红方所有合法走法
+
+            List<int[]> redMoves = getValidMoves(false);
             if (redMoves != null) {
                 for (int[] move : redMoves) {
                     int formerRow=move[0];
