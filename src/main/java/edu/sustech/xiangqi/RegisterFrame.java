@@ -102,7 +102,7 @@ public class RegisterFrame extends JFrame {
             }
             if(isInUserListU(c)){
                 loginStatusLabel1.setLocation(195, 50);
-                loginStatusLabel1.setText("用户已存在！");
+                loginStatusLabel1.setText("用户名已存在！");
                 return;
             }
             if (addNewUser(c, d)) {
